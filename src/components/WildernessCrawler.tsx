@@ -418,7 +418,7 @@ ${img.narrative}
       {/* Module Title */}
       <div className="flex justify-between items-center border-b border-white/5 pb-3">
         <div className="flex items-center gap-2">
-          <Terminal size={17} className="text-indigo-400 animate-pulse" />
+          <Terminal size={17} className="text-indigo-400" />
           <div>
             <h4 className="text-sm font-semibold text-white font-['Noto_Serif_SC'] flex items-center gap-1.5">
               高精风光图片智能爬虫采集中心
@@ -493,7 +493,7 @@ ${img.narrative}
               </>
             ) : (
               <>
-                <Download size={12} className="text-white animate-bounce" />
+                <Download size={12} className="text-white" />
                 <span>立即启动高精爬取</span>
               </>
             )}

@@ -214,7 +214,7 @@ export default function ReaderModal({ post, onClose, onLike, onAddComment, accen
       // Headings
       if (trimmed.startsWith('### ')) {
         elements.push(
-          <h4 key={`h3-${index}`} className="text-xl font-semibold text-slate-950 dark:text-white mt-8 mb-4 tracking-tight border-l-4 pl-3" style={{ borderColor: 'var(--accent-color, #10b981)' }}>
+          <h4 key={`h3-${index}`} className="text-xl font-semibold text-slate-950 dark:text-white mt-8 mb-4 tracking-tight pl-1">
             {parseInlineMarkup(trimmed.substring(4))}
           </h4>
         );
@@ -233,7 +233,7 @@ export default function ReaderModal({ post, onClose, onLike, onAddComment, accen
       } else if (trimmed.startsWith('> ')) {
         // Blockquotes
         elements.push(
-          <blockquote key={`quote-${index}`} className="border-l-4 pl-4 py-2 my-6 italic text-slate-600 dark:text-slate-300 bg-slate-50/50 dark:bg-zinc-900/30 rounded-r-lg">
+          <blockquote key={`quote-${index}`} className="pl-4 py-2 my-6 italic text-slate-600 dark:text-slate-300 bg-slate-50/50 dark:bg-zinc-900/30 rounded-lg border border-slate-200/50 dark:border-slate-700/50">
             {parseInlineMarkup(trimmed.substring(2))}
           </blockquote>
         );
@@ -296,6 +296,12 @@ export default function ReaderModal({ post, onClose, onLike, onAddComment, accen
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-slate-950/80 backdrop-blur-md"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="reader-modal-title"
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') onClose();
+      }}
     >
       {/* Scroll indicator */}
       <div className="absolute top-0 left-0 w-full h-1.5 bg-slate-800 z-50">
@@ -323,28 +329,28 @@ export default function ReaderModal({ post, onClose, onLike, onAddComment, accen
             <span className="text-xs text-slate-400 mr-1 hidden sm:inline">字号:</span>
             <button
               onClick={() => setFontSize('sm')}
-              className={`p-1 text-xs rounded transition ${fontSize === 'sm' ? 'bg-white/20 text-white font-bold' : 'text-slate-400 hover:text-white'}`}
+              className={`p-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-xs rounded transition ${fontSize === 'sm' ? 'bg-white/20 text-white font-bold' : 'text-slate-400 hover:text-white'}`}
               title="小字"
             >
               小
             </button>
             <button
               onClick={() => setFontSize('base')}
-              className={`p-1 text-xs rounded transition ${fontSize === 'base' ? 'bg-white/20 text-white font-bold' : 'text-slate-400 hover:text-white'}`}
+              className={`p-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-xs rounded transition ${fontSize === 'base' ? 'bg-white/20 text-white font-bold' : 'text-slate-400 hover:text-white'}`}
               title="中字"
             >
               中
             </button>
             <button
               onClick={() => setFontSize('lg')}
-              className={`p-1 text-xs rounded transition ${fontSize === 'lg' ? 'bg-white/20 text-white font-bold' : 'text-slate-400 hover:text-white'}`}
+              className={`p-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-xs rounded transition ${fontSize === 'lg' ? 'bg-white/20 text-white font-bold' : 'text-slate-400 hover:text-white'}`}
               title="大字"
             >
               大
             </button>
             <button
               onClick={() => setFontSize('xl')}
-              className={`p-1 text-xs rounded transition ${fontSize === 'xl' ? 'bg-white/20 text-white font-bold' : 'text-slate-400 hover:text-white'}`}
+              className={`p-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-xs rounded transition ${fontSize === 'xl' ? 'bg-white/20 text-white font-bold' : 'text-slate-400 hover:text-white'}`}
               title="超大"
             >
               特
@@ -353,8 +359,9 @@ export default function ReaderModal({ post, onClose, onLike, onAddComment, accen
 
           <button
             onClick={onClose}
-            className="p-2 bg-black/40 hover:bg-red-500/30 hover:border-red-500/50 transition-all border border-slate-700/50 rounded-full text-slate-300 hover:text-white"
+            className="p-3 bg-black/40 hover:bg-red-500/30 hover:border-red-500/50 transition-all border border-slate-700/50 rounded-full text-white hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center"
             id="close-reader-btn"
+            aria-label="关闭阅读器"
           >
             <X size={20} />
           </button>
@@ -388,7 +395,7 @@ export default function ReaderModal({ post, onClose, onLike, onAddComment, accen
                   }}>
                 {post.category}
               </span>
-              <h1 className="text-2xl md:text-4xl font-extrabold text-white tracking-tight leading-tight select-text mb-3">
+              <h1 id="reader-modal-title" className="text-2xl md:text-4xl font-extrabold text-white tracking-tight leading-tight select-text mb-3">
                 {post.title}
               </h1>
               <div className="flex items-center gap-4 text-xs md:text-sm text-slate-300 font-medium">

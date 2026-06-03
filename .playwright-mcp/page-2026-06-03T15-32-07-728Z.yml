@@ -1,0 +1,577 @@
+- generic [ref=e3]:
+  - img "翡翠湖畔" [ref=e779]
+  - generic [ref=e7]:
+    - banner [ref=e8]:
+      - generic [ref=e9]:
+        - img [ref=e11]
+        - generic [ref=e14]:
+          - heading "VistaBlog | 动态自然风景博客" [level=1] [ref=e15]:
+            - generic [ref=e16]: VistaBlog
+            - generic [ref=e17]: "| 动态自然风景博客"
+          - paragraph [ref=e18]: 夜深了，群星闪烁雪山之巅。让大自然低述，枕松涛好眠 🌌
+      - generic [ref=e19]:
+        - generic [ref=e21]: "当前壁纸:"
+        - generic [ref=e22]: 翡翠湖畔
+        - link "@Bailey Zindel / Unsplash" [ref=e23] [cursor=pointer]:
+          - /url: https://unsplash.com/@baileyzindel
+    - generic [ref=e24]:
+      - generic [ref=e25]:
+        - generic [ref=e26]:
+          - img "博主头像" [ref=e29]
+          - generic [ref=e30]:
+            - heading "林暮野 (Wilderness)" [level=2] [ref=e31]:
+              - text: 林暮野 (Wilderness)
+              - img [ref=e32]
+            - paragraph [ref=e35]: 前沿技术探索者 / 旅行摄影师
+            - paragraph [ref=e36]:
+              - img [ref=e37]
+              - text: 栖居于 · 浙中山野
+          - separator [ref=e40]
+          - paragraph [ref=e41]: “凡是能在深林竹径、璀璨星岳和晨涛海岸中获取平静的人，都值得被大自然永久拥抱。代码是我的画笔，原野是我的精神归宿。”
+          - generic [ref=e42]:
+            - generic [ref=e43]:
+              - generic [ref=e44]: "10"
+              - text: 文章
+            - generic [ref=e45]:
+              - generic [ref=e46]: "3"
+              - text: 微言
+            - generic [ref=e47]:
+              - generic [ref=e48]: "5301"
+              - text: 总博阅
+          - generic [ref=e49]:
+            - link [ref=e50] [cursor=pointer]:
+              - /url: https://github.com
+              - img [ref=e51]
+            - link [ref=e54] [cursor=pointer]:
+              - /url: https://instagram.com
+              - img [ref=e55]
+            - button "微信联络" [ref=e58] [cursor=pointer]
+        - generic [ref=e59]:
+          - generic [ref=e60]:
+            - generic [ref=e61]:
+              - img [ref=e62]
+              - heading "山林雨落白噪音" [level=3] [ref=e66]
+            - generic [ref=e67]: WebSynth
+          - paragraph [ref=e68]: 阅读深度好文时，欢迎点亮以下伴奏。由浏览器实时物理生成的舒缓落雨声，让专注更加纯粹。
+          - button "开启落雨声" [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+            - text: 开启落雨声
+        - generic [ref=e75]:
+          - generic [ref=e76]:
+            - img [ref=e77]
+            - heading "更换风景意境" [level=3] [ref=e81]
+          - paragraph [ref=e82]: 点击切换博客的主题意境，整体界面色温与色标将自适应随之渐变。
+          - generic [ref=e83]:
+            - button "翡翠湖畔 翡翠湖畔 静谧的晨雾中，远山倒映在碧绿的湖水中，绿意盎然。" [ref=e84] [cursor=pointer]:
+              - img "翡翠湖畔" [ref=e86]
+              - generic [ref=e87]:
+                - generic [ref=e89]: 翡翠湖畔
+                - paragraph [ref=e91]: 静谧的晨雾中，远山倒映在碧绿的湖水中，绿意盎然。
+            - button "雾锁秋峦 雾锁秋峦 云雾缭绕的山谷，潺潺的溪流与斑斓的秋树交相辉映。" [ref=e92] [cursor=pointer]:
+              - img "雾锁秋峦" [ref=e94]
+              - generic [ref=e95]:
+                - generic [ref=e97]: 雾锁秋峦
+                - paragraph [ref=e98]: 云雾缭绕的山谷，潺潺的溪流与斑斓的秋树交相辉映。
+            - button "璀璨星岳 璀璨星岳 浩瀚夜空下，群星在巍峨的雪山之巅闪烁，银河如丝带般悬挂。" [ref=e99] [cursor=pointer]:
+              - img "璀璨星岳" [ref=e101]
+              - generic [ref=e102]:
+                - generic [ref=e104]: 璀璨星岳
+                - paragraph [ref=e105]: 浩瀚夜空下，群星在巍峨的雪山之巅闪烁，银河如丝带般悬挂。
+            - button "暮色听涛 暮色听涛 暖洋洋的晨光漫过悬崖，椰树与无垠的海平面在潮声中苏醒。" [ref=e106] [cursor=pointer]:
+              - img "暮色听涛" [ref=e108]
+              - generic [ref=e109]:
+                - generic [ref=e111]: 暮色听涛
+                - paragraph [ref=e112]: 暖洋洋的晨光漫过悬崖，椰树与无垠的海平面在潮声中苏醒。
+            - button "极境冬雪 极境冬雪 白雪皑皑的水杉林在冬日的粉色霞光中静静站立，绝尘脱俗。" [ref=e113] [cursor=pointer]:
+              - img "极境冬雪" [ref=e115]
+              - generic [ref=e116]:
+                - generic [ref=e118]: 极境冬雪
+                - paragraph [ref=e119]: 白雪皑皑的水杉林在冬日的粉色霞光中静静站立，绝尘脱俗。
+      - generic [ref=e120]:
+        - generic [ref=e122]:
+          - generic [ref=e123]:
+            - generic [ref=e124]:
+              - generic [ref=e125]:
+                - generic [ref=e126]:
+                  - generic [ref=e127]:
+                    - img [ref=e128]
+                    - text: 国内部署友好
+                  - generic [ref=e131]:
+                    - img [ref=e132]
+                    - text: 资料与照片优先
+                - heading "学习资料与照片发现台" [level=2] [ref=e136]
+                - paragraph [ref=e137]: 先找资料和照片，再慢慢读文章。这里把考研文档、PPT、PDF、风景图集、背景音乐和采集入口集中到一个工作区，方便同学参与补充。
+              - generic [ref=e138]:
+                - generic [ref=e139]:
+                  - img [ref=e140]
+                  - generic [ref=e145]: "7"
+                  - generic [ref=e146]: 同学评论
+                - generic [ref=e147]:
+                  - img [ref=e148]
+                  - generic [ref=e151]: "5"
+                  - generic [ref=e152]: 可下载资料
+                - generic [ref=e153]:
+                  - img [ref=e154]
+                  - generic [ref=e157]: "4"
+                  - generic [ref=e158]: 照片线索
+            - generic [ref=e159]:
+              - generic [ref=e160]:
+                - button "学习资料" [ref=e161]:
+                  - generic [ref=e162]:
+                    - img [ref=e163]
+                    - text: 学习资料
+                - button "照片图集" [ref=e165]:
+                  - generic [ref=e166]:
+                    - img [ref=e167]
+                    - text: 照片图集
+                - button "同学参与" [ref=e171]:
+                  - generic [ref=e172]:
+                    - img [ref=e173]
+                    - text: 同学参与
+              - generic [ref=e781]:
+                - img [ref=e782]
+                - textbox [ref=e785]:
+                  - /placeholder: 搜索 PDF、Word、PPT...
+            - generic [ref=e786]:
+              - article [ref=e787]:
+                - generic [ref=e788]:
+                  - generic [ref=e789]:
+                    - img "【高值分享】MIT 编译技术与高级算法树分析自研笔记归结" [ref=e790]
+                    - generic [ref=e791]: PDF
+                  - generic [ref=e792]:
+                    - generic [ref=e793]:
+                      - generic [ref=e794]: 学习资料
+                      - generic [ref=e795]: 2026-06-03
+                    - heading "【高值分享】MIT 编译技术与高级算法树分析自研笔记归结" [level=3] [ref=e796]
+                    - paragraph [ref=e797]: 这是我结合 MIT OpenCourseWare 经典编译大纲以及 LR(1) 状态语法树的个人梳理笔记。内附高清拓扑分析图与 PDF 完整索引下载，供技术考研与高阶学习查阅。
+                    - generic [ref=e798]:
+                      - generic [ref=e799]: 【林间精选】MIT 编译自研笔记与状态语法树完整归结 (矢量PDF版).pdf
+                      - button "查看" [ref=e800]:
+                        - text: 查看
+                        - img [ref=e801]
+              - article [ref=e803]:
+                - generic [ref=e804]:
+                  - generic [ref=e805]:
+                    - img "【高分大沙龙】2026考研思想道德与法治(思修)核心背诵大纲.docx" [ref=e806]
+                    - generic [ref=e807]: Word
+                  - generic [ref=e808]:
+                    - generic [ref=e809]:
+                      - generic [ref=e810]: 学习资料
+                      - generic [ref=e811]: 2026-06-03
+                    - heading "【高分大沙龙】2026考研思想道德与法治(思修)核心背诵大纲.docx" [level=3] [ref=e812]
+                    - paragraph [ref=e813]: 由高分上岸学长整理的高分思修核心考点Word版，整理了全部重难点与历年高频真题考点，排版干净工整，支持Word本地直接下载打印默写。
+                    - generic [ref=e814]:
+                      - generic [ref=e815]: 【林间笔记】2026考研思想教育及政治核心背诵模板(完美排版).docx
+                      - button "查看" [ref=e816]:
+                        - text: 查看
+                        - img [ref=e817]
+              - article [ref=e819]:
+                - generic [ref=e820]:
+                  - generic [ref=e821]:
+                    - img "【学术汇报】全套极简深色学术论文汇报/大作业汇报通用.pptx" [ref=e822]
+                    - generic [ref=e823]: PPT
+                  - generic [ref=e824]:
+                    - generic [ref=e825]:
+                      - generic [ref=e826]: 学习资料
+                      - generic [ref=e827]: 2026-06-02
+                    - heading "【学术汇报】全套极简深色学术论文汇报/大作业汇报通用.pptx" [level=3] [ref=e828]
+                    - paragraph [ref=e829]: 一套精美沉稳的深色学术风Microsoft PPT汇报模板，内附完整的图表组合、科技结构图、物理运算公式排布与渐变缓动，期末满分答辩推荐。
+                    - generic [ref=e830]:
+                      - generic [ref=e831]: 【林间学术】深色高分辨率通用答辩及组会汇报演示排版.pptx
+                      - button "查看" [ref=e832]:
+                        - text: 查看
+                        - img [ref=e833]
+              - article [ref=e835]:
+                - generic [ref=e836]:
+                  - generic [ref=e837]:
+                    - img "【自习风景图片】阳光透过晨雾洒在复旦图书馆原木桌椅上的静心瞬间" [ref=e838]
+                    - generic [ref=e839]: Photo
+                  - generic [ref=e840]:
+                    - generic [ref=e841]:
+                      - generic [ref=e842]: 学习资料
+                      - generic [ref=e843]: 2026-06-03
+                    - heading "【自习风景图片】阳光透过晨雾洒在复旦图书馆原木桌椅上的静心瞬间" [level=3] [ref=e844]
+                    - paragraph [ref=e845]: 这组高清风景照片承载了每天陪伴我备考的心流瞬间。50% 的学习资料并不仅仅是硬核文档，也来自温暖治愈的风景。附原图打包。
+                    - generic [ref=e846]:
+                      - generic [ref=e847]: 【学习风景】阅览室原木桌椅与林间晨曦治愈系电脑壁纸图集.zip
+                      - button "查看" [ref=e848]:
+                        - text: 查看
+                        - img [ref=e849]
+          - complementary [ref=e248]:
+            - generic [ref=e249]:
+              - generic [ref=e250]:
+                - heading "采集队列" [level=3] [ref=e251]
+                - paragraph [ref=e252]: 把爬虫当成候选采集器，先预览来源，再导入博客或相册。
+              - img [ref=e253]
+            - generic [ref=e259]:
+              - text: 采集关键词
+              - generic [ref=e260]:
+                - textbox "采集关键词" [ref=e261]: 复习资料 风景图
+                - button "加入" [ref=e262]
+            - generic [ref=e263]:
+              - generic [ref=e264]:
+                - img [ref=e265]
+                - generic [ref=e270]:
+                  - heading "国内静态部署" [level=4] [ref=e271]
+                  - paragraph [ref=e272]: 资源通过环境变量切换到对象存储、图床代理或自建 CDN。
+              - generic [ref=e273]:
+                - img [ref=e274]
+                - generic [ref=e277]:
+                  - heading "下载资源优先" [level=4] [ref=e278]
+                  - paragraph [ref=e279]: Word、PPT、PDF 和照片包都显示格式、大小和提取码。
+              - generic [ref=e280]:
+                - img [ref=e281]
+                - generic [ref=e284]:
+                  - heading "照片导入路径" [level=4] [ref=e285]
+                  - paragraph [ref=e286]: 当前主题：翡翠湖畔，可进入荒野沙盘采集照片。
+            - button "打开照片与爬取工作台" [ref=e287]:
+              - text: 打开照片与爬取工作台
+              - img [ref=e288]
+        - generic [ref=e290]:
+          - tablist "内容分类" [ref=e291]:
+            - tab "深度博文" [ref=e292] [cursor=pointer]:
+              - img [ref=e293]
+              - text: 深度博文
+            - tab "微言片刻" [ref=e295] [cursor=pointer]:
+              - img [ref=e296]
+              - text: 微言片刻
+            - tab "关于博主" [ref=e299] [cursor=pointer]:
+              - img [ref=e300]
+              - text: 关于博主
+            - tab "荒野沙盘" [selected] [ref=e302] [cursor=pointer]:
+              - img [ref=e303]
+              - text: 荒野沙盘
+          - button "开启新创作" [ref=e306] [cursor=pointer]:
+            - img [ref=e307]
+            - text: 开启新创作
+        - tabpanel "荒野沙盘" [ref=e851]:
+          - generic [ref=e852]:
+            - generic [ref=e853]:
+              - generic [ref=e854]:
+                - img [ref=e856]
+                - generic [ref=e859]:
+                  - heading "林暮野的「荒野数字交互沙盘」" [level=3] [ref=e860]
+                  - paragraph [ref=e861]: 这里是科技美学与风光记录折叠交汇的极客地带。在这里，您可以操控多音轨物理落雨声、利用风光相机取景模拟器拍摄自然、或者亲手签盖一枚邮戳以制作明信片。
+              - button "多轨白噪音：离线中" [ref=e862] [cursor=pointer]:
+                - img [ref=e863]
+                - generic [ref=e867]: 多轨白噪音：离线中
+            - generic [ref=e868]:
+              - generic [ref=e869]:
+                - generic [ref=e870]:
+                  - generic [ref=e871]:
+                    - generic [ref=e872]:
+                      - img [ref=e873]
+                      - heading "荒野行旅探索沙盘 (Landscape Footprints)" [level=4] [ref=e875]
+                    - generic [ref=e876]: SELECT PATH PIN
+                  - generic [ref=e877]:
+                    - generic:
+                      - img
+                    - generic [ref=e878]:
+                      - generic [ref=e879]: DIGITAL TOPO SANDBOX v1.2
+                      - generic [ref=e880]: 🌐 29.58° N, 101.88° E
+                    - generic [ref=e881]:
+                      - button "西藏阿里" [ref=e882] [cursor=pointer]:
+                        - generic [ref=e883]:
+                          - img [ref=e884]
+                          - generic [ref=e887]: 西藏阿里
+                      - button "川西" [ref=e888] [cursor=pointer]:
+                        - generic [ref=e890]:
+                          - img [ref=e891]
+                          - generic [ref=e894]: 川西
+                      - button "冰岛" [ref=e895] [cursor=pointer]:
+                        - generic [ref=e896]:
+                          - img [ref=e897]
+                          - generic [ref=e900]: 冰岛
+                      - button "浙江天目" [ref=e901] [cursor=pointer]:
+                        - generic [ref=e902]:
+                          - img [ref=e903]
+                          - generic [ref=e906]: 浙江天目
+                    - generic [ref=e907]:
+                      - generic [ref=e908]: "Active footprint: 川西 · 里索海贡嘎山"
+                      - img [ref=e910]
+                  - generic [ref=e913]:
+                    - generic [ref=e914]:
+                      - img "川西 · 里索海贡嘎山" [ref=e915]
+                      - generic [ref=e916]:
+                        - img [ref=e917]
+                        - text: 4,350米
+                    - generic [ref=e920]:
+                      - generic [ref=e921]:
+                        - generic [ref=e922]:
+                          - generic [ref=e923]: 29.58° N, 101.88° E
+                          - generic [ref=e924]: •
+                          - generic [ref=e925]: "温度: 2°C 至 15°C"
+                        - heading "川西 · 里索海贡嘎山" [level=4] [ref=e926]
+                        - paragraph [ref=e927]: 蜀山之王——贡嘎雪山的最佳仰望点之一。里索海犹如一双嵌在乱石深处的松石之眼。傍晚，高达7556米的主峰闪烁着如熔岩般的黄铜金辉，与黑魆魆的冰川倒融于水面，构成了风光摄影师向往的终极画幅。
+                      - generic [ref=e928]:
+                        - generic [ref=e929]:
+                          - generic [ref=e930]: "推荐装备 (Recommended Outfit):"
+                          - generic [ref=e931]: Hasselblad X2D 100C + XCD 38mm Lens / Mavic 3 Pro Cine Drone
+                        - generic [ref=e932]:
+                          - button "制作山野寄信" [ref=e933] [cursor=pointer]:
+                            - img [ref=e934]
+                            - text: 制作山野寄信
+                          - button "载入相机" [ref=e937] [cursor=pointer]:
+                            - img [ref=e938]
+                            - text: 载入相机
+                - generic [ref=e941]:
+                  - generic [ref=e942]:
+                    - generic [ref=e943]:
+                      - img [ref=e944]
+                      - heading "风光相机取景器模拟器 (Exif Viewfinder Simulator)" [level=4] [ref=e947]
+                    - generic [ref=e948]: MEDIUM FORMAT 100MP
+                  - generic [ref=e949]:
+                    - generic:
+                      - img "Viewfinder Focus Target"
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic: MF LATCHED
+                          - generic: "|"
+                          - generic: 川西
+                        - generic:
+                          - generic: AWB
+                          - generic: "[||||] 99%"
+                          - generic: RAW+F
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic: SHUTTER
+                            - generic: 1/250s
+                          - generic:
+                            - generic: APERTURE
+                            - generic: f/4.0
+                          - generic:
+                            - generic: ISO
+                            - generic: "400"
+                        - generic:
+                          - generic:
+                            - generic: FILM PROFILE
+                            - text: Classic Chrome
+                          - generic: EV 0.0
+                  - generic [ref=e950]:
+                    - generic [ref=e951]:
+                      - generic [ref=e952]:
+                        - generic [ref=e953]:
+                          - text: "焦距 (Focal Length):"
+                          - strong [ref=e954]: 50mm
+                        - generic [ref=e955]:
+                          - button "18" [ref=e956] [cursor=pointer]
+                          - button "35" [ref=e957] [cursor=pointer]
+                          - button "50" [ref=e958] [cursor=pointer]
+                          - button "85" [ref=e959] [cursor=pointer]
+                          - button "135" [ref=e960] [cursor=pointer]
+                          - button "200" [ref=e961] [cursor=pointer]
+                      - generic [ref=e962]:
+                        - generic [ref=e963]:
+                          - text: "焦内光圈 (Aperture Focus):"
+                          - strong [ref=e964]: f/4.0
+                        - generic [ref=e965]:
+                          - button "f/1.4" [ref=e966] [cursor=pointer]
+                          - button "f/2.8" [ref=e967] [cursor=pointer]
+                          - button "f/4.0" [ref=e968] [cursor=pointer]
+                          - button "f/5.6" [ref=e969] [cursor=pointer]
+                          - button "f/8.0" [ref=e970] [cursor=pointer]
+                          - button "f/11" [ref=e971] [cursor=pointer]
+                          - button "f/16" [ref=e972] [cursor=pointer]
+                    - generic [ref=e973]:
+                      - generic [ref=e974]:
+                        - generic [ref=e975]:
+                          - text: "底片/胶片模拟 (Film Simulation):"
+                          - strong [ref=e976]: Classic Chrome
+                        - combobox [ref=e978] [cursor=pointer]:
+                          - option "FUJIFILM Classic Chrome (经底正片 - 复古暖调)" [selected]
+                          - option "FUJIFILM Velvia (反转胶片 - 极为浓郁饱满)"
+                          - option "FUJIFILM Acros (高对比碳黑 - 极致寂静)"
+                          - option "FUJIFILM Astia (经典柔和 - 多彩风景)"
+                          - option "FUJIFILM Classic Negative (老旧街头胶片)"
+                      - generic [ref=e979]:
+                        - generic [ref=e980]:
+                          - generic [ref=e981]: "ISO (数字感光):"
+                          - slider [ref=e982] [cursor=pointer]: "400"
+                          - generic [ref=e983]:
+                            - generic [ref=e984]: "100"
+                            - generic [ref=e985]: "400"
+                            - generic [ref=e986]: "6400"
+                        - generic [ref=e987]:
+                          - generic [ref=e988]: "EV (曝光缩放):"
+                          - slider [ref=e989] [cursor=pointer]: "0"
+                          - generic [ref=e990]:
+                            - generic [ref=e991]: "-2.0"
+                            - generic [ref=e992]: "0.0"
+                            - generic [ref=e993]: "+2.0"
+                  - button "按下快门 (Capture Snap!)" [ref=e995] [cursor=pointer]:
+                    - img [ref=e996]
+                    - text: 按下快门 (Capture Snap!)
+              - generic [ref=e999]:
+                - generic [ref=e1000]:
+                  - generic [ref=e1001]:
+                    - generic [ref=e1002]:
+                      - img [ref=e1003]
+                      - heading "荒野多轨声景混音台 (Ambient Synth Deck)" [level=4] [ref=e1007]
+                    - generic [ref=e1008]: PHYSICAL SYNTH
+                  - paragraph [ref=e1009]: 不仅仅是简单的雨声。本站依托现代 Web Audio API 高精正弦波及低通滤波器，在本地浏览器物理合成多声道风声、雨滴与篝火，打造最契合您的荒野专注环境。
+                  - button "启动实时物理声景 (Initiate Multi-Track Synth)" [ref=e1010] [cursor=pointer]:
+                    - img [ref=e1011]
+                    - generic [ref=e1015]: 启动实时物理声景 (Initiate Multi-Track Synth)
+                  - generic [ref=e1016]:
+                    - generic [ref=e1017]:
+                      - generic [ref=e1018]:
+                        - generic [ref=e1019]:
+                          - img [ref=e1020]
+                          - generic [ref=e1022]: 落叶松针雨 (Rhythm of Rain)
+                        - button "激活中" [disabled] [ref=e1023]
+                      - generic [ref=e1024]:
+                        - slider [disabled] [ref=e1026]: "0.15"
+                        - generic [ref=e1027]: 43%
+                    - generic [ref=e1028]:
+                      - generic [ref=e1029]:
+                        - generic [ref=e1030]:
+                          - img [ref=e1031]
+                          - generic [ref=e1033]: 林间红松篝火 (Woodland Bonfire)
+                        - button "激活中" [disabled] [ref=e1034]
+                      - generic [ref=e1035]:
+                        - slider [disabled] [ref=e1037]: "0.2"
+                        - generic [ref=e1038]: 57%
+                    - generic [ref=e1039]:
+                      - generic [ref=e1040]:
+                        - generic [ref=e1041]:
+                          - img [ref=e1042]
+                          - generic [ref=e1046]: 潮起海浪呼吸 (Breathing Tides)
+                        - button "激活中" [disabled] [ref=e1047]
+                      - generic [ref=e1048]:
+                        - slider [disabled] [ref=e1050]: "0.1"
+                        - generic [ref=e1051]: 29%
+                - generic [ref=e1052]:
+                  - generic [ref=e1053]:
+                    - generic [ref=e1054]:
+                      - img [ref=e1055]
+                      - heading "我的摄影轻胶卷 (My Captured Roll)" [level=4] [ref=e1059]
+                    - generic [ref=e1060]: EXIF DATALOG (0)
+                  - paragraph [ref=e1061]: 您在上方 Viewfinder 模拟器中每一次按下的快门，都会用纯代数形式生成一卷数微底片，并精准捕捉您当时的各种透射指标设定，储存在您的浏览器存储介质中。
+                  - generic [ref=e1062]:
+                    - img [ref=e1063]
+                    - paragraph [ref=e1068]: 轻胶卷空空如也。
+                    - paragraph [ref=e1069]: 点按上方红色大快门来捕获你的第一卷荒野瞬间吧！
+                  - generic [ref=e1070]:
+                    - generic [ref=e1071]:
+                      - generic [ref=e1072]: 我珍藏的荒野明信片 (0)
+                      - generic [ref=e1073]: POSTCARDS STORAGE
+                    - paragraph [ref=e1074]: 您目前还没有制作过印花明信片。点击左侧的【制作山野寄信】为微信好友制作一张吧！
+            - generic [ref=e1075]:
+              - generic [ref=e1076]:
+                - generic [ref=e1077]:
+                  - img [ref=e1078]
+                  - heading "高精风光图片智能爬虫采集中心 CRAWLER ENGINE v2.5" [level=4] [ref=e1081]:
+                    - text: 高精风光图片智能爬虫采集中心
+                    - generic [ref=e1082]: CRAWLER ENGINE v2.5
+                - img [ref=e1083]
+              - paragraph [ref=e1087]: 聚焦您输入的风光关键词，建立高维 HTTP 连接线程。从 Unsplash、Bing、Pexels 等极度摄影平台检索极境原野风光、获取嵌入式的元 Exif 指标， 一一映射嵌入在相机轻胶卷及新文章草稿中。
+              - generic [ref=e1088]:
+                - generic [ref=e1089]:
+                  - generic [ref=e1090]: 风光搜索索引 (Keyword index)
+                  - generic [ref=e1091]:
+                    - 'textbox "例如: 冰岛, 川西, 雪山, 湖泊..." [ref=e1092]'
+                    - img [ref=e1093]
+                - generic [ref=e1096]:
+                  - generic [ref=e1097]: 目标采集源 (Scraper Metasource)
+                  - combobox [ref=e1098] [cursor=pointer]:
+                    - option "📸 Unsplash Pro-Expedition" [selected]
+                    - option "🌐 Bing Scenic Daily Restful"
+                    - option "🌍 NASA Earth-Observing Scraper"
+                    - option "🦁 Pexels Wilderness Collective"
+                - generic [ref=e1099]:
+                  - generic [ref=e1100]: 过滤分辨率 (Filter Resolution)
+                  - combobox [ref=e1101] [cursor=pointer]:
+                    - option "Full HD (1080P)"
+                    - option "Extreme 4K (Ultra)" [selected]
+                    - option "Cine 8K (Medium Format)"
+                - button "立即启动高精爬取" [ref=e1103] [cursor=pointer]:
+                  - img [ref=e1104]
+                  - generic [ref=e1107]: 立即启动高精爬取
+            - generic [ref=e1108]:
+              - generic [ref=e1109]:
+                - generic [ref=e1111]:
+                  - img [ref=e1112]
+                  - heading "媒体资源爬取中心" [level=3] [ref=e1115]
+                  - generic [ref=e1116]: MEDIA CRAWLER v1.0
+                - generic [ref=e1117]:
+                  - button "背景图爬取" [ref=e1118]:
+                    - img [ref=e1119]
+                    - text: 背景图爬取
+                  - button "背景音乐爬取" [ref=e1123]:
+                    - img [ref=e1124]
+                    - text: 背景音乐爬取
+              - generic [ref=e1129]:
+                - img [ref=e1130]
+                - textbox "搜索风景、地点、摄影师..." [ref=e1133]
+              - generic [ref=e1135]:
+                - generic [ref=e1136]:
+                  - generic [ref=e1137]:
+                    - img "阿尔卑斯山脉日出金光" [ref=e1138]
+                    - generic [ref=e1140]:
+                      - paragraph [ref=e1141]: 阿尔卑斯山脉日出金光
+                      - paragraph [ref=e1142]: 瑞士阿尔卑斯山
+                    - button [ref=e1143]:
+                      - img [ref=e1144]
+                  - paragraph [ref=e1148]: Samuel Ferrara
+                - generic [ref=e1149]:
+                  - generic [ref=e1150]:
+                    - img "晨雾森林秘境" [ref=e1151]
+                    - generic [ref=e1153]:
+                      - paragraph [ref=e1154]: 晨雾森林秘境
+                      - paragraph [ref=e1155]: 德国黑森林
+                    - button [ref=e1156]:
+                      - img [ref=e1157]
+                  - paragraph [ref=e1161]: Samuel Ferrara
+                - generic [ref=e1162]:
+                  - generic [ref=e1163]:
+                    - img "高山湖泊倒影" [ref=e1164]
+                    - generic [ref=e1166]:
+                      - paragraph [ref=e1167]: 高山湖泊倒影
+                      - paragraph [ref=e1168]: 新西兰皇后镇
+                    - button [ref=e1169]:
+                      - img [ref=e1170]
+                  - paragraph [ref=e1174]: Paul Itkin
+                - generic [ref=e1175]:
+                  - generic [ref=e1176]:
+                    - img "星空银河拱桥" [ref=e1177]
+                    - generic [ref=e1179]:
+                      - paragraph [ref=e1180]: 星空银河拱桥
+                      - paragraph [ref=e1181]: 澳大利亚乌鲁鲁
+                    - button [ref=e1182]:
+                      - img [ref=e1183]
+                  - paragraph [ref=e1187]: Trent Szmolnik
+                - generic [ref=e1188]:
+                  - generic [ref=e1189]:
+                    - img "太空地球夜景" [ref=e1190]
+                    - generic [ref=e1192]:
+                      - paragraph [ref=e1193]: 太空地球夜景
+                      - paragraph [ref=e1194]: 国际空间站
+                    - button [ref=e1195]:
+                      - img [ref=e1196]
+                  - paragraph [ref=e1200]: NASA
+                - generic [ref=e1201]:
+                  - generic [ref=e1202]:
+                    - img "热带海滩日落" [ref=e1203]
+                    - generic [ref=e1205]:
+                      - paragraph [ref=e1206]: 热带海滩日落
+                      - paragraph [ref=e1207]: 马尔代夫
+                    - button [ref=e1208]:
+                      - img [ref=e1209]
+                  - paragraph [ref=e1213]: Sean O.
+              - paragraph [ref=e1215]: 💡 背景图片来自 Unsplash，音乐来自 Mixkit。点击按钮可直接应用背景或下载音乐。
+    - contentinfo [ref=e771]:
+      - generic [ref=e772]:
+        - generic [ref=e773]: © 2026 VistaBlog. All rights reserved.
+        - generic [ref=e774]: •
+        - generic [ref=e775]:
+          - text: Powered by
+          - generic [ref=e776]: Google AI Studio
+      - generic [ref=e777]: 本站使用高斯模糊毛玻璃(Glassmorphism)及浏览器 Web Audio API 正弦音源物理合成落雨白噪音。风景图片引自 Unsplash，感谢 Bailey Zindel, Kalen Emsley 等独立风景摄影师的杰出馈赠。
+      - generic [ref=e778]: "💡 提示: 输入 ↑↑↓↓←→←→BA 解锁彩蛋"
+  - button "返回顶部" [ref=e1216] [cursor=pointer]:
+    - img [ref=e1217]
+  - button "弹幕漂流离线" [ref=e1221] [cursor=pointer]:
+    - generic [ref=e1223]: 弹幕漂流离线
+    - img [ref=e1224]

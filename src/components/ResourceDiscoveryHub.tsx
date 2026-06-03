@@ -123,7 +123,7 @@ export default function ResourceDiscoveryHub({
               </p>
             </div>
 
-            <div className="grid grid-cols-3 gap-2 rounded-2xl border border-white/10 bg-black/25 p-2 text-center">
+            <div className="grid grid-cols-3 gap-2 rounded-2xl border border-white/10 bg-black/25 p-2 text-center shrink-0">
               {communitySignals.map((item) => {
                 const Icon = item.icon;
                 return (
@@ -138,7 +138,7 @@ export default function ResourceDiscoveryHub({
           </div>
 
           <div className="mt-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div className="flex rounded-2xl border border-white/10 bg-black/25 p-1">
+            <div className="flex rounded-2xl border border-white/10 bg-black/25 p-1 shrink-0">
               {[
                 { id: 'materials' as const, label: '学习资料', icon: BookOpen },
                 { id: 'photos' as const, label: '照片图集', icon: ImageIcon },
@@ -165,7 +165,7 @@ export default function ResourceDiscoveryHub({
             </div>
 
             {mode !== 'community' && (
-              <label className="relative block md:w-72">
+              <label className="relative block w-full md:w-72">
                 <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input
                   value={query}

@@ -242,7 +242,7 @@ ${lifeNotes.trim() ? lifeNotes.trim() : '未填写特定日常备忘。博主今
       {/* Dynamic Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-white/5">
         <div className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-xl bg-amber-500/10 flex items-center justify-center border border-amber-500/20 text-amber-300 animate-pulse">
+          <div className="w-9 h-9 rounded-xl bg-amber-500/10 flex items-center justify-center border border-amber-500/20 text-amber-300">
             <Cpu size={18} />
           </div>
           <div>

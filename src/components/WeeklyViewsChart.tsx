@@ -127,7 +127,7 @@ export default function WeeklyViewsChart({ currentTheme, style }: WeeklyViewsCha
       <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3 border-b border-white/5 pb-4">
         <div>
           <h4 className="text-sm font-semibold text-white flex items-center gap-2 font-['Noto_Serif_SC']">
-            <TrendingUp size={15} style={{ color: activeColorHex }} className="animate-pulse" />
+            <TrendingUp size={15} style={{ color: activeColorHex }} />
             最近一周博文阅读趋势 (Past 7 Days Engagement Trend)
           </h4>
           <p className="text-[11px] text-slate-400 mt-1 font-light">

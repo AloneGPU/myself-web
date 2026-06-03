@@ -176,6 +176,12 @@ export default function WritePostModal({ onClose, onSavePost, onSaveMoment, acce
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="write-modal-title"
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') onClose();
+      }}
     >
       <motion.div
         initial={{ scale: 0.95, y: 20 }}
@@ -188,7 +194,7 @@ export default function WritePostModal({ onClose, onSavePost, onSaveMoment, acce
         <div className="flex items-center justify-between px-6 py-4 bg-slate-950/40 border-b border-slate-800 shrink-0">
           <div className="flex items-center gap-2">
             <Feather size={18} className={textAccentMap[accentClass]} />
-            <h3 className="font-bold text-white text-lg">开启新创作</h3>
+            <h3 id="write-modal-title" className="font-bold text-white text-lg">开启新创作</h3>
           </div>
           <button
             onClick={onClose}
@@ -273,7 +279,7 @@ export default function WritePostModal({ onClose, onSavePost, onSaveMoment, acce
                 >
                   <div className="flex items-center justify-between border-b border-indigo-500/10 pb-2">
                     <span className="text-xs font-bold text-indigo-300 flex items-center gap-1.5">
-                      <BookOpen size={13} className="text-indigo-400 animate-pulse" />
+                      <BookOpen size={13} className="text-indigo-400" />
                       学习资料/共享资源元属性设置 (Study Asset Metadata)
                     </span>
                     <div className="flex items-center gap-1.5 flex-wrap">
@@ -447,7 +453,7 @@ export default function WritePostModal({ onClose, onSavePost, onSaveMoment, acce
                 <div className="mb-3 p-3 bg-slate-950/40 rounded-2xl border border-slate-800/80">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-[11px] font-bold text-slate-350 flex items-center gap-1.5 font-sans">
-                      <Sparkles size={12} className="text-amber-400 animate-pulse" />
+                      <Sparkles size={12} className="text-amber-400" />
                       快捷智能分析模板助推器:
                     </span>
                     <span className="text-[9px] text-slate-500 font-mono">点击一键载入标准的学术/行为大纲</span>

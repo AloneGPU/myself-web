@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState, useEffect, useRef } from 'react';
+import React, { lazy, Suspense, useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Feather,
@@ -24,7 +24,13 @@ import {
   Calendar,
   Layers,
   ChevronDown,
-  Download
+  Download,
+  ArrowUp,
+  Share2,
+  Copy,
+  Check,
+  Trophy,
+  Star
 } from 'lucide-react';
 
 import { BackgroundTheme, BlogPost, Moment, ActiveTab, Comment } from './types';
@@ -51,7 +57,7 @@ export default function App() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [moments, setMoments] = useState<Moment[]>([]);
   const [downloadingPostId, setDownloadingPostId] = useState<string | null>(null);
-  
+
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('全部');
   const [currentGreeting, setCurrentGreeting] = useState('');
@@ -71,6 +77,13 @@ export default function App() {
   const noiseSourceRef = useRef<AudioBufferSourceNode | null>(null);
   const filterNodeRef = useRef<BiquadFilterNode | null>(null);
   const gainNodeRef = useRef<GainNode | null>(null);
+
+  // New features states
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
+  const [konamiProgress, setKonamiProgress] = useState(0);
+  const [showEasterEgg, setShowEasterEgg] = useState(false);
+  const [shareTooltip, setShareTooltip] = useState<string | null>(null);
 
   // ----- Lifecycle Methods -----
   useEffect(() => {
@@ -113,6 +126,37 @@ export default function App() {
     } else {
       setCurrentGreeting('夜深了，群星闪烁雪山之巅。让大自然低述，枕松涛好眠 🌌');
     }
+  }, []);
+
+  // Back to top button visibility
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 400);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Konami Code Easter Egg (↑↑↓↓←→←→BA)
+  useEffect(() => {
+    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    let currentIndex = 0;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === konamiCode[currentIndex]) {
+        currentIndex++;
+        if (currentIndex === konamiCode.length) {
+          setShowEasterEgg(true);
+          currentIndex = 0;
+          setTimeout(() => setShowEasterEgg(false), 5000);
+        }
+      } else {
+        currentIndex = 0;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   // Sync to local storage on changes
@@ -225,93 +269,59 @@ export default function App() {
     };
   }, []);
 
-  // Custom theme-based design styling variables
-  const getThemeStyling = () => {
-    switch (currentTheme.id) {
-      case 'forest-lake':
-        document.documentElement.style.setProperty('--accent-vibe-color', '#10b981'); // Emerald
-        document.documentElement.style.setProperty('--accent-tag-bg', 'rgba(16, 185, 129, 0.15)');
-        document.documentElement.style.setProperty('--accent-tag-border', 'rgba(16, 185, 129, 0.3)');
-        document.documentElement.style.setProperty('--accent-text-color', '#34d399');
-        return {
-          accentText: 'text-emerald-400 group-hover:text-emerald-300',
-          accentBg: 'bg-emerald-500',
-          accentBorder: 'border-emerald-500/35',
-          accentBtn: 'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-900/40',
-          accentGlow: 'shadow-emerald-500/10',
-          badgeClass: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-          colorName: 'emerald'
-        };
-      case 'misty-mountain':
-        document.documentElement.style.setProperty('--accent-vibe-color', '#f59e0b'); // Amber / Orange
-        document.documentElement.style.setProperty('--accent-tag-bg', 'rgba(245, 158, 11, 0.15)');
-        document.documentElement.style.setProperty('--accent-tag-border', 'rgba(245, 158, 11, 0.3)');
-        document.documentElement.style.setProperty('--accent-text-color', '#fbbf24');
-        return {
-          accentText: 'text-amber-400 group-hover:text-amber-300',
-          accentBg: 'bg-amber-500',
-          accentBorder: 'border-amber-500/35',
-          accentBtn: 'bg-amber-600 hover:bg-amber-500 shadow-amber-900/40',
-          accentGlow: 'shadow-amber-500/10',
-          badgeClass: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
-          colorName: 'amber'
-        };
-      case 'starry-peaks':
-        document.documentElement.style.setProperty('--accent-vibe-color', '#6366f1'); // Indigo
-        document.documentElement.style.setProperty('--accent-tag-bg', 'rgba(99, 102, 241, 0.15)');
-        document.documentElement.style.setProperty('--accent-tag-border', 'rgba(99, 102, 241, 0.3)');
-        document.documentElement.style.setProperty('--accent-text-color', '#818cf8');
-        return {
-          accentText: 'text-indigo-400 group-hover:text-indigo-300',
-          accentBg: 'bg-indigo-500',
-          accentBorder: 'border-indigo-500/35',
-          accentBtn: 'bg-indigo-600 hover:bg-indigo-500 shadow-indigo-900/40',
-          accentGlow: 'shadow-indigo-500/10',
-          badgeClass: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30',
-          colorName: 'indigo'
-        };
-      case 'sunrise-ocean':
-        document.documentElement.style.setProperty('--accent-vibe-color', '#06b6d4'); // Cyan
-        document.documentElement.style.setProperty('--accent-tag-bg', 'rgba(6, 182, 212, 0.15)');
-        document.documentElement.style.setProperty('--accent-tag-border', 'rgba(6, 182, 212, 0.3)');
-        document.documentElement.style.setProperty('--accent-text-color', '#22d3ee');
-        return {
-          accentText: 'text-cyan-400 group-hover:text-cyan-300',
-          accentBg: 'bg-cyan-500',
-          accentBorder: 'border-cyan-500/35',
-          accentBtn: 'bg-cyan-600 hover:bg-cyan-500 shadow-cyan-900/40',
-          accentGlow: 'shadow-cyan-500/10',
-          badgeClass: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
-          colorName: 'cyan'
-        };
-      case 'winter-dawn':
-        document.documentElement.style.setProperty('--accent-vibe-color', '#14b8a6'); // Teal
-        document.documentElement.style.setProperty('--accent-tag-bg', 'rgba(20, 184, 166, 0.15)');
-        document.documentElement.style.setProperty('--accent-tag-border', 'rgba(20, 184, 166, 0.3)');
-        document.documentElement.style.setProperty('--accent-text-color', '#2dd4bf');
-        return {
-          accentText: 'text-teal-400 group-hover:text-teal-300',
-          accentBg: 'bg-teal-500',
-          accentBorder: 'border-teal-500/35',
-          accentBtn: 'bg-teal-600 hover:bg-teal-500 shadow-teal-900/40',
-          accentGlow: 'shadow-teal-500/10',
-          badgeClass: 'bg-teal-500/20 text-teal-300 border-teal-500/30',
-          colorName: 'teal'
-        };
-      default:
-        return {
-          accentText: 'text-slate-200 group-hover:text-white',
-          accentBg: 'bg-slate-500',
-          accentBorder: 'border-slate-500/30',
-          accentBtn: 'bg-slate-600 hover:bg-slate-500',
-          accentGlow: 'shadow-slate-500/10',
-          badgeClass: 'bg-slate-500/20 text-slate-300 border-slate-500/30',
-          colorName: 'emerald'
-        };
+  // Theme styling configuration (pure computation, no side effects)
+  const THEME_STYLES: Record<string, {
+    cssVars: { vibe: string; tagBg: string; tagBorder: string; textColor: string };
+    classes: { accentText: string; accentBg: string; accentBorder: string; accentBtn: string; accentGlow: string; badgeClass: string; colorName: string };
+  }> = {
+    'forest-lake': {
+      cssVars: { vibe: '#10b981', tagBg: 'rgba(16, 185, 129, 0.15)', tagBorder: 'rgba(16, 185, 129, 0.3)', textColor: '#34d399' },
+      classes: { accentText: 'text-emerald-400 group-hover:text-emerald-300', accentBg: 'bg-emerald-500', accentBorder: 'border-emerald-500/35', accentBtn: 'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-900/40', accentGlow: 'shadow-emerald-500/10', badgeClass: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30', colorName: 'emerald' }
+    },
+    'misty-mountain': {
+      cssVars: { vibe: '#f59e0b', tagBg: 'rgba(245, 158, 11, 0.15)', tagBorder: 'rgba(245, 158, 11, 0.3)', textColor: '#fbbf24' },
+      classes: { accentText: 'text-amber-400 group-hover:text-amber-300', accentBg: 'bg-amber-500', accentBorder: 'border-amber-500/35', accentBtn: 'bg-amber-600 hover:bg-amber-500 shadow-amber-900/40', accentGlow: 'shadow-amber-500/10', badgeClass: 'bg-amber-500/20 text-amber-300 border-amber-500/30', colorName: 'amber' }
+    },
+    'starry-peaks': {
+      cssVars: { vibe: '#6366f1', tagBg: 'rgba(99, 102, 241, 0.15)', tagBorder: 'rgba(99, 102, 241, 0.3)', textColor: '#818cf8' },
+      classes: { accentText: 'text-indigo-400 group-hover:text-indigo-300', accentBg: 'bg-indigo-500', accentBorder: 'border-indigo-500/35', accentBtn: 'bg-indigo-600 hover:bg-indigo-500 shadow-indigo-900/40', accentGlow: 'shadow-indigo-500/10', badgeClass: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30', colorName: 'indigo' }
+    },
+    'sunrise-ocean': {
+      cssVars: { vibe: '#06b6d4', tagBg: 'rgba(6, 182, 212, 0.15)', tagBorder: 'rgba(6, 182, 212, 0.3)', textColor: '#22d3ee' },
+      classes: { accentText: 'text-cyan-400 group-hover:text-cyan-300', accentBg: 'bg-cyan-500', accentBorder: 'border-cyan-500/35', accentBtn: 'bg-cyan-600 hover:bg-cyan-500 shadow-cyan-900/40', accentGlow: 'shadow-cyan-500/10', badgeClass: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30', colorName: 'cyan' }
+    },
+    'winter-dawn': {
+      cssVars: { vibe: '#14b8a6', tagBg: 'rgba(20, 184, 166, 0.15)', tagBorder: 'rgba(20, 184, 166, 0.3)', textColor: '#2dd4bf' },
+      classes: { accentText: 'text-teal-400 group-hover:text-teal-300', accentBg: 'bg-teal-500', accentBorder: 'border-teal-500/35', accentBtn: 'bg-teal-600 hover:bg-teal-500 shadow-teal-900/40', accentGlow: 'shadow-teal-500/10', badgeClass: 'bg-teal-500/20 text-teal-300 border-teal-500/30', colorName: 'teal' }
     }
   };
 
-  const style = getThemeStyling();
+  const DEFAULT_STYLE = {
+    accentText: 'text-slate-200 group-hover:text-white',
+    accentBg: 'bg-slate-500',
+    accentBorder: 'border-slate-500/30',
+    accentBtn: 'bg-slate-600 hover:bg-slate-500',
+    accentGlow: 'shadow-slate-500/10',
+    badgeClass: 'bg-slate-500/20 text-slate-300 border-slate-500/30',
+    colorName: 'emerald'
+  };
+
+  // Pure computation - no DOM side effects
+  const style = useMemo(() => {
+    return THEME_STYLES[currentTheme.id]?.classes ?? DEFAULT_STYLE;
+  }, [currentTheme.id]);
+
+  // Side effect isolated in useEffect - only runs when theme changes
+  useEffect(() => {
+    const themeConfig = THEME_STYLES[currentTheme.id];
+    if (themeConfig) {
+      const { vibe, tagBg, tagBorder, textColor } = themeConfig.cssVars;
+      document.documentElement.style.setProperty('--accent-vibe-color', vibe);
+      document.documentElement.style.setProperty('--accent-tag-bg', tagBg);
+      document.documentElement.style.setProperty('--accent-tag-border', tagBorder);
+      document.documentElement.style.setProperty('--accent-text-color', textColor);
+    }
+  }, [currentTheme.id]);
 
   // ----- Actions Handlers -----
   const handleAddNewPost = (newPost: BlogPost) => {
@@ -423,11 +433,11 @@ export default function App() {
   return (
     <div
       onMouseMove={handleMouseMove}
-      className="relative min-h-screen w-full font-sans text-slate-100 overflow-x-hidden selection:bg-slate-700 select-none pb-20"
+      className="relative min-h-screen w-full font-sans text-slate-100 overflow-x-hidden selection:bg-slate-700 pb-20"
       id="root-viewport-container"
     >
       {/* 1. HD Landscape Dynamic Background Panel */}
-      <div className="absolute inset-0 z-0 overflow-hidden scale-105 pointer-events-none">
+      <div className="absolute inset-0 z-0 overflow-hidden bg-slate-950">
         <AnimatePresence mode="wait">
           <motion.img
             key={currentTheme.id}
@@ -447,7 +457,7 @@ export default function App() {
             }}
             src={currentTheme.url}
             alt={currentTheme.name}
-            className="absolute inset-0 w-full h-[110vh] object-cover filter brightness-[0.4] contrast-[1.05] saturate-[1.02]"
+            className="absolute inset-0 w-full h-full min-h-screen object-cover filter brightness-[0.4] contrast-[1.05] saturate-[1.02]"
             referrerPolicy="no-referrer"
           />
         </AnimatePresence>
@@ -477,7 +487,7 @@ export default function App() {
             <div>
               <h1 className="text-xl md:text-2xl font-black text-white font-['Noto_Serif_SC'] tracking-tight flex items-center gap-2">
                 <span>VistaBlog </span>
-                <span className="text-sm font-normal text-slate-450 font-sans hidden sm:inline">| 动态自然风景博客</span>
+                <span className="text-sm font-normal text-slate-400 font-sans hidden sm:inline">| 动态自然风景博客</span>
               </h1>
               <p className="text-xs text-slate-350 mt-0.5">{currentGreeting}</p>
             </div>
@@ -510,7 +520,7 @@ export default function App() {
               
               {/* Avatar block */}
               <div className="relative group mb-4">
-                <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-teal-500 via-emerald-400 to-indigo-500 opacity-65 blur-md group-hover:opacity-100 transition duration-1000 animate-pulse" />
+                <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-teal-500 via-emerald-400 to-indigo-500 opacity-65 blur-md group-hover:opacity-100 transition duration-1000" />
                 <img
                   src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80"
                   alt="博主头像"
@@ -527,7 +537,7 @@ export default function App() {
                 </h2>
                 <p className="text-xs text-slate-350 tracking-wide font-mono">前沿技术探索者 / 旅行摄影师</p>
                 <p className="text-xs text-slate-400 flex items-center justify-center gap-1 mt-1 font-mono">
-                  <MapPin size={12} className="text-slate-550" />
+                  <MapPin size={12} className="text-slate-400" />
                   栖居于 · 浙中山野
                 </p>
               </div>
@@ -605,7 +615,7 @@ export default function App() {
                 >
                   {isSoundOn ? (
                     <>
-                      <VolumeX size={14} className="animate-pulse" />
+                      <VolumeX size={14} />
                       停止落雨声
                     </>
                   ) : (
@@ -702,9 +712,12 @@ export default function App() {
             <div className="glass-panel p-2 sm:p-2.5 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4">
               
               {/* Nav Tabs list */}
-              <div className="flex items-center gap-1 bg-black/25 p-1 rounded-2xl border border-white/5 w-full sm:w-auto font-mono">
+              <div className="flex items-center gap-1 bg-black/25 p-1 rounded-2xl border border-white/5 w-full sm:w-auto font-mono" role="tablist" aria-label="内容分类">
                 <button
                   type="button"
+                  role="tab"
+                  aria-selected={activeTab === 'posts'}
+                  aria-controls="panel-posts"
                   onClick={() => setActiveTab('posts')}
                   className={`flex-1 sm:flex-none px-4.5 py-2 rounded-xl text-xs sm:text-sm font-semibold tracking-wide transition flex items-center justify-center gap-2 cursor-pointer ${
                     activeTab === 'posts'
@@ -718,6 +731,9 @@ export default function App() {
                 </button>
                 <button
                   type="button"
+                  role="tab"
+                  aria-selected={activeTab === 'moments'}
+                  aria-controls="panel-moments"
                   onClick={() => setActiveTab('moments')}
                   className={`flex-1 sm:flex-none px-4.5 py-2 rounded-xl text-xs sm:text-sm font-semibold tracking-wide transition flex items-center justify-center gap-2 cursor-pointer ${
                     activeTab === 'moments'
@@ -731,6 +747,9 @@ export default function App() {
                 </button>
                 <button
                   type="button"
+                  role="tab"
+                  aria-selected={activeTab === 'about'}
+                  aria-controls="panel-about"
                   onClick={() => setActiveTab('about')}
                   className={`flex-1 sm:flex-none px-4.5 py-2 rounded-xl text-xs sm:text-sm font-semibold tracking-wide transition flex items-center justify-center gap-2 cursor-pointer ${
                     activeTab === 'about'
@@ -744,6 +763,9 @@ export default function App() {
                 </button>
                 <button
                   type="button"
+                  role="tab"
+                  aria-selected={activeTab === 'sandbox'}
+                  aria-controls="panel-sandbox"
                   onClick={() => setActiveTab('sandbox')}
                   className={`flex-1 sm:flex-none px-4.5 py-2 rounded-xl text-xs sm:text-sm font-semibold tracking-wide transition flex items-center justify-center gap-2 cursor-pointer ${
                     activeTab === 'sandbox'
@@ -774,7 +796,7 @@ export default function App() {
               
               {/* Tab 1: Articles / Blog posts */}
               {activeTab === 'posts' && (
-                <div className="space-y-6" id="blog-posts-view">
+                <div className="space-y-6" id="blog-posts-view" role="tabpanel" aria-labelledby="tab-btn-posts">
                   
                   {/* Category filters & Search search */}
                   <div className="glass-panel grid grid-cols-1 md:grid-cols-12 gap-4 items-center p-4 rounded-3xl">
@@ -845,6 +867,7 @@ export default function App() {
                               alt={post.title}
                               className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
                               referrerPolicy="no-referrer"
+                              loading="lazy"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-slate-950 via-slate-950/20 to-transparent" />
                           </div>
@@ -888,7 +911,7 @@ export default function App() {
 
                               <button
                                 onClick={() => openPostForReading(post)}
-                                className="flex items-center gap-1 text-xs font-bold text-white hover:underline uppercase transition cursor-pointer"
+                                className="flex items-center gap-1 text-xs font-bold text-white hover:underline uppercase transition cursor-pointer min-h-[44px] px-2 py-1"
                               >
                                 浸入阅读
                                 <ChevronRight size={14} className={style.accentText} />
@@ -903,7 +926,7 @@ export default function App() {
                   {/* Regular Posts Grid */}
                   <div className="space-y-3">
                     <div className="pl-2 flex items-center justify-between">
-                      <span className="text-xs text-slate-450 uppercase font-black tracking-widest font-mono">
+                      <span className="text-xs text-slate-400 uppercase font-black tracking-widest font-mono">
                         全部文章群落 (Discovering Stories)
                       </span>
                       <span className="text-[10px] text-slate-400 font-mono">
@@ -929,6 +952,7 @@ export default function App() {
                                   alt={post.title}
                                   className="w-full h-full object-cover filter brightness-[0.7] group-hover:scale-104 transition duration-500"
                                   referrerPolicy="no-referrer"
+                                  loading="lazy"
                                 />
                                 <div className="absolute top-3 left-3 flex flex-col gap-1.5 items-start">
                                   <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full border"
@@ -953,7 +977,7 @@ export default function App() {
                                     if (resNameLower.includes('风景') || resNameLower.includes('壁纸') || resNameLower.includes('照片') || resNameLower.includes('图片') || resNameLower.includes('scenery')) {
                                       return <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-emerald-600/90 text-white border border-emerald-500/30 flex items-center gap-1 shadow-sm backdrop-blur-sm"><span className="text-[11px]">🌅</span> 自习风景大图</span>;
                                     }
-                                    return <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-indigo-600/90 text-white border border-indigo-500/30 flex items-center gap-1 shadow-sm backdrop-blur-sm">📚 核心下载包</span>;
+                                    return <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded ${style.accentBtn} text-white border ${style.accentBorder} flex items-center gap-1 shadow-sm backdrop-blur-sm`}>📚 核心下载包</span>;
                                   })()}
                                 </div>
                               </div>
@@ -1031,11 +1055,11 @@ export default function App() {
                                       className={`shrink-0 h-7 px-2.5 rounded-lg flex items-center gap-1 transition-all shadow-sm cursor-pointer select-none text-[10px] font-bold text-white ${
                                         downloadingPostId === post.id
                                           ? 'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-500/20'
-                                          : 'bg-indigo-600 hover:bg-indigo-500 shadow-indigo-500/25'
+                                          : style.accentBtn
                                       }`}
                                     >
                                       {downloadingPostId === post.id ? (
-                                        <span className="animate-pulse flex items-center gap-0.5 text-[9px]">
+                                        <span className="flex items-center gap-0.5 text-[9px]">
                                           <span>资源获取中...</span>
                                           <span className="animate-spin text-[8px]">⏳</span>
                                         </span>
@@ -1052,14 +1076,28 @@ export default function App() {
                             </div>
 
                             <div className="flex items-center justify-between mt-5 pt-3.5 border-t border-white/5">
-                              <div className="flex items-center gap-3 text-[10px] font-mono text-slate-450">
+                              <div className="flex items-center gap-3 text-[10px] font-mono text-slate-400">
                                 <button
                                   onClick={(e) => { e.stopPropagation(); handleLikePost(post.id); }}
-                                  className="flex items-center gap-1 hover:text-red-400 transition cursor-pointer"
+                                  className="flex items-center gap-1 hover:text-red-400 transition cursor-pointer min-h-[44px] min-w-[44px] px-2 py-1 -my-1"
                                   title="点赞"
+                                  aria-label={`点赞，当前 ${post.likes} 个赞`}
                                 >
-                                  <Heart size={11} className="fill-transparent text-slate-555 hover:text-red-400 hover:fill-red-400" />
+                                  <Heart size={14} className="fill-transparent text-slate-400 hover:text-red-400 hover:fill-red-400" />
                                   <span>{post.likes}</span>
+                                </button>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigator.clipboard.writeText(`${window.location.origin}/post/${post.id}`);
+                                    setCopySuccess(true);
+                                    setTimeout(() => setCopySuccess(false), 2000);
+                                  }}
+                                  className="flex items-center gap-1 hover:text-blue-400 transition cursor-pointer min-h-[44px] min-w-[44px] px-2 py-1 -my-1"
+                                  title="复制链接"
+                                  aria-label="分享文章链接"
+                                >
+                                  {copySuccess ? <Check size={14} className="text-emerald-400" /> : <Share2 size={14} className="text-slate-400" />}
                                 </button>
                                 <span className="flex items-center gap-1">
                                   <MessageSquare size={11} className="text-slate-500" />
@@ -1071,7 +1109,7 @@ export default function App() {
 
                               <button
                                 onClick={() => openPostForReading(post)}
-                                className="flex items-center gap-0.5 text-[11px] font-bold text-white hover:underline transition cursor-pointer"
+                                className="flex items-center gap-1 text-[11px] font-bold text-white hover:underline transition cursor-pointer min-h-[44px] px-2 py-1"
                               >
                                 展开阅读
                                 <ChevronRight size={12} className={style.accentText} />
@@ -1087,7 +1125,7 @@ export default function App() {
 
               {/* Tab 2: Moments */}
               {activeTab === 'moments' && (
-                <div className="space-y-5" id="moments-view-feed">
+                <div className="space-y-5" id="moments-view-feed" role="tabpanel" aria-labelledby="tab-btn-moments">
                   
                   <div className="pl-2 flex items-center justify-between">
                     <span className="text-xs text-slate-400 uppercase font-black tracking-widest font-mono">
@@ -1190,6 +1228,8 @@ export default function App() {
                   animate={{ opacity: 1, scale: 1 }}
                   className="glass-panel p-6 sm:p-8 rounded-3xl space-y-8 select-text"
                   id="about-me-section"
+                  role="tabpanel"
+                  aria-labelledby="tab-btn-about"
                 >
                   {/* Photo row */}
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
@@ -1252,7 +1292,7 @@ export default function App() {
                   </Suspense>
 
                   {/* Copyright quote */}
-                  <div className="text-center text-slate-500 text-[11px] pt-4 leading-relaxed font-light">
+                  <div className="text-center text-slate-400 text-[11px] pt-4 leading-relaxed font-light">
                     “生命的密度，取决于你凝视风景的时间，以及你创造真实价值的纯净心流程度。” <br />
                     所有发布的博文图片均拥有 CC-BY 版权协议。商业约稿及旅行定制计划请通过社交账户与我联络。
                   </div>
@@ -1262,16 +1302,18 @@ export default function App() {
 
               {/* Tab 4: Wilderness Sandbox interactive dashboard */}
               {activeTab === 'sandbox' && (
-                <Suspense fallback={<LazyPanelFallback label="正在加载照片、环境声与爬取工作台..." />}>
-                  <WildernessSandbox 
-                    currentTheme={currentTheme} 
-                    style={style} 
-                    onImportAsPost={(newPost) => {
-                      const updated = [newPost, ...posts];
-                      setPosts(updated);
-                    }}
-                  />
-                </Suspense>
+                <div role="tabpanel" aria-labelledby="tab-btn-sandbox">
+                  <Suspense fallback={<LazyPanelFallback label="正在加载照片、环境声与爬取工作台..." />}>
+                    <WildernessSandbox
+                      currentTheme={currentTheme}
+                      style={style}
+                      onImportAsPost={(newPost) => {
+                        const updated = [newPost, ...posts];
+                        setPosts(updated);
+                      }}
+                    />
+                  </Suspense>
+                </div>
               )}
 
             </div>
@@ -1281,7 +1323,7 @@ export default function App() {
         </div>
 
         {/* BOTTOM FOOLPROOF STATIC COPYRIGHT */}
-        <footer className="mt-14 pt-6 border-t border-slate-850 text-center text-xs text-slate-500 leading-normal flex flex-col items-center gap-2 select-none">
+        <footer className="mt-14 pt-6 border-t border-slate-850 text-center text-xs text-slate-400 leading-normal flex flex-col items-center gap-2 select-none">
           <div className="flex items-center gap-2">
             <span>© 2026 VistaBlog. All rights reserved.</span>
             <span>•</span>
@@ -1292,9 +1334,72 @@ export default function App() {
           <div className="text-[10px] text-slate-650 max-w-lg font-light">
             本站使用高斯模糊毛玻璃(Glassmorphism)及浏览器 Web Audio API 正弦音源物理合成落雨白噪音。风景图片引自 Unsplash，感谢 Bailey Zindel, Kalen Emsley 等独立风景摄影师的杰出馈赠。
           </div>
+          <div className="text-[9px] text-slate-700 mt-2 font-mono">
+            💡 提示: 输入 ↑↑↓↓←→←→BA 解锁彩蛋
+          </div>
         </footer>
 
       </div>
+
+      {/* Back to Top Button */}
+      <AnimatePresence>
+        {showBackToTop && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="fixed bottom-8 right-8 z-50 p-3 rounded-full bg-slate-800/80 backdrop-blur-md border border-white/10 text-white hover:bg-slate-700/80 transition-all shadow-lg cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+            aria-label="返回顶部"
+          >
+            <ArrowUp size={20} />
+          </motion.button>
+        )}
+      </AnimatePresence>
+
+      {/* Easter Egg Modal */}
+      <AnimatePresence>
+        {showEasterEgg && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm"
+            onClick={() => setShowEasterEgg(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.5, rotate: -10 }}
+              animate={{ scale: 1, rotate: 0 }}
+              exit={{ scale: 0.5, rotate: 10 }}
+              className="glass-panel p-8 rounded-3xl text-center max-w-md mx-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <motion.div
+                animate={{ rotate: [0, 10, -10, 0] }}
+                transition={{ duration: 0.5, repeat: 2 }}
+              >
+                <Trophy size={64} className="text-amber-400 mx-auto mb-4" />
+              </motion.div>
+              <h2 className="text-2xl font-bold text-white mb-2 font-['Noto_Serif_SC']">🎉 彩蛋解锁!</h2>
+              <p className="text-slate-300 text-sm mb-4">
+                恭喜你发现了 Konami Code 彩蛋！<br/>
+                你是一个有探索精神的人。
+              </p>
+              <div className="flex items-center justify-center gap-2 text-amber-400">
+                <Star size={16} className="fill-amber-400" />
+                <span className="text-sm font-bold">探索者成就解锁</span>
+                <Star size={16} className="fill-amber-400" />
+              </div>
+              <button
+                onClick={() => setShowEasterEgg(false)}
+                className="mt-6 px-6 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 transition cursor-pointer"
+              >
+                太棒了！
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* 3. MODALS LIGHT BOXES */}
       <AnimatePresence>

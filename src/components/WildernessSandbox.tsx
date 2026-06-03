@@ -27,6 +27,7 @@ import {
 } from 'lucide-react';
 import { BackgroundTheme, BlogPost } from '../types';
 import WildernessCrawler from './WildernessCrawler';
+import MediaCrawler from './MediaCrawler';
 
 interface WildernessSandboxProps {
   currentTheme: BackgroundTheme;
@@ -1073,7 +1074,7 @@ export default function WildernessSandbox({ currentTheme, style, onImportAsPost 
                 onClick={handleCapturePhotoSnap}
                 className="flex-1 py-3 bg-red-600 hover:bg-red-500 hover:scale-[1.01] text-white font-bold text-xs rounded-2xl flex items-center justify-center gap-2 cursor-pointer shadow-red-950/40 shadow-lg active:scale-99 transition-all duration-300 uppercase tracking-widest"
               >
-                <Camera size={15} className="animate-pulse" />
+                <Camera size={15} />
                 按下快门 (Capture Snap!)
               </button>
             </div>
@@ -1113,7 +1114,7 @@ export default function WildernessSandbox({ currentTheme, style, onImportAsPost 
             >
               {mixerActive ? (
                 <>
-                  <VolumeX size={14} className="animate-pulse text-red-400" />
+                  <VolumeX size={14} className="text-red-400" />
                   <span>停止声景合成 (Stop Ambient Synth)</span>
                 </>
               ) : (
@@ -1410,6 +1411,20 @@ export default function WildernessSandbox({ currentTheme, style, onImportAsPost 
           if (onImportAsPost) {
             onImportAsPost(newPost);
           }
+        }}
+      />
+
+      {/* --- MEDIA CRAWLER: Background & Music --- */}
+      <MediaCrawler
+        currentTheme={currentTheme}
+        style={style}
+        onSetBackground={(bg) => {
+          // 可以触发背景切换
+          console.log('Apply background:', bg);
+        }}
+        onPlayMusic={(track) => {
+          // 可以触发音乐播放
+          console.log('Play music:', track);
         }}
       />
 

@@ -65,3 +65,23 @@ export interface PhotoSnap {
 }
 
 export type ActiveTab = 'posts' | 'moments' | 'about' | 'sandbox';
+
+export interface MusicTrack {
+  id: string;
+  title: string;
+  artist: string;
+  duration: string;
+  url: string;
+  coverUrl: string;
+  category: string;
+  tags: string[];
+}
+
+export interface CrawledBackground {
+  id: string;
+  url: string;
+  photographer: string;
+  photographerUrl: string;
+  description: string;
+  location: string;
+}
