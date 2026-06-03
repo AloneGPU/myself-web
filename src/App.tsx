@@ -30,10 +30,13 @@ import {
   Copy,
   Check,
   Trophy,
-  Star
+  Star,
+  Music,
+  Image,
+  Video
 } from 'lucide-react';
 
-import { BackgroundTheme, BlogPost, Moment, ActiveTab, Comment } from './types';
+import { BackgroundTheme, BlogPost, Moment, ActiveTab, Comment, MusicTrack, VideoTrack, CrawledBackground } from './types';
 import { BACKGROUND_THEMES, INITIAL_BLOG_POSTS, INITIAL_MOMENTS } from './data/defaultData';
 import ResourceDiscoveryHub from './components/ResourceDiscoveryHub';
 
@@ -43,6 +46,8 @@ const WildernessSandbox = lazy(() => import('./components/WildernessSandbox'));
 const WeeklyViewsChart = lazy(() => import('./components/WeeklyViewsChart'));
 const DanmakuOverlay = lazy(() => import('./components/DanmakuOverlay'));
 const AnalyticalWorkbench = lazy(() => import('./components/AnalyticalWorkbench'));
+const MediaCrawler = lazy(() => import('./components/MediaCrawler'));
+const MediaPlayer = lazy(() => import('./components/MediaPlayer'));
 
 const LazyPanelFallback = ({ label = '正在加载互动模块...' }: { label?: string }) => (
   <div className="glass-panel rounded-3xl p-6 text-center text-sm text-slate-300">
@@ -66,6 +71,14 @@ export default function App() {
   // Modals
   const [readingPost, setReadingPost] = useState<BlogPost | null>(null);
   const [isWriteOpen, setIsWriteOpen] = useState(false);
+  
+  // Media Player States
+  const [currentTrack, setCurrentTrack] = useState<MusicTrack | null>(null);
+  const [currentVideo, setCurrentVideo] = useState<VideoTrack | null>(null);
+  const [currentImage, setCurrentImage] = useState<CrawledBackground | null>(null);
+  const [showMediaPlayer, setShowMediaPlayer] = useState(false);
+  const [customBackground, setCustomBackground] = useState<CrawledBackground | null>(null);
+  const [customVideoBackground, setCustomVideoBackground] = useState<VideoTrack | null>(null);
 
   // Background Parallax Mouse Tracking
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -91,6 +104,7 @@ export default function App() {
     const storedPosts = localStorage.getItem('vistablog_posts');
     const storedMoments = localStorage.getItem('vistablog_moments');
     const storedThemeId = localStorage.getItem('vistablog_theme_id');
+    const storedCustomBg = localStorage.getItem('vistablog_custom_bg');
 
     if (storedPosts) {
       setPosts(JSON.parse(storedPosts));
@@ -109,6 +123,10 @@ export default function App() {
     if (storedThemeId) {
       const match = BACKGROUND_THEMES.find(t => t.id === storedThemeId);
       if (match) setCurrentTheme(match);
+    }
+    
+    if (storedCustomBg) {
+      setCustomBackground(JSON.parse(storedCustomBg));
     }
 
     // 2. Setup dynamic time-based greeting in Chinese
@@ -429,6 +447,31 @@ export default function App() {
     const likedMoments = JSON.parse(localStorage.getItem('liked_moments') || '[]');
     return likedMoments.includes(momentId);
   };
+  
+  // ----- Media Handlers -----
+  const handleSetBackground = (bg: CrawledBackground) => {
+    setCustomBackground(bg);
+    localStorage.setItem('vistablog_custom_bg', JSON.stringify(bg));
+  };
+  
+  const handlePlayMusic = (track: MusicTrack) => {
+    setCurrentTrack(track);
+    setCurrentVideo(null);
+    setCurrentImage(null);
+    setShowMediaPlayer(true);
+  };
+  
+  const handleSetVideoBackground = (video: VideoTrack) => {
+    setCustomVideoBackground(video);
+    localStorage.setItem('vistablog_custom_video_bg', JSON.stringify(video));
+  };
+  
+  const handleOpenImageInViewer = (img: CrawledBackground) => {
+    setCurrentImage(img);
+    setCurrentTrack(null);
+    setCurrentVideo(null);
+    setShowMediaPlayer(true);
+  };
 
   return (
     <div
@@ -439,34 +482,58 @@ export default function App() {
       {/* 1. HD Landscape Dynamic Background Panel */}
       <div className="absolute inset-0 z-0 overflow-hidden bg-slate-950">
         <AnimatePresence mode="wait">
-          <motion.img
-            key={currentTheme.id}
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{
-              opacity: 1,
-              scale: 1.05,
-              x: mousePos.x,
-              y: mousePos.y
-            }}
-            exit={{ opacity: 0, scale: 1.02 }}
-            transition={{
-              opacity: { duration: 1.2 },
-              scale: { duration: 1.2 },
-              x: { type: 'spring', damping: 20, stiffness: 40 },
-              y: { type: 'spring', damping: 20, stiffness: 40 }
-            }}
-            src={currentTheme.url}
-            alt={currentTheme.name}
-            className="absolute inset-0 w-full h-full min-h-screen object-cover filter brightness-[0.4] contrast-[1.05] saturate-[1.02]"
-            referrerPolicy="no-referrer"
-          />
+          {customBackground ? (
+            <motion.img
+              key={customBackground.id}
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{
+                opacity: 1,
+                scale: 1.05,
+                x: mousePos.x,
+                y: mousePos.y
+              }}
+              exit={{ opacity: 0, scale: 1.02 }}
+              transition={{
+                opacity: { duration: 1.2 },
+                scale: { duration: 1.2 },
+                x: { type: 'spring', damping: 20, stiffness: 40 },
+                y: { type: 'spring', damping: 20, stiffness: 40 }
+              }}
+              src={customBackground.url}
+              alt={customBackground.description}
+              className="absolute inset-0 w-full h-full min-h-screen object-cover filter brightness-[0.4] contrast-[1.05] saturate-[1.02]"
+              referrerPolicy="no-referrer"
+            />
+          ) : (
+            <motion.img
+              key={currentTheme.id}
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{
+                opacity: 1,
+                scale: 1.05,
+                x: mousePos.x,
+                y: mousePos.y
+              }}
+              exit={{ opacity: 0, scale: 1.02 }}
+              transition={{
+                opacity: { duration: 1.2 },
+                scale: { duration: 1.2 },
+                x: { type: 'spring', damping: 20, stiffness: 40 },
+                y: { type: 'spring', damping: 20, stiffness: 40 }
+              }}
+              src={currentTheme.url}
+              alt={currentTheme.name}
+              className="absolute inset-0 w-full h-full min-h-screen object-cover filter brightness-[0.4] contrast-[1.05] saturate-[1.02]"
+              referrerPolicy="no-referrer"
+            />
+          )}
         </AnimatePresence>
         
         {/* Soft atmospheric gradient layer */}
         <div className="absolute inset-0 bg-gradient-to-b from-slate-950/10 via-transparent to-slate-950/70" />
 
         {/* Ambient star particle overlay for Starry Peaks background */}
-        {currentTheme.id === 'starry-peaks' && (
+        {currentTheme.id === 'starry-peaks' && !customBackground && (
           <div className="absolute inset-0 overflow-hidden pointer-events-none z-1">
             <div className="star-particle absolute w-1.5 h-1.5 bg-white rounded-full top-[15%] left-[25%] blur-[0.5px] opacity-40 duration-1000" />
             <div className="star-particle absolute w-1 h-1 bg-white rounded-full top-[28%] left-[65%] blur-[0.5px] opacity-[0.2] delay-500 duration-1500" />
@@ -1302,7 +1369,7 @@ export default function App() {
 
               {/* Tab 4: Wilderness Sandbox interactive dashboard */}
               {activeTab === 'sandbox' && (
-                <div role="tabpanel" aria-labelledby="tab-btn-sandbox">
+                <div role="tabpanel" aria-labelledby="tab-btn-sandbox" className="space-y-6">
                   <Suspense fallback={<LazyPanelFallback label="正在加载照片、环境声与爬取工作台..." />}>
                     <WildernessSandbox
                       currentTheme={currentTheme}
@@ -1311,6 +1378,17 @@ export default function App() {
                         const updated = [newPost, ...posts];
                         setPosts(updated);
                       }}
+                    />
+                  </Suspense>
+                  
+                  {/* Media Resource Center */}
+                  <Suspense fallback={<LazyPanelFallback label="正在加载媒体资源中心..." />}>
+                    <MediaCrawler
+                      currentTheme={currentTheme}
+                      style={style}
+                      onSetBackground={handleSetBackground}
+                      onPlayMusic={handlePlayMusic}
+                      onSetVideoBackground={handleSetVideoBackground}
                     />
                   </Suspense>
                 </div>
@@ -1425,6 +1503,18 @@ export default function App() {
               onSavePost={handleAddNewPost}
               onSaveMoment={handleAddNewMoment}
               accentClass={style.colorName}
+            />
+          </Suspense>
+        )}
+        
+        {/* Media Player Modal */}
+        {showMediaPlayer && (
+          <Suspense fallback={<LazyPanelFallback label="正在打开媒体播放器..." />}>
+            <MediaPlayer
+              track={currentTrack}
+              video={currentVideo}
+              background={currentImage}
+              onClose={() => setShowMediaPlayer(false)}
             />
           </Suspense>
         )}

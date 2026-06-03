@@ -84,4 +84,31 @@ export interface CrawledBackground {
   photographerUrl: string;
   description: string;
   location: string;
+  thumbnail?: string;
+  width?: number;
+  height?: number;
+}
+
+export interface VideoTrack {
+  id: string;
+  title: string;
+  url: string;
+  thumbnail: string;
+  description: string;
+  duration: string;
+}
+
+export interface SearchResult&lt;T&gt; {
+  success: boolean;
+  data: T[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+  };
+}
+
+export interface SingleResult&lt;T&gt; {
+  success: boolean;
+  data: T;
 }
