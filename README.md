@@ -1,20 +1,28 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# VistaBlog
 
-# Run and deploy your AI Studio app
+一个动态个人博客与资源发现台，重点用于整理学习资料、照片图集、风景素材和背景音乐，也支持同学通过评论、微言和投稿参与。
 
-This contains everything you need to run your app locally.
+## 本地运行
 
-View your app in AI Studio: https://ai.studio/apps/78071580-dcd1-4643-bc03-aa32c79ea4bb
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
+1. 安装依赖：
+   `npm ci`
+2. 复制 `.env.example` 为 `.env.local`，按需填写配置。
+3. 启动开发服务器：
    `npm run dev`
+4. 构建生产版本：
+   `npm run build`
+
+## 国内部署建议
+
+- 静态站点可以部署到 Vercel、Netlify、Cloudflare Pages、阿里云 OSS、腾讯云 COS、七牛云或自建 Nginx。
+- 如果图片来自海外图床，建议配置 `VITE_IMAGE_PROXY` 或把常用图片同步到对象存储/CDN。
+- 学习资料、照片包、背景音乐建议放在国内对象存储，并通过 `VITE_ASSET_CDN` / `VITE_AUDIO_CDN` 统一管理。
+- 真正的爬虫任务建议放在服务端，通过 `VITE_CRAWLER_ENDPOINT` 接入前端。前端只负责提交关键词、展示候选结果和导入博客，避免静态站点承担跨域、限流和合规风险。
+
+## 当前功能重点
+
+- 学习资料与照片发现台
+- 文章、微言、评论、回复和点赞
+- 风景主题切换与动态背景
+- 阅读器、资源下载信息和提取码展示
+- 荒野沙盘、照片采集、环境声混音与爬取候选导入

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { lazy, Suspense, useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Feather,
@@ -29,12 +29,20 @@ import {
 
 import { BackgroundTheme, BlogPost, Moment, ActiveTab, Comment } from './types';
 import { BACKGROUND_THEMES, INITIAL_BLOG_POSTS, INITIAL_MOMENTS } from './data/defaultData';
-import ReaderModal from './components/ReaderModal';
-import WritePostModal from './components/WritePostModal';
-import WildernessSandbox from './components/WildernessSandbox';
-import WeeklyViewsChart from './components/WeeklyViewsChart';
-import DanmakuOverlay from './components/DanmakuOverlay';
-import AnalyticalWorkbench from './components/AnalyticalWorkbench';
+import ResourceDiscoveryHub from './components/ResourceDiscoveryHub';
+
+const ReaderModal = lazy(() => import('./components/ReaderModal'));
+const WritePostModal = lazy(() => import('./components/WritePostModal'));
+const WildernessSandbox = lazy(() => import('./components/WildernessSandbox'));
+const WeeklyViewsChart = lazy(() => import('./components/WeeklyViewsChart'));
+const DanmakuOverlay = lazy(() => import('./components/DanmakuOverlay'));
+const AnalyticalWorkbench = lazy(() => import('./components/AnalyticalWorkbench'));
+
+const LazyPanelFallback = ({ label = '正在加载互动模块...' }: { label?: string }) => (
+  <div className="glass-panel rounded-3xl p-6 text-center text-sm text-slate-300">
+    {label}
+  </div>
+);
 
 export default function App() {
   // ----- States -----
@@ -47,7 +55,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('全部');
   const [currentGreeting, setCurrentGreeting] = useState('');
-  const [isDanmakuVisible, setIsDanmakuVisible] = useState(true);
+  const [isDanmakuVisible, setIsDanmakuVisible] = useState(false);
 
   // Modals
   const [readingPost, setReadingPost] = useState<BlogPost | null>(null);
@@ -680,6 +688,16 @@ export default function App() {
           {/* COLUMN 2, 3, 4: Content Feed Container */}
           <section className="lg:col-span-3 space-y-6">
 
+            <ResourceDiscoveryHub
+              posts={posts}
+              moments={moments}
+              currentTheme={currentTheme}
+              style={style}
+              onOpenPost={openPostForReading}
+              onOpenSandbox={() => setActiveTab('sandbox')}
+              onStartContribution={() => setIsWriteOpen(true)}
+            />
+
             {/* TAB SELECTOR & ADD POST BUTTON */}
             <div className="glass-panel p-2 sm:p-2.5 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4">
               
@@ -799,13 +817,15 @@ export default function App() {
                   </div>
 
                   {/* 🛠️ INTEGRATED KNOWLEDGE, STUDY AND PHYSICAL IMAGE ANALYSIS WORKBENCH PANEL */}
-                  <AnalyticalWorkbench
-                    currentTheme={currentTheme}
-                    style={style}
-                    onImportAsPost={(newPost) => {
-                      handleAddNewPost(newPost);
-                    }}
-                  />
+                  <Suspense fallback={<LazyPanelFallback label="正在加载资料分析工作台..." />}>
+                    <AnalyticalWorkbench
+                      currentTheme={currentTheme}
+                      style={style}
+                      onImportAsPost={(newPost) => {
+                        handleAddNewPost(newPost);
+                      }}
+                    />
+                  </Suspense>
 
                   {/* Pinned post highlight if all categories is active */}
                   {selectedCategory === '全部' && searchQuery === '' && posts.some(p => p.pinned) && (
@@ -1227,7 +1247,9 @@ export default function App() {
                   </div>
 
                   {/* Recent 7 Days Blog Views Chart */}
-                  <WeeklyViewsChart currentTheme={currentTheme} style={style} />
+                  <Suspense fallback={<LazyPanelFallback label="正在加载浏览趋势..." />}>
+                    <WeeklyViewsChart currentTheme={currentTheme} style={style} />
+                  </Suspense>
 
                   {/* Copyright quote */}
                   <div className="text-center text-slate-500 text-[11px] pt-4 leading-relaxed font-light">
@@ -1240,14 +1262,16 @@ export default function App() {
 
               {/* Tab 4: Wilderness Sandbox interactive dashboard */}
               {activeTab === 'sandbox' && (
-                <WildernessSandbox 
-                  currentTheme={currentTheme} 
-                  style={style} 
-                  onImportAsPost={(newPost) => {
-                    const updated = [newPost, ...posts];
-                    setPosts(updated);
-                  }}
-                />
+                <Suspense fallback={<LazyPanelFallback label="正在加载照片、环境声与爬取工作台..." />}>
+                  <WildernessSandbox 
+                    currentTheme={currentTheme} 
+                    style={style} 
+                    onImportAsPost={(newPost) => {
+                      const updated = [newPost, ...posts];
+                      setPosts(updated);
+                    }}
+                  />
+                </Suspense>
               )}
 
             </div>
@@ -1277,34 +1301,40 @@ export default function App() {
         
         {/* Full screen blog reader modal */}
         {readingPost && (
-          <ReaderModal
-            post={readingPost}
-            onClose={() => setReadingPost(null)}
-            onLike={handleLikePost}
-            onAddComment={handleAddComment}
-            accentClass={style.colorName}
-          />
+          <Suspense fallback={<LazyPanelFallback label="正在打开阅读器..." />}>
+            <ReaderModal
+              post={readingPost}
+              onClose={() => setReadingPost(null)}
+              onLike={handleLikePost}
+              onAddComment={handleAddComment}
+              accentClass={style.colorName}
+            />
+          </Suspense>
         )}
 
         {/* Dynamic Writer Creator editor modal */}
         {isWriteOpen && (
-          <WritePostModal
-            onClose={() => setIsWriteOpen(false)}
-            onSavePost={handleAddNewPost}
-            onSaveMoment={handleAddNewMoment}
-            accentClass={style.colorName}
-          />
+          <Suspense fallback={<LazyPanelFallback label="正在打开投稿编辑器..." />}>
+            <WritePostModal
+              onClose={() => setIsWriteOpen(false)}
+              onSavePost={handleAddNewPost}
+              onSaveMoment={handleAddNewMoment}
+              accentClass={style.colorName}
+            />
+          </Suspense>
         )}
 
       </AnimatePresence>
 
       {/* Global Wilderness Whispers Danmaku Overlay */}
-      <DanmakuOverlay
-        posts={posts}
-        currentTheme={currentTheme}
-        isGlobalVisible={isDanmakuVisible}
-        setIsGlobalVisible={setIsDanmakuVisible}
-      />
+      <Suspense fallback={null}>
+        <DanmakuOverlay
+          posts={posts}
+          currentTheme={currentTheme}
+          isGlobalVisible={isDanmakuVisible}
+          setIsGlobalVisible={setIsDanmakuVisible}
+        />
+      </Suspense>
 
     </div>
   );
