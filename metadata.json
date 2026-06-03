@@ -1,0 +1,6 @@
+{
+  "name": "动态风景个人博客",
+  "description": "一个富有沉浸感的动态个人博客，使用高清风景图片作为动态背景，支持背景切换、模糊毛玻璃效果、文章阅读、分类筛选、搜索以及个人动态发布等功能。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

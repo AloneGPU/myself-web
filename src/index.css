@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+/* Custom Scrollbars for beautiful immersive readers */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.4);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 999px;
+  border: 2px solid transparent;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.45);
+}
+
+/* Glassmorphism Preset utilities */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-light {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.glass-card {
+  background: rgba(30, 41, 59, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  background: rgba(30, 41, 59, 0.5);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Custom Typography selection */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+/* Dynamic stars / particles background effects */
+@keyframes slow-pan {
+  0% { transform: scale(1.05) translate(0px, 0px); }
+  50% { transform: scale(1.08) translate(-10px, -6px); }
+  100% { transform: scale(1.05) translate(0px, 0px); }
+}
+
+.ambient-bg-pan {
+  animation: slow-pan 25s infinite ease-in-out;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 0.95; transform: scale(1.2); }
+}
+
+.star-particle {
+  animation: twinkle 3s infinite ease-in-out;
+}
+
+/* Custom Markdown Rendering tweaks */
+.markdown-body h3, .markdown-body h4 {
+  font-family: 'Noto Serif SC', 'Inter', sans-serif;
+}
+
