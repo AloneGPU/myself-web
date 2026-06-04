@@ -25,12 +25,15 @@ import {
   Info,
   Waves
 } from 'lucide-react';
-import { BackgroundTheme, BlogPost } from '../types';
-import WildernessCrawler from './WildernessCrawler';
-import MediaCrawler from './MediaCrawler';
+import { BackgroundTheme, BlogPost, CrawledBackground, MusicTrack } from '../types';
 
 interface WildernessSandboxProps {
   currentTheme: BackgroundTheme;
+  crawledBackgrounds: CrawledBackground[];
+  musicTracks: MusicTrack[];
+  manifestVersion?: string;
+  onRefreshManifest?: () => void;
+  onApplyBackground?: (bg: CrawledBackground) => void;
   style: {
     accentText: string;
     accentBg: string;
@@ -126,7 +129,16 @@ const ADVENTURE_SPOTS: AdventureSpot[] = [
   }
 ];
 
-export default function WildernessSandbox({ currentTheme, style, onImportAsPost }: WildernessSandboxProps) {
+export default function WildernessSandbox({
+  currentTheme,
+  crawledBackgrounds,
+  musicTracks,
+  manifestVersion,
+  onRefreshManifest,
+  onApplyBackground,
+  style,
+  onImportAsPost,
+}: WildernessSandboxProps) {
   // --- STATE FOR CAMERA VIEWFINDER SIMULATOR ---
   const [focalLength, setFocalLength] = useState<number>(50); // 18, 35, 50, 85, 135, 200
   const [aperture, setAperture] = useState<string>('f/4.0'); // 'f/1.4', 'f/2.0', 'f/2.8', 'f/4.0', 'f/5.6', 'f/8.0', 'f/11', 'f/16'
@@ -1399,34 +1411,6 @@ export default function WildernessSandbox({ currentTheme, style, onImportAsPost 
         </div>
 
       </div>
-
-      {/* --- CRAWLER COMPONENT FULL WIDTH EXTENSION PANEL --- */}
-      <WildernessCrawler
-        currentTheme={currentTheme}
-        style={style}
-        onImportToCameraRoll={(newPhoto: any) => {
-          setCameraRoll(prev => [newPhoto, ...prev]);
-        }}
-        onImportAsPost={(newPost) => {
-          if (onImportAsPost) {
-            onImportAsPost(newPost);
-          }
-        }}
-      />
-
-      {/* --- MEDIA CRAWLER: Background & Music --- */}
-      <MediaCrawler
-        currentTheme={currentTheme}
-        style={style}
-        onSetBackground={(bg) => {
-          // 可以触发背景切换
-          console.log('Apply background:', bg);
-        }}
-        onPlayMusic={(track) => {
-          // 可以触发音乐播放
-          console.log('Play music:', track);
-        }}
-      />
 
       {/* --- POPUP LIGHTBOX PORTRAIT IMAGE FULL LOG PREVIEW --- */}
       <AnimatePresence>

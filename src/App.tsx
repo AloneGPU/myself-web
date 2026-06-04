@@ -29,22 +29,33 @@ import {
   Share2,
   Copy,
   Check,
-  Trophy,
-  Star
+  Trash2,
+  Pencil,
+  Settings2,
 } from 'lucide-react';
+import ConfirmDialog from './components/ConfirmDialog';
+import CommandPalette, { paletteIcons } from './components/CommandPalette';
+import EasterEggToasts from './components/EasterEggToasts';
+import { HeartRain, SnowMode, SparkleEffect } from './components/EasterEggEffects';
+import { useEasterEggs } from './hooks/useEasterEggs';
+import { postHasShareableResource } from './utils/postResources';
 import { animateCounter, animateCards, animateTitle, animateBounce, anime } from './utils/animations';
+import MusicPlayer from './components/MusicPlayer';
+import ClickEffect from './components/ClickEffect';
+import Fireflies from './components/Fireflies';
+import MouseGlow from './components/MouseGlow';
 
-import { BackgroundTheme, BlogPost, Moment, ActiveTab, Comment } from './types';
+import { BackgroundTheme, BlogPost, Moment, ActiveTab, Comment, CrawledBackground } from './types';
 import { BACKGROUND_THEMES, INITIAL_BLOG_POSTS, INITIAL_MOMENTS } from './data/defaultData';
 import ResourceDiscoveryHub from './components/ResourceDiscoveryHub';
 import DynamicBackground from './components/DynamicBackground';
+import { findThemeById, useMediaManifest } from './hooks/useMediaManifest';
 
 const ReaderModal = lazy(() => import('./components/ReaderModal'));
 const WritePostModal = lazy(() => import('./components/WritePostModal'));
-const WildernessSandbox = lazy(() => import('./components/WildernessSandbox'));
+// WildernessSandbox removed
 const WeeklyViewsChart = lazy(() => import('./components/WeeklyViewsChart'));
 const DanmakuOverlay = lazy(() => import('./components/DanmakuOverlay'));
-const AnalyticalWorkbench = lazy(() => import('./components/AnalyticalWorkbench'));
 
 const LazyPanelFallback = ({ label = '正在加载互动模块...' }: { label?: string }) => (
   <div className="glass-panel rounded-3xl p-6 text-center text-sm text-slate-300">
@@ -53,9 +64,22 @@ const LazyPanelFallback = ({ label = '正在加载互动模块...' }: { label?: 
 );
 
 export default function App() {
+  const {
+    themes,
+    themeVideos,
+    crawledBackgrounds,
+    music,
+    manifest,
+    source: manifestSource,
+    refresh: refreshManifest,
+  } = useMediaManifest();
+
+  const backgroundThemes = themes.length > 0 ? themes : BACKGROUND_THEMES;
+
   // ----- States -----
   const [activeTab, setActiveTab] = useState<ActiveTab>('posts');
   const [currentTheme, setCurrentTheme] = useState<BackgroundTheme>(BACKGROUND_THEMES[0]);
+  const [customBgUrl, setCustomBgUrl] = useState<string | null>(null);
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [moments, setMoments] = useState<Moment[]>([]);
   const [downloadingPostId, setDownloadingPostId] = useState<string | null>(null);
@@ -68,6 +92,16 @@ export default function App() {
   // Modals
   const [readingPost, setReadingPost] = useState<BlogPost | null>(null);
   const [isWriteOpen, setIsWriteOpen] = useState(false);
+  const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
+  const [editingMoment, setEditingMoment] = useState<Moment | null>(null);
+  const [isManageMode, setIsManageMode] = useState(
+    () => localStorage.getItem('vistablog_manage_mode') === '1',
+  );
+  const [confirmDialog, setConfirmDialog] = useState<{
+    title: string;
+    message: string;
+    onConfirm: () => void;
+  } | null>(null);
 
   // Background Parallax Mouse Tracking
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -83,9 +117,52 @@ export default function App() {
   // New features states
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
-  const [konamiProgress, setKonamiProgress] = useState(0);
-  const [showEasterEgg, setShowEasterEgg] = useState(false);
   const [shareTooltip, setShareTooltip] = useState<string | null>(null);
+
+  const toggleManageMode = useCallback(() => {
+    setIsManageMode((prev) => {
+      const next = !prev;
+      localStorage.setItem('vistablog_manage_mode', next ? '1' : '0');
+      return next;
+    });
+  }, []);
+
+  const {
+    toasts: easterToasts,
+    dismissToast,
+    sparkleMode,
+    commandOpen,
+    setCommandOpen,
+    konamiProgress,
+    handleLogoClick,
+    handleFooterClick,
+    pushToast,
+    heartRain,
+    snowMode,
+  } = useEasterEggs({
+    onToggleManageMode: toggleManageMode,
+    onShuffleTheme: () => {
+      if (!backgroundThemes.length) return;
+      const pick = backgroundThemes[Math.floor(Math.random() * backgroundThemes.length)];
+      setCurrentTheme(pick);
+      setCustomBgUrl(null);
+      localStorage.removeItem('vistablog_custom_bg');
+      localStorage.setItem('vistablog_theme_id', pick.id);
+      pushToast('随机意境', `已切换为「${pick.name}」`, '🎲');
+    },
+  });
+
+  const openWriter = useCallback((post?: BlogPost | null, moment?: Moment | null) => {
+    setEditingPost(post ?? null);
+    setEditingMoment(moment ?? null);
+    setIsWriteOpen(true);
+  }, []);
+
+  const closeWriter = useCallback(() => {
+    setIsWriteOpen(false);
+    setEditingPost(null);
+    setEditingMoment(null);
+  }, []);
 
   // ----- Lifecycle Methods -----
   useEffect(() => {
@@ -108,9 +185,14 @@ export default function App() {
       localStorage.setItem('vistablog_moments', JSON.stringify(INITIAL_MOMENTS));
     }
 
-    if (storedThemeId) {
-      const match = BACKGROUND_THEMES.find(t => t.id === storedThemeId);
-      if (match) setCurrentTheme(match);
+    try {
+      const customRaw = localStorage.getItem('vistablog_custom_bg');
+      if (customRaw) {
+        const bg = JSON.parse(customRaw) as CrawledBackground;
+        if (bg.url) setCustomBgUrl(bg.url);
+      }
+    } catch {
+      /* ignore */
     }
 
     // 2. Setup dynamic time-based greeting in Chinese
@@ -130,6 +212,20 @@ export default function App() {
     }
   }, []);
 
+  useEffect(() => {
+    if (!backgroundThemes.length) return;
+    const storedThemeId = localStorage.getItem('vistablog_theme_id');
+    const match = findThemeById(backgroundThemes, storedThemeId);
+    if (match) setCurrentTheme(match);
+  }, [backgroundThemes]);
+
+  const displayTheme = useMemo(() => {
+    if (customBgUrl) {
+      return { ...currentTheme, url: customBgUrl };
+    }
+    return currentTheme;
+  }, [currentTheme, customBgUrl]);
+
   // Back to top button visibility
   useEffect(() => {
     const handleScroll = () => {
@@ -137,28 +233,6 @@ export default function App() {
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Konami Code Easter Egg (↑↑↓↓←→←→BA)
-  useEffect(() => {
-    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-    let currentIndex = 0;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === konamiCode[currentIndex]) {
-        currentIndex++;
-        if (currentIndex === konamiCode.length) {
-          setShowEasterEgg(true);
-          currentIndex = 0;
-          setTimeout(() => setShowEasterEgg(false), 5000);
-        }
-      } else {
-        currentIndex = 0;
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   // Sync to local storage on changes
@@ -172,9 +246,16 @@ export default function App() {
     localStorage.setItem('vistablog_moments', JSON.stringify(updated));
   };
 
+  const handleApplyCrawledBackground = (bg: CrawledBackground) => {
+    setCustomBgUrl(bg.url);
+    localStorage.setItem('vistablog_custom_bg', JSON.stringify(bg));
+  };
+
   // Switch Theme & Save
   const handleThemeChange = (theme: BackgroundTheme) => {
     setCurrentTheme(theme);
+    setCustomBgUrl(null);
+    localStorage.removeItem('vistablog_custom_bg');
     localStorage.setItem('vistablog_theme_id', theme.id);
   };
 
@@ -398,6 +479,61 @@ export default function App() {
     saveMomentsToLS(updated);
   };
 
+  const handleUpdatePost = (post: BlogPost) => {
+    const updated = posts.map((p) => (p.id === post.id ? post : p));
+    savePostsToLS(updated);
+    if (readingPost?.id === post.id) setReadingPost(post);
+  };
+
+  const handleUpdateMoment = (moment: Moment) => {
+    const updated = moments.map((m) => (m.id === moment.id ? moment : m));
+    saveMomentsToLS(updated);
+  };
+
+  const handleDeletePost = (postId: string) => {
+    const updated = posts.filter((p) => p.id !== postId);
+    savePostsToLS(updated);
+    if (readingPost?.id === postId) setReadingPost(null);
+  };
+
+  const handleDeleteMoment = (momentId: string) => {
+    saveMomentsToLS(moments.filter((m) => m.id !== momentId));
+  };
+
+  const handleDeleteComment = (postId: string, commentId: string) => {
+    const updated = posts.map((p) => {
+      if (p.id !== postId) return p;
+      return { ...p, comments: p.comments.filter((c) => c.id !== commentId) };
+    });
+    savePostsToLS(updated);
+    if (readingPost?.id === postId) {
+      const match = updated.find((p) => p.id === postId);
+      if (match) setReadingPost(match);
+    }
+  };
+
+  const requestDeletePost = (post: BlogPost) => {
+    setConfirmDialog({
+      title: '删除文章',
+      message: `确定删除「${post.title}」？此操作不可恢复。`,
+      onConfirm: () => {
+        handleDeletePost(post.id);
+        setConfirmDialog(null);
+      },
+    });
+  };
+
+  const requestDeleteMoment = (moment: Moment) => {
+    setConfirmDialog({
+      title: '删除微言',
+      message: '确定删除这条微言？',
+      onConfirm: () => {
+        handleDeleteMoment(moment.id);
+        setConfirmDialog(null);
+      },
+    });
+  };
+
   const handleAddComment = (postId: string, comment: Comment) => {
     const updated = posts.map(p => {
       if (p.id === postId) {
@@ -443,7 +579,83 @@ export default function App() {
     return matchesSearch && matchesCategory;
   });
 
-  const CATEGORIES = ['全部', '日常随记', '学习资料', '图片分析', '成长思考', '技术笔记'];
+  const CATEGORIES = ['全部', '日常随记', '学习资料', '资源链接', '图片分析', '成长思考', '技术笔记'];
+
+  const commandActions = useMemo(
+    () => [
+      {
+        id: 'write',
+        label: '开启新创作',
+        hint: '博文 / 微言',
+        icon: paletteIcons.write,
+        run: () => openWriter(),
+      },
+      {
+        id: 'manage',
+        label: isManageMode ? '退出博主管理' : '进入博主管理',
+        hint: '增删改',
+        icon: paletteIcons.manage,
+        run: toggleManageMode,
+      },
+      {
+        id: 'theme',
+        label: '随机切换风景',
+        icon: paletteIcons.theme,
+        run: () => {
+          if (!backgroundThemes.length) return;
+          const pick = backgroundThemes[Math.floor(Math.random() * backgroundThemes.length)];
+          setCurrentTheme(pick);
+          setCustomBgUrl(null);
+          localStorage.removeItem('vistablog_custom_bg');
+          localStorage.setItem('vistablog_theme_id', pick.id);
+          pushToast('意境切换', pick.name, '🏔️');
+        },
+      },
+      {
+        id: 'danmaku',
+        label: '开关弹幕层',
+        icon: paletteIcons.sparkles,
+        run: () => setIsDanmakuVisible((v) => !v),
+      },
+      // 彩蛋命令
+      {
+        id: 'egg-snow',
+        label: '❄️ 雪花飘落',
+        hint: '彩蛋',
+        icon: paletteIcons.sparkles,
+        run: () => pushToast('❄️ 雪花飘落', '冬日暖阳，雪花轻轻飘落。', '❄️'),
+      },
+      {
+        id: 'egg-love',
+        label: '❤️ 爱心飘落',
+        hint: '彩蛋',
+        icon: paletteIcons.sparkles,
+        run: () => pushToast('❤️ 爱心飘落', '你输入了「love」，全站爱心飘落！', '❤️'),
+      },
+      {
+        id: 'egg-sparkle',
+        label: '✨ 星尘模式',
+        hint: '彩蛋',
+        icon: paletteIcons.sparkles,
+        run: () => pushToast('✨ 星尘模式', '全站微微闪烁，像山野里的萤火。', '✨'),
+      },
+      {
+        id: 'egg-coffee',
+        label: '☕ 咖啡时间',
+        hint: '彩蛋',
+        icon: paletteIcons.sparkles,
+        run: () => pushToast('☕ 咖啡时间', '来一杯咖啡？阅读时光更惬意。', '☕'),
+      },
+      {
+        id: 'egg-cat',
+        label: '🐱 猫咪彩蛋',
+        hint: '彩蛋',
+        icon: paletteIcons.sparkles,
+        run: () => pushToast('🐱 猫咪彩蛋', '喵~ 一只小猫路过。', '🐱'),
+      },
+    ],
+    [isManageMode, backgroundThemes, openWriter, toggleManageMode, pushToast],
+  );
 
   const getMomentLikingStatus = (momentId: string) => {
     const likedMoments = JSON.parse(localStorage.getItem('liked_moments') || '[]');
@@ -452,12 +664,34 @@ export default function App() {
 
   return (
     <div
-      className="relative min-h-screen w-full font-sans text-slate-100 overflow-x-hidden selection:bg-slate-700 pb-20"
+      className={`relative min-h-screen w-full font-sans text-slate-100 overflow-x-hidden selection:bg-slate-700 pb-20 ${sparkleMode ? 'sparkle-mode' : ''}`}
       id="root-viewport-container"
     >
+      <EasterEggToasts toasts={easterToasts} onDismiss={dismissToast} />
+      <CommandPalette open={commandOpen} onClose={() => setCommandOpen(false)} actions={commandActions} />
+      <ConfirmDialog
+        open={Boolean(confirmDialog)}
+        title={confirmDialog?.title ?? ''}
+        message={confirmDialog?.message ?? ''}
+        danger
+        confirmLabel="删除"
+        onConfirm={() => confirmDialog?.onConfirm()}
+        onCancel={() => setConfirmDialog(null)}
+      />
+      {/* Easter Egg Effects */}
+      <HeartRain active={heartRain} />
+      <SnowMode active={snowMode} />
+      <SparkleEffect active={sparkleMode} />
+
+      {/* New Features */}
+      <MusicPlayer />
+      <ClickEffect enabled={true} />
+      <Fireflies count={15} enabled={sparkleMode} />
+      <MouseGlow size={120} />
       {/* 1. Dynamic Background with Video/Image Support */}
       <DynamicBackground
-        currentTheme={currentTheme}
+        currentTheme={displayTheme}
+        themeVideos={themeVideos}
         onMouseMove={handleMouseMove}
       />
 
@@ -467,9 +701,14 @@ export default function App() {
         {/* TOP Atmospheric Branding & Weather Grid */}
         <header className="glass-panel mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-5 rounded-3xl">
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800 border border-slate-700/60 flex items-center justify-center">
+            <button
+              type="button"
+              onClick={handleLogoClick}
+              className="w-11 h-11 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800 border border-slate-700/60 flex items-center justify-center cursor-pointer hover:scale-105 transition active:scale-95"
+              title="连点三次打开指令台 · Ctrl+K"
+            >
               <Compass size={22} className={style.accentText} />
-            </div>
+            </button>
             <div>
               <h1 className="text-xl md:text-2xl font-black text-white font-['Noto_Serif_SC'] tracking-tight flex items-center gap-2">
                 <span>VistaBlog </span>
@@ -483,17 +722,45 @@ export default function App() {
           <div className="flex items-center gap-2 text-[11px] font-mono bg-black/35 pl-3 pr-4 py-2 border border-white/5 rounded-2xl">
             <div className="w-2 h-2 rounded-full alive-indicator shrink-0" style={{ backgroundColor: 'var(--accent-vibe-color)' }} />
             <span className="text-slate-400">当前壁纸: </span>
-            <span className="font-semibold text-white mr-1">{currentTheme.name}</span>
-            <a
-              href={currentTheme.photographerUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-slate-400 hover:text-white underline cursor-pointer"
-            >
-              @{currentTheme.photographer} / Unsplash
-            </a>
+            <span className="font-semibold text-white mr-1">{displayTheme.name}</span>
+            {customBgUrl ? (
+              <span className="text-slate-400">自定义采集背景</span>
+            ) : (
+              <a
+                href={currentTheme.photographerUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-slate-400 hover:text-white underline cursor-pointer"
+              >
+                @{currentTheme.photographer}
+              </a>
+            )}
+            {manifestSource && (
+              <span className="text-slate-600 font-mono text-[10px] ml-1" title="资源清单来源">
+                · {manifestSource}
+              </span>
+            )}
+            {konamiProgress > 0 && (
+              <span className="text-[10px] text-amber-400 font-mono ml-1" title="Konami 进度">
+                🎮 {konamiProgress}/10
+              </span>
+            )}
           </div>
         </header>
+
+        {isManageMode && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="glass-panel mb-6 px-4 py-3 rounded-2xl flex flex-wrap items-center justify-between gap-3 border border-amber-500/25 bg-amber-500/5"
+          >
+            <span className="text-xs text-amber-200 font-semibold flex items-center gap-2">
+              <Settings2 size={14} />
+              博主管理模式：可编辑 / 删除文章、微言与评论
+            </span>
+            <span className="text-[10px] text-slate-500 font-mono">快捷键 Ctrl+K · 输入 guanli 切换</span>
+          </motion.div>
+        )}
 
         {/* CORE GRID LAYOUT: Left sidebar + Middle content body */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
@@ -570,6 +837,19 @@ export default function App() {
                 </button>
               </div>
 
+              <button
+                type="button"
+                onClick={toggleManageMode}
+                className={`mt-4 w-full py-2 rounded-xl text-xs font-bold border transition cursor-pointer flex items-center justify-center gap-1.5 ${
+                  isManageMode
+                    ? 'bg-amber-500/20 text-amber-200 border-amber-500/40'
+                    : 'bg-white/5 text-slate-300 border-white/10 hover:bg-white/10'
+                }`}
+              >
+                <Settings2 size={14} />
+                {isManageMode ? '退出管理' : '博主管理'}
+              </button>
+
             </div>
 
             {/* INTERACTIVE AMBIENT SOUND GENERATOR (Web Audio Binaural Synth) */}
@@ -643,7 +923,7 @@ export default function App() {
               </p>
 
               <div className="flex flex-col gap-2">
-                {BACKGROUND_THEMES.map((theme) => {
+                {backgroundThemes.map((theme) => {
                   const isActive = currentTheme.id === theme.id;
                   return (
                     <button
@@ -690,8 +970,7 @@ export default function App() {
               currentTheme={currentTheme}
               style={style}
               onOpenPost={openPostForReading}
-              onOpenSandbox={() => setActiveTab('sandbox')}
-              onStartContribution={() => setIsWriteOpen(true)}
+              onStartContribution={() => openWriter()}
             />
 
             {/* TAB SELECTOR & ADD POST BUTTON */}
@@ -747,28 +1026,12 @@ export default function App() {
                   <Info size={15} />
                   关于博主
                 </button>
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected={activeTab === 'sandbox'}
-                  aria-controls="panel-sandbox"
-                  onClick={() => setActiveTab('sandbox')}
-                  className={`flex-1 sm:flex-none px-4.5 py-2 rounded-xl text-xs sm:text-sm font-semibold tracking-wide transition flex items-center justify-center gap-2 cursor-pointer ${
-                    activeTab === 'sandbox'
-                      ? 'bg-white/10 font-bold text-white shadow-sm'
-                      : 'text-slate-355 hover:text-white hover:bg-white/5'
-                  }`}
-                  id="tab-btn-sandbox"
-                >
-                  <Compass size={15} />
-                  荒野沙盘
-                </button>
-              </div>
+                </div>
 
               {/* Creator Pen button */}
               <button
                 type="button"
-                onClick={() => setIsWriteOpen(true)}
+                onClick={() => openWriter()}
                 className={`w-full sm:w-auto px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 shadow-lg select-none shrink-0 cursor-pointer ${style.accentBtn}`}
                 id="open-write_post-btn"
               >
@@ -823,17 +1086,6 @@ export default function App() {
                       <Search size={13} className="absolute left-3 top-2.5 text-slate-500" />
                     </div>
                   </div>
-
-                  {/* 🛠️ INTEGRATED KNOWLEDGE, STUDY AND PHYSICAL IMAGE ANALYSIS WORKBENCH PANEL */}
-                  <Suspense fallback={<LazyPanelFallback label="正在加载资料分析工作台..." />}>
-                    <AnalyticalWorkbench
-                      currentTheme={currentTheme}
-                      style={style}
-                      onImportAsPost={(newPost) => {
-                        handleAddNewPost(newPost);
-                      }}
-                    />
-                  </Suspense>
 
                   {/* Pinned post highlight if all categories is active */}
                   {selectedCategory === '全部' && searchQuery === '' && posts.some(p => p.pinned) && (
@@ -981,7 +1233,7 @@ export default function App() {
                                 </p>
 
                                 {/* --- CARD QUICK DOWNLOAD BAR & METADATA ACCELERATOR --- */}
-                                {(post.category === '学习资料' || post.resourceLink) && (
+                                {postHasShareableResource(post) && (
                                   <div className="mt-3.5 p-2.5 rounded-xl bg-slate-950/50 border border-white/5 flex items-center justify-between gap-3 text-left">
                                     <div className="flex items-center gap-2.5 min-w-0">
                                       <div className="shrink-0 w-8 h-8 rounded-lg bg-indigo-500/10 border border-indigo-500/15 flex items-center justify-center text-[15px]">
@@ -1061,7 +1313,34 @@ export default function App() {
                               </div>
                             </div>
 
-                            <div className="flex items-center justify-between mt-5 pt-3.5 border-t border-white/5">
+                            <div className="mt-5 pt-3.5 border-t border-white/5 space-y-2">
+                              {isManageMode && (
+                                <div className="flex gap-1 justify-end">
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      openWriter(post);
+                                    }}
+                                    className="p-2 rounded-lg bg-white/10 text-slate-300 hover:text-white cursor-pointer"
+                                    title="编辑"
+                                  >
+                                    <Pencil size={14} />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      requestDeletePost(post);
+                                    }}
+                                    className="p-2 rounded-lg bg-red-500/15 text-red-400 hover:bg-red-500/25 cursor-pointer"
+                                    title="删除"
+                                  >
+                                    <Trash2 size={14} />
+                                  </button>
+                                </div>
+                              )}
+                              <div className="flex items-center justify-between">
                               <div className="flex items-center gap-3 text-[10px] font-mono text-slate-400">
                                 <button
                                   onClick={(e) => { e.stopPropagation(); handleLikePost(post.id); }}
@@ -1100,6 +1379,7 @@ export default function App() {
                                 展开阅读
                                 <ChevronRight size={12} className={style.accentText} />
                               </button>
+                              </div>
                             </div>
                           </div>
                         ))}
@@ -1183,7 +1463,27 @@ export default function App() {
                             </div>
                           )}
 
-                          {/* Likes action */}
+                          {isManageMode && (
+                            <div className="flex justify-end gap-1 pt-1">
+                              <button
+                                type="button"
+                                onClick={() => openWriter(null, mom)}
+                                className="p-2 rounded-lg bg-white/10 text-slate-300 hover:text-white cursor-pointer"
+                                title="编辑微言"
+                              >
+                                <Pencil size={14} />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => requestDeleteMoment(mom)}
+                                className="p-2 rounded-lg bg-red-500/15 text-red-400 cursor-pointer"
+                                title="删除微言"
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                            </div>
+                          )}
+
                           <div className="flex items-center justify-between pt-3 border-t border-white/5 pl-1">
                             <span className="text-[10px] text-slate-400 font-mono uppercase tracking-widest">
                               Wilderness moment
@@ -1286,21 +1586,7 @@ export default function App() {
                 </motion.div>
               )}
 
-              {/* Tab 4: Wilderness Sandbox interactive dashboard */}
-              {activeTab === 'sandbox' && (
-                <div role="tabpanel" aria-labelledby="tab-btn-sandbox">
-                  <Suspense fallback={<LazyPanelFallback label="正在加载照片、环境声与爬取工作台..." />}>
-                    <WildernessSandbox
-                      currentTheme={currentTheme}
-                      style={style}
-                      onImportAsPost={(newPost) => {
-                        const updated = [newPost, ...posts];
-                        setPosts(updated);
-                      }}
-                    />
-                  </Suspense>
-                </div>
-              )}
+              {/* Tab 4 removed - Wilderness Sandbox */}
 
             </div>
 
@@ -1309,7 +1595,11 @@ export default function App() {
         </div>
 
         {/* BOTTOM FOOLPROOF STATIC COPYRIGHT */}
-        <footer className="mt-14 pt-6 border-t border-slate-850 text-center text-xs text-slate-400 leading-normal flex flex-col items-center gap-2 select-none">
+        <footer
+          className="mt-14 pt-6 border-t border-slate-850 text-center text-xs text-slate-400 leading-normal flex flex-col items-center gap-2 select-none cursor-default"
+          onClick={handleFooterClick}
+          role="presentation"
+        >
           <div className="flex items-center gap-2">
             <span>© 2026 VistaBlog. All rights reserved.</span>
             <span>•</span>
@@ -1318,10 +1608,7 @@ export default function App() {
             </span>
           </div>
           <div className="text-[10px] text-slate-650 max-w-lg font-light">
-            本站使用高斯模糊毛玻璃(Glassmorphism)及浏览器 Web Audio API 正弦音源物理合成落雨白噪音。风景图片引自 Unsplash，感谢 Bailey Zindel, Kalen Emsley 等独立风景摄影师的杰出馈赠。
-          </div>
-          <div className="text-[9px] text-slate-700 mt-2 font-mono">
-            💡 提示: 输入 ↑↑↓↓←→←→BA 解锁彩蛋
+            本站使用毛玻璃界面与 Web Audio 合成环境白噪音。风景与音乐资源由 manifest 清单加载。
           </div>
         </footer>
 
@@ -1343,50 +1630,6 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Easter Egg Modal */}
-      <AnimatePresence>
-        {showEasterEgg && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm"
-            onClick={() => setShowEasterEgg(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.5, rotate: -10 }}
-              animate={{ scale: 1, rotate: 0 }}
-              exit={{ scale: 0.5, rotate: 10 }}
-              className="glass-panel p-8 rounded-3xl text-center max-w-md mx-4"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <motion.div
-                animate={{ rotate: [0, 10, -10, 0] }}
-                transition={{ duration: 0.5, repeat: 2 }}
-              >
-                <Trophy size={64} className="text-amber-400 mx-auto mb-4" />
-              </motion.div>
-              <h2 className="text-2xl font-bold text-white mb-2 font-['Noto_Serif_SC']">🎉 彩蛋解锁!</h2>
-              <p className="text-slate-300 text-sm mb-4">
-                恭喜你发现了 Konami Code 彩蛋！<br/>
-                你是一个有探索精神的人。
-              </p>
-              <div className="flex items-center justify-center gap-2 text-amber-400">
-                <Star size={16} className="fill-amber-400" />
-                <span className="text-sm font-bold">探索者成就解锁</span>
-                <Star size={16} className="fill-amber-400" />
-              </div>
-              <button
-                onClick={() => setShowEasterEgg(false)}
-                className="mt-6 px-6 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 transition cursor-pointer"
-              >
-                太棒了！
-              </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* 3. MODALS LIGHT BOXES */}
       <AnimatePresence>
         
@@ -1398,6 +1641,13 @@ export default function App() {
               onClose={() => setReadingPost(null)}
               onLike={handleLikePost}
               onAddComment={handleAddComment}
+              onDeleteComment={handleDeleteComment}
+              onDeletePost={requestDeletePost}
+              onEditPost={(p) => {
+                setReadingPost(null);
+                openWriter(p);
+              }}
+              isManageMode={isManageMode}
               accentClass={style.colorName}
             />
           </Suspense>
@@ -1407,9 +1657,13 @@ export default function App() {
         {isWriteOpen && (
           <Suspense fallback={<LazyPanelFallback label="正在打开投稿编辑器..." />}>
             <WritePostModal
-              onClose={() => setIsWriteOpen(false)}
+              onClose={closeWriter}
               onSavePost={handleAddNewPost}
               onSaveMoment={handleAddNewMoment}
+              onUpdatePost={handleUpdatePost}
+              onUpdateMoment={handleUpdateMoment}
+              editingPost={editingPost}
+              editingMoment={editingMoment}
               accentClass={style.colorName}
             />
           </Suspense>

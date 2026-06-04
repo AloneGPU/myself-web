@@ -1,0 +1,96 @@
+import { BackgroundTheme, CrawledBackground, MusicTrack } from '../types';
+
+/** 与 public/vistablog/manifest.json 路径一致（离线回退） */
+export const FALLBACK_MANIFEST_VERSION = '1.1.0-folders';
+
+export const FALLBACK_THEMES: BackgroundTheme[] = [
+  {
+    id: 'forest-lake',
+    name: '翡翠湖畔',
+    url: '/vistablog/bg/forest-lake.webp',
+    description: '静谧的晨雾中，远山倒映在碧绿的湖水中，绿意盎然。',
+    photographer: '自托管',
+    photographerUrl: '',
+    accentColor: 'emerald',
+  },
+  {
+    id: 'misty-mountain',
+    name: '雾锁秋峦',
+    url: '/vistablog/bg/misty-mountain.webp',
+    description: '云雾缭绕的山谷，潺潺的溪流与斑斓的秋树交相辉映。',
+    photographer: '自托管',
+    photographerUrl: '',
+    accentColor: 'amber',
+  },
+  {
+    id: 'starry-peaks',
+    name: '璀璨星岳',
+    url: '/vistablog/bg/starry-peaks.webp',
+    description: '浩瀚夜空下，群星在巍峨的雪山之巅闪烁，银河如丝带般悬挂。',
+    photographer: '自托管',
+    photographerUrl: '',
+    accentColor: 'indigo',
+  },
+  {
+    id: 'sunrise-ocean',
+    name: '暮色听涛',
+    url: '/vistablog/bg/sunrise-ocean.webp',
+    description: '暖洋洋的晨光漫过海岸，椰树与无垠的海平面在潮声中苏醒。',
+    photographer: '自托管',
+    photographerUrl: '',
+    accentColor: 'cyan',
+  },
+  {
+    id: 'winter-dawn',
+    name: '极境冬雪',
+    url: '/vistablog/bg/winter-dawn.webp',
+    description: '白雪皑皑的山峰在冬日霞光中静静矗立，绝尘脱俗。',
+    photographer: '自托管',
+    photographerUrl: '',
+    accentColor: 'teal',
+  },
+];
+
+export const FALLBACK_THEME_VIDEOS: Record<string, { videoUrl: string; posterUrl: string }> = {
+  'forest-lake': {
+    videoUrl: '/vistablog/video/forest-lake.mp4',
+    posterUrl: '/vistablog/bg/forest-lake.webp',
+  },
+  'misty-mountain': {
+    videoUrl: '/vistablog/video/misty-mountain.mp4',
+    posterUrl: '/vistablog/bg/misty-mountain.webp',
+  },
+  'starry-peaks': {
+    videoUrl: '/vistablog/video/starry-peaks.mp4',
+    posterUrl: '/vistablog/bg/starry-peaks.webp',
+  },
+  'sunrise-ocean': {
+    videoUrl: '/vistablog/video/sunrise-ocean.mp4',
+    posterUrl: '/vistablog/bg/sunrise-ocean.webp',
+  },
+  'winter-dawn': {
+    videoUrl: '/vistablog/video/winter-dawn.mp4',
+    posterUrl: '/vistablog/bg/winter-dawn.webp',
+  },
+};
+
+export const FALLBACK_CRAWLED_BACKGROUNDS: CrawledBackground[] = [
+  { id: 'bg-01', url: '/vistablog/bg/extra/bg-01.webp', photographer: '自托管', photographerUrl: '', description: '阿尔卑斯山脉日出金光', location: '瑞士阿尔卑斯山' },
+  { id: 'bg-02', url: '/vistablog/bg/extra/bg-02.webp', photographer: '自托管', photographerUrl: '', description: '晨雾森林秘境', location: '德国黑森林' },
+  { id: 'bg-03', url: '/vistablog/bg/extra/bg-03.webp', photographer: '自托管', photographerUrl: '', description: '星空银河拱桥', location: '澳大利亚乌鲁鲁' },
+  { id: 'bg-04', url: '/vistablog/bg/extra/bg-04.webp', photographer: '自托管', photographerUrl: '', description: '高山湖泊倒影', location: '新西兰皇后镇' },
+  { id: 'bg-05', url: '/vistablog/bg/extra/bg-05.webp', photographer: '自托管', photographerUrl: '', description: '银河夜空', location: '冰岛' },
+  { id: 'bg-06', url: '/vistablog/bg/extra/bg-06.webp', photographer: '自托管', photographerUrl: '', description: '热带海滩日落', location: '马尔代夫' },
+  { id: 'bg-07', url: '/vistablog/bg/extra/bg-07.webp', photographer: '自托管', photographerUrl: '', description: '海边夕阳', location: '三亚' },
+  { id: 'bg-08', url: '/vistablog/bg/extra/bg-08.webp', photographer: '自托管', photographerUrl: '', description: '森林小径', location: '四川九寨沟' },
+  { id: 'bg-09', url: '/vistablog/bg/extra/bg-09.webp', photographer: '自托管', photographerUrl: '', description: '雪山雄峰', location: '西藏珠穆朗玛' },
+];
+
+export const FALLBACK_MUSIC: MusicTrack[] = [
+  { id: 'music-01', title: '森林雨声白噪音', artist: '自托管', duration: '5:23', url: '/vistablog/audio/music-01.mp3', coverUrl: '/vistablog/covers/music-01.webp', category: '自然白噪音', tags: ['雨声', '森林'] },
+  { id: 'music-02', title: '海浪轻拍沙滩', artist: '自托管', duration: '3:45', url: '/vistablog/audio/music-02.mp3', coverUrl: '/vistablog/covers/music-02.webp', category: '自然白噪音', tags: ['海浪', '沙滩'] },
+  { id: 'music-03', title: '篝火噼啪声', artist: '自托管', duration: '4:12', url: '/vistablog/audio/music-03.mp3', coverUrl: '/vistablog/covers/music-03.webp', category: '自然白噪音', tags: ['篝火', '露营'] },
+  { id: 'music-04', title: '山谷鸟鸣晨曲', artist: '自托管', duration: '6:30', url: '/vistablog/audio/music-04.mp3', coverUrl: '/vistablog/covers/music-04.webp', category: '自然白噪音', tags: ['鸟鸣', '清晨'] },
+  { id: 'music-05', title: '溪流潺潺水声', artist: '自托管', duration: '4:56', url: '/vistablog/audio/music-05.mp3', coverUrl: '/vistablog/covers/music-05.webp', category: '自然白噪音', tags: ['溪流', '水声'] },
+  { id: 'music-06', title: '风穿过松林', artist: '自托管', duration: '3:28', url: '/vistablog/audio/music-06.mp3', coverUrl: '/vistablog/covers/music-06.webp', category: '自然白噪音', tags: ['风声', '松林'] },
+];

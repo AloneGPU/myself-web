@@ -9,8 +9,8 @@ import {
   FileText,
   Globe2,
   Image as ImageIcon,
+  Info,
   Music,
-  Radio,
   Search,
   ShieldCheck,
   Sparkles,
@@ -62,13 +62,10 @@ export default function ResourceDiscoveryHub({
   currentTheme,
   style,
   onOpenPost,
-  onOpenSandbox,
   onStartContribution,
 }: ResourceDiscoveryHubProps) {
   const [mode, setMode] = useState<HubMode>('materials');
   const [query, setQuery] = useState('');
-  const [crawlerKeyword, setCrawlerKeyword] = useState('复习资料 风景图');
-  const [isQueued, setIsQueued] = useState(false);
 
   const learningPosts = useMemo(
     () => posts.filter((post) => post.category === '学习资料' || Boolean(post.resourceLink)),
@@ -93,11 +90,6 @@ export default function ResourceDiscoveryHub({
     { label: '可下载资料', value: learningPosts.length, icon: FileText },
     { label: '照片线索', value: photoPosts.length, icon: Camera },
   ];
-
-  const handleQueueCrawler = () => {
-    setIsQueued(true);
-    window.setTimeout(() => setIsQueued(false), 2200);
-  };
 
   return (
     <section className="resource-hub glass-panel rounded-3xl overflow-hidden border border-white/10">
@@ -273,39 +265,17 @@ export default function ResourceDiscoveryHub({
         <aside className="border-t border-white/10 bg-slate-950/40 p-5 sm:p-6 xl:border-l xl:border-t-0">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <h3 className="text-base font-black text-white font-['Noto_Serif_SC']">采集队列</h3>
-              <p className="mt-1 text-xs leading-5 text-slate-400">把爬虫当成候选采集器，先预览来源，再导入博客或相册。</p>
+              <h3 className="text-base font-black text-white font-['Noto_Serif_SC']">资源帮助</h3>
+              <p className="mt-1 text-xs leading-5 text-slate-400">本站资源使用说明和常见问题。</p>
             </div>
-            <Radio size={20} className={style.accentText} />
-          </div>
-
-          <div className="mt-4 rounded-2xl border border-white/10 bg-black/25 p-3">
-            <label className="text-xs font-semibold text-slate-300" htmlFor="crawler-keyword">
-              采集关键词
-            </label>
-            <div className="mt-2 flex gap-2">
-              <input
-                id="crawler-keyword"
-                value={crawlerKeyword}
-                onChange={(event) => setCrawlerKeyword(event.target.value)}
-                className="min-h-11 min-w-0 flex-1 rounded-xl border border-white/10 bg-slate-950/70 px-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-white/25"
-              />
-              <button
-                type="button"
-                onClick={handleQueueCrawler}
-                disabled={!crawlerKeyword.trim() || isQueued}
-                className={`min-h-11 rounded-xl px-4 text-xs font-bold disabled:cursor-not-allowed disabled:opacity-50 ${style.accentBtn}`}
-              >
-                {isQueued ? '排队中' : '加入'}
-              </button>
-            </div>
+            <Info size={20} className={style.accentText} />
           </div>
 
           <div className="mt-4 space-y-2">
             {[
               { icon: Globe2, title: '国内静态部署', body: '资源通过环境变量切换到对象存储、图床代理或自建 CDN。' },
               { icon: Download, title: '下载资源优先', body: 'Word、PPT、PDF 和照片包都显示格式、大小和提取码。' },
-              { icon: Camera, title: '照片导入路径', body: `当前主题：${currentTheme.name}，可进入荒野沙盘采集照片。` },
+              { icon: Camera, title: '照片导入路径', body: `当前主题：${currentTheme.name}，点击照片图集查看风景照。` },
             ].map((item) => {
               const Icon = item.icon;
               return (
@@ -319,15 +289,6 @@ export default function ResourceDiscoveryHub({
               );
             })}
           </div>
-
-          <button
-            type="button"
-            onClick={onOpenSandbox}
-            className="mt-4 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/10 text-sm font-bold text-white transition hover:bg-white/15"
-          >
-            打开照片与爬取工作台
-            <ChevronRight size={15} />
-          </button>
         </aside>
       </div>
     </section>

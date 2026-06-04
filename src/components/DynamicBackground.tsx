@@ -1,32 +1,16 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { BackgroundTheme } from '../types';
+import { BackgroundTheme, ThemeVideoConfig } from '../types';
 
 interface DynamicBackgroundProps {
   currentTheme: BackgroundTheme;
+  themeVideos?: Record<string, ThemeVideoConfig>;
   onMouseMove?: (e: React.MouseEvent) => void;
 }
 
-// 为每个风景意境配置视频资源
-const THEME_VIDEOS: Record<string, string> = {
-  'forest-lake': 'https://cdn.pixabay.com/video/2020/07/30/45766-445484278_large.mp4',
-  'misty-mountain': 'https://cdn.pixabay.com/video/2024/02/22/201627-915623293_large.mp4',
-  'starry-peaks': 'https://cdn.pixabay.com/video/2021/08/06/84241-586523838_large.mp4',
-  'sunrise-ocean': 'https://cdn.pixabay.com/video/2020/05/25/40130-424930032_large.mp4',
-  'winter-dawn': 'https://cdn.pixabay.com/video/2021/11/01/94736-642524840_large.mp4'
-};
-
-// 视频封面图（备用）
-const THEME_POSTERS: Record<string, string> = {
-  'forest-lake': 'https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072823_1280.jpg',
-  'misty-mountain': 'https://cdn.pixabay.com/photo/2017/02/01/22/02/mountain-landscape-2031539_1280.jpg',
-  'starry-peaks': 'https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_1280.jpg',
-  'sunrise-ocean': 'https://cdn.pixabay.com/photo/2016/10/13/11/06/beach-1737124_1280.jpg',
-  'winter-dawn': 'https://cdn.pixabay.com/photo/2013/10/14/16/22/snow-covered-mountain-195411_1280.jpg'
-};
-
 export default function DynamicBackground({
   currentTheme,
+  themeVideos = {},
   onMouseMove
 }: DynamicBackgroundProps) {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
@@ -73,8 +57,9 @@ export default function DynamicBackground({
     setIsVideoLoaded(false);
   }, []);
 
-  const videoUrl = THEME_VIDEOS[currentTheme.id];
-  const posterUrl = THEME_POSTERS[currentTheme.id];
+  const videoConfig = themeVideos[currentTheme.id];
+  const videoUrl = videoConfig?.videoUrl;
+  const posterUrl = videoConfig?.posterUrl ?? currentTheme.url;
 
   return (
     <div
@@ -100,32 +85,33 @@ export default function DynamicBackground({
         </motion.div>
       </AnimatePresence>
 
-      {/* 视频背景（覆盖在图片上方） */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={`vid-${currentTheme.id}`}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isVideoLoaded ? 1 : 0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1, ease: 'easeOut' }}
-          className="absolute inset-0"
-        >
-          <video
-            ref={videoRef}
-            src={videoUrl}
-            poster={posterUrl}
-            muted
-            loop
-            playsInline
-            onLoadedData={handleVideoLoaded}
-            onPlay={handleVideoPlay}
-            onPause={handleVideoPause}
-            onEnded={handleVideoEnded}
-            onError={handleVideoError}
-            className="w-full h-full object-cover filter brightness-[0.4] contrast-[1.05] saturate-[1.02]"
-          />
-        </motion.div>
-      </AnimatePresence>
+      {videoUrl && (
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`vid-${currentTheme.id}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isVideoLoaded ? 1 : 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1, ease: 'easeOut' }}
+            className="absolute inset-0"
+          >
+            <video
+              ref={videoRef}
+              src={videoUrl}
+              poster={posterUrl}
+              muted
+              loop
+              playsInline
+              onLoadedData={handleVideoLoaded}
+              onPlay={handleVideoPlay}
+              onPause={handleVideoPause}
+              onEnded={handleVideoEnded}
+              onError={handleVideoError}
+              className="w-full h-full object-cover filter brightness-[0.4] contrast-[1.05] saturate-[1.02]"
+            />
+          </motion.div>
+        </AnimatePresence>
+      )}
 
       {/* 渐变遮罩 */}
       <div className="absolute inset-0 bg-gradient-to-b from-slate-950/10 via-transparent to-slate-950/70 pointer-events-none" />

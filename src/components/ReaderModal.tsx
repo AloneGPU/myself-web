@@ -1,17 +1,32 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Heart, Eye, MessageSquare, CornerDownRight, Plus, Send, RefreshCw, ZoomIn, ZoomOut, Sparkles, BookOpen, Download, Key, FileCheck, Image as ImageIcon } from 'lucide-react';
+import { X, Heart, Eye, MessageSquare, CornerDownRight, Plus, Send, RefreshCw, ZoomIn, ZoomOut, Sparkles, BookOpen, Download, Key, FileCheck, Image as ImageIcon, Trash2, Pencil, Link2, Copy } from 'lucide-react';
 import { BlogPost, Comment } from '../types';
+import { getPostResourceKind, postHasShareableResource } from '../utils/postResources';
 
 interface ReaderModalProps {
   post: BlogPost | null;
   onClose: () => void;
   onLike: (postId: string) => void;
   onAddComment: (postId: string, comment: Comment) => void;
+  onDeleteComment?: (postId: string, commentId: string) => void;
+  onDeletePost?: (post: BlogPost) => void;
+  onEditPost?: (post: BlogPost) => void;
+  isManageMode?: boolean;
   accentClass: string;
 }
 
-export default function ReaderModal({ post, onClose, onLike, onAddComment, accentClass }: ReaderModalProps) {
+export default function ReaderModal({
+  post,
+  onClose,
+  onLike,
+  onAddComment,
+  onDeleteComment,
+  onDeletePost,
+  onEditPost,
+  isManageMode = false,
+  accentClass,
+}: ReaderModalProps) {
   const [fontSize, setFontSize] = useState<'sm' | 'base' | 'lg' | 'xl'>('base');
   const [newCommentName, setNewCommentName] = useState('');
   const [newCommentText, setNewCommentText] = useState('');
@@ -21,6 +36,7 @@ export default function ReaderModal({ post, onClose, onLike, onAddComment, accen
   const [isLiked, setIsLiked] = useState(false);
   const [replyingTo, setReplyingTo] = useState<Comment | null>(null);
   const [copiedResourcePw, setCopiedResourcePw] = useState(false);
+  const [copiedTextRes, setCopiedTextRes] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -323,7 +339,27 @@ export default function ReaderModal({ post, onClose, onLike, onAddComment, accen
         id="reader-modal-body"
       >
         {/* Modal Controls Bar */}
-        <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
+        <div className="absolute top-4 right-4 z-10 flex items-center gap-2 flex-wrap justify-end max-w-[90%]">
+          {isManageMode && post && (
+            <>
+              <button
+                type="button"
+                onClick={() => onEditPost?.(post)}
+                className="p-2.5 bg-black/40 border border-white/10 rounded-full text-slate-300 hover:text-white cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+                title="编辑文章"
+              >
+                <Pencil size={18} />
+              </button>
+              <button
+                type="button"
+                onClick={() => onDeletePost?.(post)}
+                className="p-2.5 bg-red-500/20 border border-red-500/30 rounded-full text-red-400 hover:bg-red-500/30 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+                title="删除文章"
+              >
+                <Trash2 size={18} />
+              </button>
+            </>
+          )}
           {/* Font Sizer */}
           <div className="flex items-center gap-1 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-700/50">
             <span className="text-xs text-slate-400 mr-1 hidden sm:inline">字号:</span>
@@ -426,7 +462,8 @@ export default function ReaderModal({ post, onClose, onLike, onAddComment, accen
             </div>
 
             {/* --- STUDY MATERIALS RESOURCE CORRIDOR --- */}
-            {(post.category === '学习资料' || post.resourceLink) && (() => {
+            {postHasShareableResource(post) && (() => {
+              const resKind = getPostResourceKind(post);
               // Parse the resource format dynamically
               const resNameLower = (post.resourceName || '').toLowerCase();
               let formatBadge = {
@@ -527,11 +564,54 @@ export default function ReaderModal({ post, onClose, onLike, onAddComment, accen
                     </span>
                   </div>
 
+                  {resKind === 'text' && post.resourceText && (
+                    <div className="p-4 bg-slate-950/50 rounded-xl border border-slate-800 mb-3">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-bold text-emerald-300">📋 文本资源</span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigator.clipboard.writeText(post.resourceText || '');
+                            setCopiedTextRes(true);
+                            setTimeout(() => setCopiedTextRes(false), 2000);
+                          }}
+                          className="text-[10px] flex items-center gap-1 text-slate-400 hover:text-white cursor-pointer"
+                        >
+                          <Copy size={12} />
+                          {copiedTextRes ? '已复制' : '复制全文'}
+                        </button>
+                      </div>
+                      <pre className="text-xs text-slate-300 whitespace-pre-wrap font-mono leading-relaxed max-h-48 overflow-y-auto">
+                        {post.resourceText}
+                      </pre>
+                    </div>
+                  )}
+
+                  {(post.extraLinks?.length ?? 0) > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {post.extraLinks!.map((link) => (
+                        <a
+                          key={link.id}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-800/80 border border-white/10 text-xs text-indigo-300 hover:text-white transition"
+                        >
+                          <Link2 size={12} />
+                          {link.label || '链接'}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+
+                  {resKind !== 'text' && (
                   <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-4 bg-slate-950/40 rounded-xl border border-slate-800">
                     <div className="space-y-1 min-w-0 flex-1">
-                      <span className="text-[9px] text-indigo-300 font-bold uppercase tracking-wider block">共享文件 / 备考素材 / 高清壁纸原图</span>
+                      <span className="text-[9px] text-indigo-300 font-bold uppercase tracking-wider block">
+                        {resKind === 'web' ? '网页链接' : '共享文件 / 网盘资源'}
+                      </span>
                       <h5 className="text-xs font-semibold text-slate-200 truncate pr-2">
-                        {post.resourceName || '【考研/期末复习】编译原理核心状态树与其LR1语法自解指南.pdf'}
+                        {post.resourceName || post.title}
                       </h5>
                       <div className="flex items-center gap-2 text-[10px] text-slate-500">
                         <span className="flex items-center gap-1">
@@ -542,19 +622,21 @@ export default function ReaderModal({ post, onClose, onLike, onAddComment, accen
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0 w-full md:w-auto mt-2 md:mt-0">
+                      {post.resourcePassword && (
                       <button
                         type="button"
                         onClick={() => {
-                          const targetPw = post.resourcePassword || 'MIT2026';
-                          navigator.clipboard.writeText(targetPw);
+                          navigator.clipboard.writeText(post.resourcePassword || '');
                           setCopiedResourcePw(true);
                           setTimeout(() => setCopiedResourcePw(false), 2000);
                         }}
                         className="flex-1 md:flex-none px-3 py-1.5 bg-slate-800 hover:bg-slate-700 hover:text-white text-slate-300 rounded-lg text-[11px] font-medium transition flex items-center justify-center gap-1 border border-white/5 cursor-pointer active:scale-95"
                       >
                         <Key size={11} className="text-indigo-400" />
-                        <span>{copiedResourcePw ? '提取码已复制！' : `提取码: ${post.resourcePassword || 'MIT2026'}`}</span>
+                        <span>{copiedResourcePw ? '提取码已复制！' : `提取码: ${post.resourcePassword}`}</span>
                       </button>
+                      )}
+                      {post.resourceLink && (
                       <motion.button
                         whileHover={{ 
                           scale: 1.05,
@@ -573,7 +655,7 @@ export default function ReaderModal({ post, onClose, onLike, onAddComment, accen
                           setIsDownloading(true);
                           
                           // Open sharing/download URL safely
-                          window.open(post.resourceLink || 'https://github.com/google/genai', '_blank');
+                          window.open(post.resourceLink, '_blank');
 
                           // Self clear
                           setTimeout(() => {
@@ -598,8 +680,10 @@ export default function ReaderModal({ post, onClose, onLike, onAddComment, accen
                           </>
                         )}
                       </motion.button>
+                      )}
                     </div>
                   </div>
+                  )}
 
                   <div className="text-[10px] text-slate-450 leading-normal bg-black/15 p-2.5 rounded-lg border border-white/5 space-y-1">
                     <p>💡 <strong>学习分享友情提醒:</strong> 以上分享资料占比中，高价值学习文档（Word笔记、PPT演讲模板、PDF教材）及风景美照（治愈系自习室风景照、微光校园保护色）各占一半（50%比50%分布），以此在繁琐解题与平静风景间构建完美的精力能量守恒。你可以打包一键保存！</p>
@@ -800,6 +884,16 @@ export default function ReaderModal({ post, onClose, onLike, onAddComment, accen
                               <CornerDownRight size={11} />
                               <span>回复</span>
                             </button>
+                            {isManageMode && onDeleteComment && post && (
+                              <button
+                                type="button"
+                                onClick={() => onDeleteComment(post.id, comment.id)}
+                                className="text-xs text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-red-500/10 cursor-pointer"
+                                title="删除评论"
+                              >
+                                <Trash2 size={12} />
+                              </button>
+                            )}
                           </div>
                         </div>
                         <p className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap select-text pt-0.5">

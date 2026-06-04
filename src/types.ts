@@ -9,6 +9,15 @@ export interface Comment {
   image?: string;
 }
 
+/** 分享资源类型：网盘链接 / 网页 / 纯文本笔记 */
+export type ResourceKind = 'none' | 'cloud' | 'web' | 'text';
+
+export interface ExtraLink {
+  id: string;
+  label: string;
+  url: string;
+}
+
 export interface BlogPost {
   id: string;
   title: string;
@@ -22,11 +31,16 @@ export interface BlogPost {
   views: number;
   comments: Comment[];
   pinned?: boolean;
-  // Resource Sharing Support
+  /** 资源分享 */
+  resourceKind?: ResourceKind;
   resourceLink?: string;
   resourcePassword?: string;
   resourceSize?: string;
   resourceName?: string;
+  /** 纯文本资料：笔记、提纲、代码片段等 */
+  resourceText?: string;
+  /** 附加链接（教程、文档、Repo 等） */
+  extraLinks?: ExtraLink[];
 }
 
 export interface Moment {
@@ -84,4 +98,19 @@ export interface CrawledBackground {
   photographerUrl: string;
   description: string;
   location: string;
+}
+
+export interface ThemeVideoConfig {
+  videoUrl: string;
+  posterUrl: string;
+}
+
+/** 由 manifest.json 或本地 public 提供，上线后改为阿里云 CDN 地址即可 */
+export interface MediaManifest {
+  version: string;
+  updatedAt: string;
+  themes: BackgroundTheme[];
+  crawledBackgrounds: CrawledBackground[];
+  music: MusicTrack[];
+  themeVideos: Record<string, ThemeVideoConfig>;
 }

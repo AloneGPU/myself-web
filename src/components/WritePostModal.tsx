@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { X, Feather, FileText, Check, Camera, Image as ImageIcon, Sparkles, BookOpen } from 'lucide-react';
-import { BlogPost, Moment } from '../types';
+import { X, Feather, FileText, Check, Camera, Image as ImageIcon, Sparkles, BookOpen, Link2, Plus, Trash2 } from 'lucide-react';
+import { BlogPost, ExtraLink, Moment, ResourceKind } from '../types';
 
 interface WritePostModalProps {
   onClose: () => void;
   onSavePost: (post: BlogPost) => void;
   onSaveMoment: (moment: Moment) => void;
+  onUpdatePost?: (post: BlogPost) => void;
+  onUpdateMoment?: (moment: Moment) => void;
+  editingPost?: BlogPost | null;
+  editingMoment?: Moment | null;
   accentClass: string;
 }
 
@@ -71,22 +75,35 @@ const TEMPLATE_IMAGE_ANALYSIS = `### 📸 视觉构图与极境美学分析 (Vis
 ### 💭 画面故事与生命脉搏映射 (Spatial Resonance)
 > 该作品不仅仅定格了瞬间的光影。其美学价值更在于，在整片被幽蓝寒雾统治的冬晨中，那抹透亮的红橘色灯光代表了人在旷野之中的一种不被寒冬妥协、温存而坚定的生息呼吸。`;
 
-export default function WritePostModal({ onClose, onSavePost, onSaveMoment, accentClass }: WritePostModalProps) {
-  const [type, setType] = useState<'post' | 'moment'>('post');
+export default function WritePostModal({
+  onClose,
+  onSavePost,
+  onSaveMoment,
+  onUpdatePost,
+  onUpdateMoment,
+  editingPost,
+  editingMoment,
+  accentClass,
+}: WritePostModalProps) {
+  const isEditing = Boolean(editingPost || editingMoment);
+  const [type, setType] = useState<'post' | 'moment'>(editingMoment ? 'moment' : 'post');
 
-  // Blog states
   const [title, setTitle] = useState('');
   const [summary, setSummary] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('日常随记');
   const [coverImage, setCoverImage] = useState(CONSTANT_COVERS[0].url);
   const [customCover, setCustomCover] = useState('');
+  const [pinned, setPinned] = useState(false);
 
-  // Share Study Material States
+  const [attachResource, setAttachResource] = useState(false);
+  const [resourceKind, setResourceKind] = useState<ResourceKind>('cloud');
   const [resName, setResName] = useState('');
   const [resLink, setResLink] = useState('');
   const [resPassword, setResPassword] = useState('');
   const [resSize, setResSize] = useState('');
+  const [resText, setResText] = useState('');
+  const [extraLinks, setExtraLinks] = useState<ExtraLink[]>([]);
 
   // Moment states
   const [momentContent, setMomentContent] = useState('');
@@ -96,7 +113,78 @@ export default function WritePostModal({ onClose, onSavePost, onSaveMoment, acce
 
   const [errorMsg, setErrorMsg] = useState('');
 
-  // Submit hander
+  useEffect(() => {
+    if (editingPost) {
+      setType('post');
+      setTitle(editingPost.title);
+      setSummary(editingPost.summary);
+      setContent(editingPost.content);
+      setCategory(editingPost.category);
+      setCoverImage(editingPost.coverImage);
+      setCustomCover('');
+      setPinned(Boolean(editingPost.pinned));
+      const kind = editingPost.resourceKind ?? (editingPost.resourceText ? 'text' : editingPost.resourceLink ? 'cloud' : 'none');
+      setAttachResource(kind !== 'none' || Boolean(editingPost.extraLinks?.length));
+      setResourceKind(kind === 'none' ? 'cloud' : kind);
+      setResName(editingPost.resourceName ?? '');
+      setResLink(editingPost.resourceLink ?? '');
+      setResPassword(editingPost.resourcePassword ?? '');
+      setResSize(editingPost.resourceSize ?? '');
+      setResText(editingPost.resourceText ?? '');
+      setExtraLinks(editingPost.extraLinks ?? []);
+    }
+    if (editingMoment) {
+      setType('moment');
+      setMomentContent(editingMoment.content);
+      setMomentLocation(editingMoment.location ?? '');
+      setMomentMood(editingMoment.mood ?? MOODS[0]);
+      setMomentImage(editingMoment.image ?? '');
+    }
+  }, [editingPost, editingMoment]);
+
+  useEffect(() => {
+    if (category === '学习资料' || category === '资源链接') {
+      setAttachResource(true);
+    }
+  }, [category]);
+
+  const showResourceSection =
+    attachResource || category === '学习资料' || category === '资源链接' || category === '技术笔记';
+
+  const buildResourceFields = () => {
+    if (!showResourceSection || resourceKind === 'none') {
+      return {
+        resourceKind: 'none' as ResourceKind,
+        resourceName: undefined,
+        resourceLink: undefined,
+        resourcePassword: undefined,
+        resourceSize: undefined,
+        resourceText: undefined,
+        extraLinks: extraLinks.filter((l) => l.label.trim() && l.url.trim()),
+      };
+    }
+    if (resourceKind === 'text') {
+      return {
+        resourceKind: 'text' as ResourceKind,
+        resourceName: resName.trim() || '文本笔记',
+        resourceText: resText.trim() || undefined,
+        resourceLink: undefined,
+        resourcePassword: undefined,
+        resourceSize: resSize.trim() || '文本',
+        extraLinks: extraLinks.filter((l) => l.label.trim() && l.url.trim()),
+      };
+    }
+    return {
+      resourceKind,
+      resourceName: resName.trim() || undefined,
+      resourceLink: resLink.trim() || undefined,
+      resourcePassword: resPassword.trim() || undefined,
+      resourceSize: resSize.trim() || undefined,
+      resourceText: undefined,
+      extraLinks: extraLinks.filter((l) => l.label.trim() && l.url.trim()),
+    };
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
@@ -108,39 +196,41 @@ export default function WritePostModal({ onClose, onSavePost, onSaveMoment, acce
 
       const finalCover = customCover.trim() || coverImage;
 
-      const newPost: BlogPost = {
-        id: 'post_' + Date.now(),
+      const resourceFields = buildResourceFields();
+      const postPayload: BlogPost = {
+        id: editingPost?.id ?? 'post_' + Date.now(),
         title: title.trim(),
         summary: summary.trim(),
         content: content,
         category: category,
         coverImage: finalCover,
-        publishDate: new Date().toISOString().split('T')[0],
+        publishDate: editingPost?.publishDate ?? new Date().toISOString().split('T')[0],
         readTime: `${Math.max(1, Math.ceil(content.length / 450))} 分钟`,
-        likes: 0,
-        views: 1,
-        comments: [],
-        resourceLink: category === '学习资料' ? resLink.trim() || undefined : undefined,
-        resourcePassword: category === '学习资料' ? resPassword.trim() || undefined : undefined,
-        resourceSize: category === '学习资料' ? resSize.trim() || undefined : undefined,
-        resourceName: category === '学习资料' ? resName.trim() || undefined : undefined,
+        likes: editingPost?.likes ?? 0,
+        views: editingPost?.views ?? 1,
+        comments: editingPost?.comments ?? [],
+        pinned,
+        ...resourceFields,
+        extraLinks: resourceFields.extraLinks?.length ? resourceFields.extraLinks : undefined,
       };
 
-      onSavePost(newPost);
+      if (editingPost && onUpdatePost) onUpdatePost(postPayload);
+      else onSavePost(postPayload);
     } else {
       if (!momentContent.trim()) { return setErrorMsg('请写点此刻的心情吧'); }
 
-      const newMoment: Moment = {
-        id: 'moment_' + Date.now(),
+      const momentPayload: Moment = {
+        id: editingMoment?.id ?? 'moment_' + Date.now(),
         content: momentContent.trim(),
         image: momentImage.trim() || undefined,
-        publishDate: new Date().toISOString().replace('T', ' ').substring(0, 16),
+        publishDate: editingMoment?.publishDate ?? new Date().toISOString().replace('T', ' ').substring(0, 16),
         location: momentLocation.trim() || undefined,
-        likes: 0,
-        mood: momentMood
+        likes: editingMoment?.likes ?? 0,
+        mood: momentMood,
       };
 
-      onSaveMoment(newMoment);
+      if (editingMoment && onUpdateMoment) onUpdateMoment(momentPayload);
+      else onSaveMoment(momentPayload);
     }
 
     onClose();
@@ -194,7 +284,9 @@ export default function WritePostModal({ onClose, onSavePost, onSaveMoment, acce
         <div className="flex items-center justify-between px-6 py-4 bg-slate-950/40 border-b border-slate-800 shrink-0">
           <div className="flex items-center gap-2">
             <Feather size={18} className={textAccentMap[accentClass]} />
-            <h3 id="write-modal-title" className="font-bold text-white text-lg">开启新创作</h3>
+            <h3 id="write-modal-title" className="font-bold text-white text-lg">
+              {isEditing ? '编辑内容' : '开启新创作'}
+            </h3>
           </div>
           <button
             onClick={onClose}
@@ -263,6 +355,7 @@ export default function WritePostModal({ onClose, onSavePost, onSaveMoment, acce
                   >
                     <option value="日常随记" className="bg-slate-900">日常随记 (Life Records)</option>
                     <option value="学习资料" className="bg-slate-900">学习资料 (Study Materials)</option>
+                    <option value="资源链接" className="bg-slate-900">资源链接 (Links & Files)</option>
                     <option value="图片分析" className="bg-slate-900">图片分析 (Image Analysis)</option>
                     <option value="成长思考" className="bg-slate-900">成长思考</option>
                     <option value="技术笔记" className="bg-slate-900">技术笔记</option>
@@ -270,100 +363,168 @@ export default function WritePostModal({ onClose, onSavePost, onSaveMoment, acce
                 </div>
               </div>
 
-              {/* Conditional Study Resource Attachment Form Section */}
-              {category === '学习资料' && (
+              <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={attachResource || category === '学习资料' || category === '资源链接'}
+                  onChange={(e) => setAttachResource(e.target.checked)}
+                  className="rounded border-slate-600"
+                />
+                附带分享资源（链接 / 网盘 / 文本笔记）
+              </label>
+
+              {showResourceSection && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   className="p-4 bg-indigo-500/5 rounded-2xl border border-indigo-500/20 space-y-3"
                 >
-                  <div className="flex items-center justify-between border-b border-indigo-500/10 pb-2">
+                  <div className="flex items-center justify-between border-b border-indigo-500/10 pb-2 flex-wrap gap-2">
                     <span className="text-xs font-bold text-indigo-300 flex items-center gap-1.5">
                       <BookOpen size={13} className="text-indigo-400" />
-                      学习资料/共享资源元属性设置 (Study Asset Metadata)
+                      资源分享设置
                     </span>
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setResName('【精选】2026年思想道德法治重点核心考点突破整理.docx');
-                          setResLink('https://github.com/google/genai');
-                          setResPassword('WORD99');
-                          setResSize('3.5 MB (Word版)');
-                        }}
-                        className="text-[9px] text-blue-300 hover:text-white bg-blue-500/10 hover:bg-blue-600/20 px-2 py-0.5 rounded border border-blue-500/20 transition"
-                      >
-                        📄 Word版模板
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setResName('【答辩通用】高吞吐并行流系统学术课题汇报模板.pptx');
-                          setResLink('https://github.com/google/genai');
-                          setResPassword('PPTX8');
-                          setResSize('12.8 MB (PowerPoint版)');
-                        }}
-                        className="text-[9px] text-orange-300 hover:text-white bg-orange-500/10 hover:bg-orange-600/20 px-2 py-0.5 rounded border border-orange-500/20 transition"
-                      >
-                        📊 PPT演示稿模板
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setResName('【唯美风景】晨曦阅览室法桐绿影治愈壁纸包.zip');
-                          setResLink('https://github.com/google/genai');
-                          setResPassword('WALL66');
-                          setResSize('44.2 MB (高清风景合集)');
-                        }}
-                        className="text-[9px] text-emerald-300 hover:text-white bg-emerald-500/10 hover:bg-emerald-600/20 px-2 py-0.5 rounded border border-emerald-500/20 transition"
-                      >
-                        🌅 治愈自修风景
-                      </button>
+                    <div className="flex gap-1 p-0.5 bg-black/30 rounded-lg">
+                      {(
+                        [
+                          ['cloud', '网盘/云盘'],
+                          ['web', '网页链接'],
+                          ['text', '纯文本'],
+                        ] as const
+                      ).map(([k, label]) => (
+                        <button
+                          key={k}
+                          type="button"
+                          onClick={() => setResourceKind(k)}
+                          className={`px-2 py-1 rounded-md text-[10px] font-bold transition ${
+                            resourceKind === k ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
+                          }`}
+                        >
+                          {label}
+                        </button>
+                      ))}
                     </div>
                   </div>
-
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                    <div>
-                      <span className="text-slate-400 block mb-1">资源显示名称 (e.g. 课件PDF/代码包)</span>
+                    <div className="md:col-span-2">
+                      <span className="text-slate-400 block mb-1">资源显示名称</span>
                       <input
                         type="text"
-                        placeholder="例：React 18 心流架构全套指南"
+                        placeholder="例：高数期末复习提纲 / 算法笔记"
                         value={resName}
                         onChange={(e) => setResName(e.target.value)}
                         className={`w-full px-3 py-1.5 bg-slate-950/40 border border-slate-800 rounded-lg text-slate-200 text-xs focus:outline-none transition ${ringAccentMap[accentClass]}`}
                       />
                     </div>
-                    <div>
-                      <span className="text-slate-400 block mb-1">资源体积大小 / 类别详情</span>
-                      <input
-                        type="text"
-                        placeholder="例：12.5 MB (PDF格式)"
-                        value={resSize}
-                        onChange={(e) => setResSize(e.target.value)}
-                        className={`w-full px-3 py-1.5 bg-slate-950/40 border border-slate-800 rounded-lg text-slate-200 text-xs focus:outline-none transition ${ringAccentMap[accentClass]}`}
-                      />
-                    </div>
-                    <div>
-                      <span className="text-slate-400 block mb-1">下载提取外链 (或网盘/GitHub链接)</span>
-                      <input
-                        type="text"
-                        placeholder="例：https://pan.baidu.com/s/..."
-                        value={resLink}
-                        onChange={(e) => setResLink(e.target.value)}
-                        className={`w-full px-3 py-1.5 bg-slate-950/40 border border-slate-800 rounded-lg text-slate-200 text-xs focus:outline-none transition ${ringAccentMap[accentClass]}`}
-                      />
-                    </div>
-                    <div>
-                      <span className="text-slate-400 block mb-1">提取码 / 解密密码 (如果有)</span>
-                      <input
-                        type="text"
-                        placeholder="例：MIT88 / 留空免密码"
-                        value={resPassword}
-                        onChange={(e) => setResPassword(e.target.value)}
-                        className={`w-full px-3 py-1.5 bg-slate-950/40 border border-slate-800 rounded-lg text-slate-200 text-xs focus:outline-none transition ${ringAccentMap[accentClass]}`}
-                      />
-                    </div>
+                    {resourceKind === 'text' ? (
+                      <div className="md:col-span-2">
+                        <span className="text-slate-400 block mb-1">文本内容（提纲、代码、摘录）</span>
+                        <textarea
+                          rows={6}
+                          placeholder="直接粘贴要分享的文本…"
+                          value={resText}
+                          onChange={(e) => setResText(e.target.value)}
+                          className={`w-full px-3 py-2 bg-slate-950/40 border border-slate-800 rounded-lg text-slate-200 text-xs focus:outline-none transition font-mono ${ringAccentMap[accentClass]}`}
+                        />
+                      </div>
+                    ) : (
+                      <>
+                        <div>
+                          <span className="text-slate-400 block mb-1">体积 / 格式说明</span>
+                          <input
+                            type="text"
+                            placeholder="例：12.5 MB (PDF)"
+                            value={resSize}
+                            onChange={(e) => setResSize(e.target.value)}
+                            className={`w-full px-3 py-1.5 bg-slate-950/40 border border-slate-800 rounded-lg text-slate-200 text-xs focus:outline-none transition ${ringAccentMap[accentClass]}`}
+                          />
+                        </div>
+                        <div>
+                          <span className="text-slate-400 block mb-1">
+                            {resourceKind === 'web' ? '网页 URL' : '下载 / 网盘链接'}
+                          </span>
+                          <input
+                            type="text"
+                            placeholder="https://..."
+                            value={resLink}
+                            onChange={(e) => setResLink(e.target.value)}
+                            className={`w-full px-3 py-1.5 bg-slate-950/40 border border-slate-800 rounded-lg text-slate-200 text-xs focus:outline-none transition ${ringAccentMap[accentClass]}`}
+                          />
+                        </div>
+                        {resourceKind === 'cloud' && (
+                          <div className="md:col-span-2">
+                            <span className="text-slate-400 block mb-1">提取码（可选）</span>
+                            <input
+                              type="text"
+                              placeholder="留空表示免密"
+                              value={resPassword}
+                              onChange={(e) => setResPassword(e.target.value)}
+                              className={`w-full px-3 py-1.5 bg-slate-950/40 border border-slate-800 rounded-lg text-slate-200 text-xs focus:outline-none transition ${ringAccentMap[accentClass]}`}
+                            />
+                          </div>
+                        )}
+                      </>
+                    )}
                   </div>
+
+                  <div className="space-y-2 pt-2 border-t border-indigo-500/10">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-bold text-slate-400 flex items-center gap-1">
+                        <Link2 size={12} /> 附加链接
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setExtraLinks((prev) => [
+                            ...prev,
+                            { id: 'link_' + Date.now(), label: '', url: '' },
+                          ])
+                        }
+                        className="text-[10px] flex items-center gap-0.5 text-indigo-300 hover:text-white"
+                      >
+                        <Plus size={12} /> 添加
+                      </button>
+                    </div>
+                    {extraLinks.map((link, i) => (
+                      <div key={link.id} className="flex gap-2 items-start">
+                        <input
+                          type="text"
+                          placeholder="标签"
+                          value={link.label}
+                          onChange={(e) => {
+                            const next = [...extraLinks];
+                            next[i] = { ...link, label: e.target.value };
+                            setExtraLinks(next);
+                          }}
+                          className="w-24 shrink-0 px-2 py-1.5 bg-slate-950/40 border border-slate-800 rounded-lg text-xs text-white"
+                        />
+                        <input
+                          type="url"
+                          placeholder="https://..."
+                          value={link.url}
+                          onChange={(e) => {
+                            const next = [...extraLinks];
+                            next[i] = { ...link, url: e.target.value };
+                            setExtraLinks(next);
+                          }}
+                          className="flex-1 px-2 py-1.5 bg-slate-950/40 border border-slate-800 rounded-lg text-xs text-white"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setExtraLinks((prev) => prev.filter((l) => l.id !== link.id))}
+                          className="p-1.5 text-red-400 hover:bg-red-500/10 rounded-lg"
+                          aria-label="删除链接"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  <label className="flex items-center gap-2 text-[11px] text-amber-200/90 cursor-pointer">
+                    <input type="checkbox" checked={pinned} onChange={(e) => setPinned(e.target.checked)} />
+                    置顶到首页
+                  </label>
                 </motion.div>
               )}
 
@@ -607,7 +768,7 @@ export default function WritePostModal({ onClose, onSavePost, onSaveMoment, acce
             className={`px-6 py-2 rounded-xl text-sm font-bold shadow-md transition text-white ${btnAccentMap[accentClass] || 'bg-emerald-600'}`}
             id="publish-submit-btn"
           >
-            发布上线
+            {isEditing ? '保存修改' : '发布上线'}
           </button>
         </div>
       </motion.div>

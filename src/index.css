@@ -70,32 +70,58 @@ select:focus-visible {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.06);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
 }
 
 .glass-card:hover {
   background: rgba(30, 41, 59, 0.5);
-  border-color: rgba(255, 255, 255, 0.12);
-  transform: translateY(-2px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow:
+    0 20px 40px -10px rgba(0, 0, 0, 0.3),
+    0 8px 16px -6px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-card:active {
+  transform: translateY(-1px) scale(0.99);
+  transition-duration: 0.15s;
 }
 
 /* Smooth button press effect */
+button {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 button:active:not(:disabled) {
-  transform: scale(0.97);
+  transform: translateY(0) scale(0.97);
   transition-duration: 0.1s;
 }
 
-/* Link hover underline animation */
+/* Link hover animation */
 a {
   text-decoration-skip-ink: auto;
   text-underline-offset: 2px;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
 }
 
 /* Smooth image loading */
 img {
-  transition: opacity 0.3s ease-in-out;
+  transition: all 0.4s ease;
+}
+
+img:hover {
+  filter: brightness(1.05);
 }
 
 img[loading="lazy"] {
@@ -105,6 +131,58 @@ img[loading="lazy"] {
 img[loading="lazy"].loaded,
 img:not([loading="lazy"]) {
   opacity: 1;
+
+/* 输入框聚焦动画 */
+input[type="text"],
+input[type="search"],
+input[type="range"] {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
+}
+
+/* 标签页切换动画 */
+[role="tab"] {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[role="tab"]:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+[role="tab"][aria-selected="true"] {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* 选中文字样式 */
+::selection {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
 }
 
 /* Dynamic stars / particles background effects */
@@ -143,6 +221,43 @@ img:not([loading="lazy"]) {
   }
 }
 
+.sparkle-mode .glass-panel,
+.sparkle-mode .glass-card {
+  animation: subtle-glow 4s ease-in-out infinite;
+}
+
+.sparkle-mode::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  opacity: 0.35;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 80% 40%, rgba(167, 243, 208, 0.45), transparent),
+    radial-gradient(1.5px 1.5px at 50% 80%, rgba(199, 210, 254, 0.4), transparent);
+  animation: sparkle-drift 12s linear infinite;
+}
+
+@keyframes sparkle-drift {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-12px); }
+}
+
+@keyframes subtle-glow {
+  0%, 100% { box-shadow: 0 0 0 transparent; }
+  50% { box-shadow: 0 0 24px rgba(16, 185, 129, 0.08); }
+}
+
+.glass-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.glass-card:active {
+  transform: scale(0.99);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -151,5 +266,9 @@ img:not([loading="lazy"]) {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .sparkle-mode::after {
+    display: none;
   }
 }

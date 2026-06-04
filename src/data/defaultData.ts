@@ -1,52 +1,8 @@
 import { BackgroundTheme, BlogPost, Moment } from '../types';
+import { FALLBACK_THEMES } from './mediaFallback';
 
-export const BACKGROUND_THEMES: BackgroundTheme[] = [
-  {
-    id: 'forest-lake',
-    name: '翡翠湖畔',
-    url: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1920&q=85',
-    description: '静谧的晨雾中，远山倒映在碧绿的湖水中，绿意盎然。',
-    photographer: 'Bailey Zindel',
-    photographerUrl: 'https://unsplash.com/@baileyzindel',
-    accentColor: 'emerald'
-  },
-  {
-    id: 'misty-mountain',
-    name: '雾锁秋峦',
-    url: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=85',
-    description: '云雾缭绕的山谷，潺潺的溪流与斑斓的秋树交相辉映。',
-    photographer: 'Kalen Emsley',
-    photographerUrl: 'https://unsplash.com/@kalenemsley',
-    accentColor: 'amber'
-  },
-  {
-    id: 'starry-peaks',
-    name: '璀璨星岳',
-    url: 'https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?auto=format&fit=crop&w=1920&q=85',
-    description: '浩瀚夜空下，群星在巍峨的雪山之巅闪烁，银河如丝带般悬挂。',
-    photographer: 'Vincent Ledvina',
-    photographerUrl: 'https://unsplash.com/@vincentledvina',
-    accentColor: 'indigo'
-  },
-  {
-    id: 'sunrise-ocean',
-    name: '暮色听涛',
-    url: 'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?auto=format&fit=crop&w=1920&q=85',
-    description: '暖洋洋的晨光漫过悬崖，椰树与无垠的海平面在潮声中苏醒。',
-    photographer: 'Ishak Kacel',
-    photographerUrl: 'https://unsplash.com/@ishakkacel',
-    accentColor: 'cyan'
-  },
-  {
-    id: 'winter-dawn',
-    name: '极境冬雪',
-    url: 'https://images.unsplash.com/photo-1482862549707-f63cb32c5fd9?auto=format&fit=crop&w=1920&q=85',
-    description: '白雪皑皑的水杉林在冬日的粉色霞光中静静站立，绝尘脱俗。',
-    photographer: 'Ales Krivec',
-    photographerUrl: 'https://unsplash.com/@aleskrivec',
-    accentColor: 'teal'
-  }
-];
+/** 与 manifest 同步的默认主题，供首屏与离线回退 */
+export const BACKGROUND_THEMES: BackgroundTheme[] = FALLBACK_THEMES;
 
 export const INITIAL_BLOG_POSTS: BlogPost[] = [
   {

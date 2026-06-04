@@ -1,0 +1,30 @@
+{
+  "neteaseIds": [
+    "1973665667",
+    "1999759062",
+    "1827600686"
+  ],
+  "fallbackPlaylist": [
+    {
+      "id": "1",
+      "title": "森林雨声白噪音",
+      "artist": "Nature Sounds",
+      "url": "https://cdn.freesound.org/previews/528/528006_11542807-lq.mp3",
+      "cover": "https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_200.jpg"
+    },
+    {
+      "id": "2",
+      "title": "海浪轻拍沙滩",
+      "artist": "Ocean Waves",
+      "url": "https://cdn.freesound.org/previews/467/467853_9497060-lq.mp3",
+      "cover": "https://cdn.pixabay.com/photo/2016/10/13/11/06/beach-1737124_200.jpg"
+    },
+    {
+      "id": "3",
+      "title": "篝火噼啪声",
+      "artist": "Campfire",
+      "url": "https://cdn.freesound.org/previews/423/423215_1038808-lq.mp3",
+      "cover": "https://cdn.pixabay.com/photo/2015/06/19/20/13/sunset-815270_200.jpg"
+    }
+  ]
+}

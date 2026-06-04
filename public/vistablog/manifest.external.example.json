@@ -1,0 +1,16 @@
+{
+  "_comment": "外链示例：尚未放入本地文件时，可把 themes[].url 等字段临时改成下面的 https 地址。正式使用请改回 /vistablog/... 本地路径。",
+  "themes_example_urls": {
+    "forest-lake": "https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072823_1280.jpg",
+    "misty-mountain": "https://cdn.pixabay.com/photo/2017/02/01/22/02/mountain-landscape-2031539_1280.jpg",
+    "starry-peaks": "https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_1280.jpg",
+    "sunrise-ocean": "https://cdn.pixabay.com/photo/2016/10/13/11/06/beach-1737124_1280.jpg",
+    "winter-dawn": "https://cdn.pixabay.com/photo/2013/10/14/16/22/snow-covered-mountain-195411_1280.jpg"
+  },
+  "themeVideos_example": {
+    "forest-lake": "https://cdn.pixabay.com/video/2020/07/30/45766-445484278_large.mp4"
+  },
+  "music_example_urls": {
+    "music-01": "https://cdn.freesound.org/previews/528/528006_11542807-lq.mp3"
+  }
+}
