@@ -1,0 +1,631 @@
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - img "翡翠湖畔" [ref=e6]
+    - generic:
+      - generic:
+        - generic: 🖼️ 图片背景
+  - generic [ref=e9]:
+    - banner [ref=e10]:
+      - generic [ref=e11]:
+        - img [ref=e13]
+        - generic [ref=e16]:
+          - heading "VistaBlog | 动态自然风景博客" [level=1] [ref=e17]:
+            - generic [ref=e18]: VistaBlog
+            - generic [ref=e19]: "| 动态自然风景博客"
+          - paragraph [ref=e20]: 上午好！阳光漫步进松林，正是专注与沉思的良机 ✨
+      - generic [ref=e21]:
+        - generic [ref=e23]: "当前壁纸:"
+        - generic [ref=e24]: 极境冬雪
+        - link "@Ales Krivec / Unsplash" [ref=e25] [cursor=pointer]:
+          - /url: https://unsplash.com/@aleskrivec
+    - generic [ref=e26]:
+      - generic [ref=e27]:
+        - generic [ref=e28]:
+          - img "博主头像" [ref=e31]
+          - generic [ref=e32]:
+            - heading "林暮野 (Wilderness)" [level=2] [ref=e33]:
+              - text: 林暮野 (Wilderness)
+              - img [ref=e34]
+            - paragraph [ref=e37]: 前沿技术探索者 / 旅行摄影师
+            - paragraph [ref=e38]:
+              - img [ref=e39]
+              - text: 栖居于 · 浙中山野
+          - separator [ref=e42]
+          - paragraph [ref=e43]: “凡是能在深林竹径、璀璨星岳和晨涛海岸中获取平静的人，都值得被大自然永久拥抱。代码是我的画笔，原野是我的精神归宿。”
+          - generic [ref=e44]:
+            - generic [ref=e45]:
+              - generic [ref=e46]: "10"
+              - text: 文章
+            - generic [ref=e47]:
+              - generic [ref=e48]: "3"
+              - text: 微言
+            - generic [ref=e49]:
+              - generic [ref=e50]: "5302"
+              - text: 总博阅
+          - generic [ref=e51]:
+            - link [ref=e52] [cursor=pointer]:
+              - /url: https://github.com
+              - img [ref=e53]
+            - link [ref=e56] [cursor=pointer]:
+              - /url: https://instagram.com
+              - img [ref=e57]
+            - button "微信联络" [ref=e60] [cursor=pointer]
+        - generic [ref=e61]:
+          - generic [ref=e62]:
+            - generic [ref=e63]:
+              - img [ref=e64]
+              - heading "山林雨落白噪音" [level=3] [ref=e68]
+            - generic [ref=e69]: WebSynth
+          - paragraph [ref=e70]: 阅读深度好文时，欢迎点亮以下伴奏。由浏览器实时物理生成的舒缓落雨声，让专注更加纯粹。
+          - button "开启落雨声" [ref=e72] [cursor=pointer]:
+            - img [ref=e73]
+            - text: 开启落雨声
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - img [ref=e79]
+            - heading "更换风景意境" [level=3] [ref=e83]
+          - paragraph [ref=e84]: 点击切换博客的主题意境，整体界面色温与色标将自适应随之渐变。
+          - generic [ref=e85]:
+            - button "翡翠湖畔 翡翠湖畔 静谧的晨雾中，远山倒映在碧绿的湖水中，绿意盎然。" [ref=e86] [cursor=pointer]:
+              - img "翡翠湖畔" [ref=e88]
+              - generic [ref=e89]:
+                - generic [ref=e91]: 翡翠湖畔
+                - paragraph [ref=e92]: 静谧的晨雾中，远山倒映在碧绿的湖水中，绿意盎然。
+            - button "雾锁秋峦 雾锁秋峦 云雾缭绕的山谷，潺潺的溪流与斑斓的秋树交相辉映。" [ref=e93] [cursor=pointer]:
+              - img "雾锁秋峦" [ref=e95]
+              - generic [ref=e96]:
+                - generic [ref=e98]: 雾锁秋峦
+                - paragraph [ref=e99]: 云雾缭绕的山谷，潺潺的溪流与斑斓的秋树交相辉映。
+            - button "璀璨星岳 璀璨星岳 浩瀚夜空下，群星在巍峨的雪山之巅闪烁，银河如丝带般悬挂。" [ref=e100] [cursor=pointer]:
+              - img "璀璨星岳" [ref=e102]
+              - generic [ref=e103]:
+                - generic [ref=e105]: 璀璨星岳
+                - paragraph [ref=e106]: 浩瀚夜空下，群星在巍峨的雪山之巅闪烁，银河如丝带般悬挂。
+            - button "暮色听涛 暮色听涛 暖洋洋的晨光漫过悬崖，椰树与无垠的海平面在潮声中苏醒。" [ref=e107] [cursor=pointer]:
+              - img "暮色听涛" [ref=e109]
+              - generic [ref=e110]:
+                - generic [ref=e112]: 暮色听涛
+                - paragraph [ref=e113]: 暖洋洋的晨光漫过悬崖，椰树与无垠的海平面在潮声中苏醒。
+            - button "极境冬雪 极境冬雪 白雪皑皑的水杉林在冬日的粉色霞光中静静站立，绝尘脱俗。" [ref=e114] [cursor=pointer]:
+              - img "极境冬雪" [ref=e116]
+              - generic [ref=e117]:
+                - generic [ref=e119]: 极境冬雪
+                - paragraph [ref=e121]: 白雪皑皑的水杉林在冬日的粉色霞光中静静站立，绝尘脱俗。
+      - generic [ref=e122]:
+        - generic [ref=e124]:
+          - generic [ref=e125]:
+            - generic [ref=e126]:
+              - generic [ref=e127]:
+                - generic [ref=e128]:
+                  - generic [ref=e129]:
+                    - img [ref=e130]
+                    - text: 国内部署友好
+                  - generic [ref=e133]:
+                    - img [ref=e134]
+                    - text: 资料与照片优先
+                - heading "学习资料与照片发现台" [level=2] [ref=e138]
+                - paragraph [ref=e139]: 先找资料和照片，再慢慢读文章。这里把考研文档、PPT、PDF、风景图集、背景音乐和采集入口集中到一个工作区，方便同学参与补充。
+              - generic [ref=e140]:
+                - generic [ref=e141]:
+                  - img [ref=e142]
+                  - generic [ref=e147]: "7"
+                  - generic [ref=e148]: 同学评论
+                - generic [ref=e149]:
+                  - img [ref=e150]
+                  - generic [ref=e153]: "5"
+                  - generic [ref=e154]: 可下载资料
+                - generic [ref=e155]:
+                  - img [ref=e156]
+                  - generic [ref=e159]: "4"
+                  - generic [ref=e160]: 照片线索
+            - generic [ref=e161]:
+              - generic [ref=e162]:
+                - button "学习资料" [ref=e163]:
+                  - generic [ref=e164]:
+                    - img [ref=e165]
+                    - text: 学习资料
+                - button "照片图集" [ref=e167]:
+                  - generic [ref=e168]:
+                    - img [ref=e169]
+                    - text: 照片图集
+                - button "同学参与" [ref=e173]:
+                  - generic [ref=e174]:
+                    - img [ref=e175]
+                    - text: 同学参与
+              - generic [ref=e180]:
+                - img [ref=e181]
+                - textbox [ref=e184]:
+                  - /placeholder: 搜索 PDF、Word、PPT...
+            - generic [ref=e185]:
+              - article [ref=e186]:
+                - generic [ref=e187]:
+                  - generic [ref=e188]:
+                    - img "【高值分享】MIT 编译技术与高级算法树分析自研笔记归结" [ref=e189]
+                    - generic [ref=e190]: PDF
+                  - generic [ref=e191]:
+                    - generic [ref=e192]:
+                      - generic [ref=e193]: 学习资料
+                      - generic [ref=e194]: 2026-06-03
+                    - heading "【高值分享】MIT 编译技术与高级算法树分析自研笔记归结" [level=3] [ref=e195]
+                    - paragraph [ref=e196]: 这是我结合 MIT OpenCourseWare 经典编译大纲以及 LR(1) 状态语法树的个人梳理笔记。内附高清拓扑分析图与 PDF 完整索引下载，供技术考研与高阶学习查阅。
+                    - generic [ref=e197]:
+                      - generic [ref=e198]: 【林间精选】MIT 编译自研笔记与状态语法树完整归结 (矢量PDF版).pdf
+                      - button "查看" [ref=e199]:
+                        - text: 查看
+                        - img [ref=e200]
+              - article [ref=e202]:
+                - generic [ref=e203]:
+                  - generic [ref=e204]:
+                    - img "【高分大沙龙】2026考研思想道德与法治(思修)核心背诵大纲.docx" [ref=e205]
+                    - generic [ref=e206]: Word
+                  - generic [ref=e207]:
+                    - generic [ref=e208]:
+                      - generic [ref=e209]: 学习资料
+                      - generic [ref=e210]: 2026-06-03
+                    - heading "【高分大沙龙】2026考研思想道德与法治(思修)核心背诵大纲.docx" [level=3] [ref=e211]
+                    - paragraph [ref=e212]: 由高分上岸学长整理的高分思修核心考点Word版，整理了全部重难点与历年高频真题考点，排版干净工整，支持Word本地直接下载打印默写。
+                    - generic [ref=e213]:
+                      - generic [ref=e214]: 【林间笔记】2026考研思想教育及政治核心背诵模板(完美排版).docx
+                      - button "查看" [ref=e215]:
+                        - text: 查看
+                        - img [ref=e216]
+              - article [ref=e218]:
+                - generic [ref=e219]:
+                  - generic [ref=e220]:
+                    - img "【学术汇报】全套极简深色学术论文汇报/大作业汇报通用.pptx" [ref=e221]
+                    - generic [ref=e222]: PPT
+                  - generic [ref=e223]:
+                    - generic [ref=e224]:
+                      - generic [ref=e225]: 学习资料
+                      - generic [ref=e226]: 2026-06-02
+                    - heading "【学术汇报】全套极简深色学术论文汇报/大作业汇报通用.pptx" [level=3] [ref=e227]
+                    - paragraph [ref=e228]: 一套精美沉稳的深色学术风Microsoft PPT汇报模板，内附完整的图表组合、科技结构图、物理运算公式排布与渐变缓动，期末满分答辩推荐。
+                    - generic [ref=e229]:
+                      - generic [ref=e230]: 【林间学术】深色高分辨率通用答辩及组会汇报演示排版.pptx
+                      - button "查看" [ref=e231]:
+                        - text: 查看
+                        - img [ref=e232]
+              - article [ref=e234]:
+                - generic [ref=e235]:
+                  - generic [ref=e236]:
+                    - img "【自习风景图片】阳光透过晨雾洒在复旦图书馆原木桌椅上的静心瞬间" [ref=e237]
+                    - generic [ref=e238]: Photo
+                  - generic [ref=e239]:
+                    - generic [ref=e240]:
+                      - generic [ref=e241]: 学习资料
+                      - generic [ref=e242]: 2026-06-03
+                    - heading "【自习风景图片】阳光透过晨雾洒在复旦图书馆原木桌椅上的静心瞬间" [level=3] [ref=e243]
+                    - paragraph [ref=e244]: 这组高清风景照片承载了每天陪伴我备考的心流瞬间。50% 的学习资料并不仅仅是硬核文档，也来自温暖治愈的风景。附原图打包。
+                    - generic [ref=e245]:
+                      - generic [ref=e246]: 【学习风景】阅览室原木桌椅与林间晨曦治愈系电脑壁纸图集.zip
+                      - button "查看" [ref=e247]:
+                        - text: 查看
+                        - img [ref=e248]
+          - complementary [ref=e250]:
+            - generic [ref=e251]:
+              - generic [ref=e252]:
+                - heading "采集队列" [level=3] [ref=e253]
+                - paragraph [ref=e254]: 把爬虫当成候选采集器，先预览来源，再导入博客或相册。
+              - img [ref=e255]
+            - generic [ref=e261]:
+              - text: 采集关键词
+              - generic [ref=e262]:
+                - textbox "采集关键词" [ref=e263]: 复习资料 风景图
+                - button "加入" [ref=e264]
+            - generic [ref=e265]:
+              - generic [ref=e266]:
+                - img [ref=e267]
+                - generic [ref=e272]:
+                  - heading "国内静态部署" [level=4] [ref=e273]
+                  - paragraph [ref=e274]: 资源通过环境变量切换到对象存储、图床代理或自建 CDN。
+              - generic [ref=e275]:
+                - img [ref=e276]
+                - generic [ref=e279]:
+                  - heading "下载资源优先" [level=4] [ref=e280]
+                  - paragraph [ref=e281]: Word、PPT、PDF 和照片包都显示格式、大小和提取码。
+              - generic [ref=e282]:
+                - img [ref=e283]
+                - generic [ref=e286]:
+                  - heading "照片导入路径" [level=4] [ref=e287]
+                  - paragraph [ref=e288]: 当前主题：极境冬雪，可进入荒野沙盘采集照片。
+            - button "打开照片与爬取工作台" [ref=e289]:
+              - text: 打开照片与爬取工作台
+              - img [ref=e290]
+        - generic [ref=e292]:
+          - tablist "内容分类" [ref=e293]:
+            - tab "深度博文" [selected] [ref=e294] [cursor=pointer]:
+              - img [ref=e295]
+              - text: 深度博文
+            - tab "微言片刻" [ref=e297] [cursor=pointer]:
+              - img [ref=e298]
+              - text: 微言片刻
+            - tab "关于博主" [ref=e301] [cursor=pointer]:
+              - img [ref=e302]
+              - text: 关于博主
+            - tab "荒野沙盘" [ref=e304] [cursor=pointer]:
+              - img [ref=e305]
+              - text: 荒野沙盘
+          - button "开启新创作" [ref=e308] [cursor=pointer]:
+            - img [ref=e309]
+            - text: 开启新创作
+        - tabpanel "深度博文" [ref=e312]:
+          - generic [ref=e313]:
+            - generic [ref=e314]:
+              - generic [ref=e315]:
+                - img [ref=e316]
+                - text: "分类:"
+              - button "全部" [ref=e318] [cursor=pointer]
+              - button "日常随记" [ref=e319] [cursor=pointer]
+              - button "学习资料" [ref=e320] [cursor=pointer]
+              - button "图片分析" [ref=e321] [cursor=pointer]
+              - button "成长思考" [ref=e322] [cursor=pointer]
+              - button "技术笔记" [ref=e323] [cursor=pointer]
+            - generic [ref=e324]:
+              - textbox "搜索我的文章及思考..." [ref=e325]
+              - img [ref=e326]
+          - generic [ref=e329]: 正在加载资料分析工作台...
+          - generic [ref=e330]:
+            - generic [ref=e331]:
+              - img [ref=e332]
+              - text: 置顶特推 (Features)
+            - generic [ref=e334]:
+              - img "重返荒野：川西高原的秋日漫步与感悟" [ref=e336]
+              - generic [ref=e338]:
+                - generic [ref=e339]:
+                  - generic [ref=e340]:
+                    - generic [ref=e341]: 置顶
+                    - generic [ref=e342]: 旅行摄影
+                    - generic [ref=e343]: •
+                    - generic [ref=e344]: 2026-05-18
+                  - heading "重返荒野：川西高原的秋日漫步与感悟" [level=3] [ref=e345]
+                  - paragraph [ref=e346]: 在这个一切都加速运转的时代，我背起行囊逃入山野。去川西不仅仅是一次摄影之旅，更是一次重新寻找内心微光的心灵修行。
+                - generic [ref=e347]:
+                  - generic [ref=e348]:
+                    - generic [ref=e349]:
+                      - img [ref=e350]
+                      - text: 124 赞
+                    - generic [ref=e352]:
+                      - img [ref=e353]
+                      - text: 2 评论
+                  - button "浸入阅读" [ref=e355] [cursor=pointer]:
+                    - text: 浸入阅读
+                    - img [ref=e356]
+          - generic [ref=e358]:
+            - generic [ref=e359]:
+              - generic [ref=e360]: 全部文章群落 (Discovering Stories)
+              - generic [ref=e361]: 共 10 篇
+            - generic [ref=e362]:
+              - generic [ref=e363]:
+                - generic [ref=e364]:
+                  - generic [ref=e365]:
+                    - img "【极境探索】喜马拉雅金山重叠层峦 风光志" [ref=e366]
+                    - generic [ref=e368]: 旅行摄影
+                  - generic [ref=e369]:
+                    - generic [ref=e370]:
+                      - generic [ref=e371]: 2026-06-03
+                      - generic [ref=e372]: "阅时: 4 分钟"
+                    - heading "【极境探索】喜马拉雅金山重叠层峦 风光志" [level=4] [ref=e373]
+                    - paragraph [ref=e374]: 这是一篇本站爬虫系统从极境网络自动析取的摄影纪实。聚焦于西藏日喀则 · 喜马拉雅山脉这一神奇的秘境进行自然美学的剖析。
+                - generic [ref=e375]:
+                  - generic [ref=e376]:
+                    - button "点赞，当前 12 个赞" [ref=e377] [cursor=pointer]:
+                      - img [ref=e378]
+                      - generic [ref=e380]: "12"
+                    - button "分享文章链接" [ref=e381] [cursor=pointer]:
+                      - img [ref=e382]
+                    - generic [ref=e388]:
+                      - img [ref=e389]
+                      - generic [ref=e391]: "1"
+                    - generic [ref=e392]: "|"
+                    - generic [ref=e393]: 65 阅读
+                  - button "展开阅读" [ref=e394] [cursor=pointer]:
+                    - text: 展开阅读
+                    - img [ref=e395]
+              - generic [ref=e397]:
+                - generic [ref=e398]:
+                  - generic [ref=e399]:
+                    - img "重返荒野：川西高原的秋日漫步与感悟" [ref=e400]
+                    - generic [ref=e402]: 旅行摄影
+                  - generic [ref=e403]:
+                    - generic [ref=e404]:
+                      - generic [ref=e405]: 2026-05-18
+                      - generic [ref=e406]: "阅时: 6 分钟"
+                    - heading "重返荒野：川西高原的秋日漫步与感悟" [level=4] [ref=e407]
+                    - paragraph [ref=e408]: 在这个一切都加速运转的时代，我背起行囊逃入山野。去川西不仅仅是一次摄影之旅，更是一次重新寻找内心微光的心灵修行。
+                - generic [ref=e409]:
+                  - generic [ref=e410]:
+                    - button "点赞，当前 124 个赞" [ref=e411] [cursor=pointer]:
+                      - img [ref=e412]
+                      - generic [ref=e414]: "124"
+                    - button "分享文章链接" [ref=e415] [cursor=pointer]:
+                      - img [ref=e416]
+                    - generic [ref=e422]:
+                      - img [ref=e423]
+                      - generic [ref=e425]: "2"
+                    - generic [ref=e426]: "|"
+                    - generic [ref=e427]: 890 阅读
+                  - button "展开阅读" [ref=e428] [cursor=pointer]:
+                    - text: 展开阅读
+                    - img [ref=e429]
+              - generic [ref=e431]:
+                - generic [ref=e432]:
+                  - generic [ref=e433]:
+                    - img "极简数字生活：我的信息“轻量化”实践指南" [ref=e434]
+                    - generic [ref=e436]: 成长思考
+                  - generic [ref=e437]:
+                    - generic [ref=e438]:
+                      - generic [ref=e439]: 2026-04-25
+                      - generic [ref=e440]: "阅时: 4 分钟"
+                    - heading "极简数字生活：我的信息“轻量化”实践指南" [level=4] [ref=e441]
+                    - paragraph [ref=e442]: 我们每天都在海量信息的洪流中沉浮，大脑被算法喂养，疲倦不堪。这是一份关于我如何在数字世界中夺回主权、过上专注生活的探索报告。
+                - generic [ref=e443]:
+                  - generic [ref=e444]:
+                    - button "点赞，当前 98 个赞" [ref=e445] [cursor=pointer]:
+                      - img [ref=e446]
+                      - generic [ref=e448]: "98"
+                    - button "分享文章链接" [ref=e449] [cursor=pointer]:
+                      - img [ref=e450]
+                    - generic [ref=e456]:
+                      - img [ref=e457]
+                      - generic [ref=e459]: "1"
+                    - generic [ref=e460]: "|"
+                    - generic [ref=e461]: 450 阅读
+                  - button "展开阅读" [ref=e462] [cursor=pointer]:
+                    - text: 展开阅读
+                    - img [ref=e463]
+              - generic [ref=e465]:
+                - generic [ref=e466]:
+                  - generic [ref=e467]:
+                    - img "代码中的美学：给前端开发者的感官设计法则" [ref=e468]
+                    - generic [ref=e470]: 技术笔记
+                  - generic [ref=e471]:
+                    - generic [ref=e472]:
+                      - generic [ref=e473]: 2026-03-12
+                      - generic [ref=e474]: "阅时: 5 分钟"
+                    - heading "代码中的美学：给前端开发者的感官设计法则" [level=4] [ref=e475]
+                    - paragraph [ref=e476]: 优秀的前端应该像一位优雅的建筑师或产品设计师，不仅仅去拼凑排版和控制逻辑，更要理解比例、流动性、对比度与隐形心理学。
+                - generic [ref=e477]:
+                  - generic [ref=e478]:
+                    - button "点赞，当前 156 个赞" [ref=e479] [cursor=pointer]:
+                      - img [ref=e480]
+                      - generic [ref=e482]: "156"
+                    - button "分享文章链接" [ref=e483] [cursor=pointer]:
+                      - img [ref=e484]
+                    - generic [ref=e490]:
+                      - img [ref=e491]
+                      - generic [ref=e493]: "1"
+                    - generic [ref=e494]: "|"
+                    - generic [ref=e495]: 1205 阅读
+                  - button "展开阅读" [ref=e496] [cursor=pointer]:
+                    - text: 展开阅读
+                    - img [ref=e497]
+              - generic [ref=e499]:
+                - generic [ref=e500]:
+                  - generic [ref=e501]:
+                    - img "【高值分享】MIT 编译技术与高级算法树分析自研笔记归结" [ref=e502]
+                    - generic [ref=e503]:
+                      - generic [ref=e504]: 学习资料
+                      - generic [ref=e505]:
+                        - generic [ref=e506]: 📕
+                        - text: PDF 电子讲义
+                  - generic [ref=e507]:
+                    - generic [ref=e508]:
+                      - generic [ref=e509]: 2026-06-03
+                      - generic [ref=e510]: "阅时: 4 分钟"
+                    - heading "【高值分享】MIT 编译技术与高级算法树分析自研笔记归结" [level=4] [ref=e511]
+                    - paragraph [ref=e512]: 这是我结合 MIT OpenCourseWare 经典编译大纲以及 LR(1) 状态语法树的个人梳理笔记。内附高清拓扑分析图与 PDF 完整索引下载，供技术考研与高阶学习查阅。
+                    - generic [ref=e513]:
+                      - generic [ref=e514]:
+                        - generic "PDF 讲义" [ref=e516]: 📕
+                        - generic [ref=e517]:
+                          - heading "【林间精选】MIT 编译自研笔记与状态语法树完整归结 (矢量PDF版).pdf" [level=5] [ref=e518]
+                          - paragraph [ref=e519]: "14.8 MB (PDF格式) • 提取: MITCS"
+                      - button "下载" [ref=e520] [cursor=pointer]:
+                        - generic [ref=e521]: 下载
+                        - img [ref=e522]
+                - generic [ref=e525]:
+                  - generic [ref=e526]:
+                    - button "点赞，当前 87 个赞" [ref=e527] [cursor=pointer]:
+                      - img [ref=e528]
+                      - generic [ref=e530]: "87"
+                    - button "分享文章链接" [ref=e531] [cursor=pointer]:
+                      - img [ref=e532]
+                    - generic [ref=e538]:
+                      - img [ref=e539]
+                      - generic [ref=e541]: "1"
+                    - generic [ref=e542]: "|"
+                    - generic [ref=e543]: 413 阅读
+                  - button "展开阅读" [ref=e544] [cursor=pointer]:
+                    - text: 展开阅读
+                    - img [ref=e545]
+              - generic [ref=e547]:
+                - generic [ref=e548]:
+                  - generic [ref=e549]:
+                    - img "【高分大沙龙】2026考研思想道德与法治(思修)核心背诵大纲.docx" [ref=e550]
+                    - generic [ref=e551]:
+                      - generic [ref=e552]: 学习资料
+                      - generic [ref=e553]:
+                        - generic [ref=e554]: 📄
+                        - text: Word 考研文档
+                  - generic [ref=e555]:
+                    - generic [ref=e556]:
+                      - generic [ref=e557]: 2026-06-03
+                      - generic [ref=e558]: "阅时: 3 分钟"
+                    - heading "【高分大沙龙】2026考研思想道德与法治(思修)核心背诵大纲.docx" [level=4] [ref=e559]
+                    - paragraph [ref=e560]: 由高分上岸学长整理的高分思修核心考点Word版，整理了全部重难点与历年高频真题考点，排版干净工整，支持Word本地直接下载打印默写。
+                    - generic [ref=e561]:
+                      - generic [ref=e562]:
+                        - generic "Word 资料" [ref=e564]: 📄
+                        - generic [ref=e565]:
+                          - heading "【林间笔记】2026考研思想教育及政治核心背诵模板(完美排版).docx" [level=5] [ref=e566]
+                          - paragraph [ref=e567]: "3.6 MB (Word文档格式) • 提取: WORD"
+                      - button "下载" [ref=e568] [cursor=pointer]:
+                        - generic [ref=e569]: 下载
+                        - img [ref=e570]
+                - generic [ref=e573]:
+                  - generic [ref=e574]:
+                    - button "点赞，当前 92 个赞" [ref=e575] [cursor=pointer]:
+                      - img [ref=e576]
+                      - generic [ref=e578]: "92"
+                    - button "分享文章链接" [ref=e579] [cursor=pointer]:
+                      - img [ref=e580]
+                    - generic [ref=e586]:
+                      - img [ref=e587]
+                      - generic [ref=e589]: "0"
+                    - generic [ref=e590]: "|"
+                    - generic [ref=e591]: 310 阅读
+                  - button "展开阅读" [ref=e592] [cursor=pointer]:
+                    - text: 展开阅读
+                    - img [ref=e593]
+              - generic [ref=e595]:
+                - generic [ref=e596]:
+                  - generic [ref=e597]:
+                    - img "【学术汇报】全套极简深色学术论文汇报/大作业汇报通用.pptx" [ref=e598]
+                    - generic [ref=e599]:
+                      - generic [ref=e600]: 学习资料
+                      - generic [ref=e601]:
+                        - generic [ref=e602]: 📊
+                        - text: PPT 答辩幻灯片
+                  - generic [ref=e603]:
+                    - generic [ref=e604]:
+                      - generic [ref=e605]: 2026-06-02
+                      - generic [ref=e606]: "阅时: 5 分钟"
+                    - heading "【学术汇报】全套极简深色学术论文汇报/大作业汇报通用.pptx" [level=4] [ref=e607]
+                    - paragraph [ref=e608]: 一套精美沉稳的深色学术风Microsoft PPT汇报模板，内附完整的图表组合、科技结构图、物理运算公式排布与渐变缓动，期末满分答辩推荐。
+                    - generic [ref=e609]:
+                      - generic [ref=e610]:
+                        - generic "PPTx 演示" [ref=e612]: 📊
+                        - generic [ref=e613]:
+                          - heading "【林间学术】深色高分辨率通用答辩及组会汇报演示排版.pptx" [level=5] [ref=e614]
+                          - paragraph [ref=e615]: "12.4 MB (PPTX演示文档) • 提取: PPTX"
+                      - button "下载" [ref=e616] [cursor=pointer]:
+                        - generic [ref=e617]: 下载
+                        - img [ref=e618]
+                - generic [ref=e621]:
+                  - generic [ref=e622]:
+                    - button "点赞，当前 114 个赞" [ref=e623] [cursor=pointer]:
+                      - img [ref=e624]
+                      - generic [ref=e626]: "114"
+                    - button "分享文章链接" [ref=e627] [cursor=pointer]:
+                      - img [ref=e628]
+                    - generic [ref=e634]:
+                      - img [ref=e635]
+                      - generic [ref=e637]: "1"
+                    - generic [ref=e638]: "|"
+                    - generic [ref=e639]: 521 阅读
+                  - button "展开阅读" [ref=e640] [cursor=pointer]:
+                    - text: 展开阅读
+                    - img [ref=e641]
+              - generic [ref=e643]:
+                - generic [ref=e644]:
+                  - generic [ref=e645]:
+                    - img "【自习风景图片】阳光透过晨雾洒在复旦图书馆原木桌椅上的静心瞬间" [ref=e646]
+                    - generic [ref=e647]:
+                      - generic [ref=e648]: 学习资料
+                      - generic [ref=e649]:
+                        - generic [ref=e650]: 🌅
+                        - text: 自习风景大图
+                  - generic [ref=e651]:
+                    - generic [ref=e652]:
+                      - generic [ref=e653]: 2026-06-03
+                      - generic [ref=e654]: "阅时: 3 分钟"
+                    - heading "【自习风景图片】阳光透过晨雾洒在复旦图书馆原木桌椅上的静心瞬间" [level=4] [ref=e655]
+                    - paragraph [ref=e656]: 这组高清风景照片承载了每天陪伴我备考的心流瞬间。50% 的学习资料并不仅仅是硬核文档，也来自温暖治愈的风景。附原图打包。
+                    - generic [ref=e657]:
+                      - generic [ref=e658]:
+                        - generic "治愈系自学风景壁纸" [ref=e660]: 🌅
+                        - generic [ref=e661]:
+                          - heading "【学习风景】阅览室原木桌椅与林间晨曦治愈系电脑壁纸图集.zip" [level=5] [ref=e662]
+                          - paragraph [ref=e663]: "44.5 MB (高清风景照片集) • 提取: SUN6"
+                      - button "下载" [ref=e664] [cursor=pointer]:
+                        - generic [ref=e665]: 下载
+                        - img [ref=e666]
+                - generic [ref=e669]:
+                  - generic [ref=e670]:
+                    - button "点赞，当前 148 个赞" [ref=e671] [cursor=pointer]:
+                      - img [ref=e672]
+                      - generic [ref=e674]: "148"
+                    - button "分享文章链接" [ref=e675] [cursor=pointer]:
+                      - img [ref=e676]
+                    - generic [ref=e682]:
+                      - img [ref=e683]
+                      - generic [ref=e685]: "0"
+                    - generic [ref=e686]: "|"
+                    - generic [ref=e687]: 630 阅读
+                  - button "展开阅读" [ref=e688] [cursor=pointer]:
+                    - text: 展开阅读
+                    - img [ref=e689]
+              - generic [ref=e691]:
+                - generic [ref=e692]:
+                  - generic [ref=e693]:
+                    - img "【自习风景图片】落日余晖落满校园树林与考研备用多维学习图库" [ref=e694]
+                    - generic [ref=e695]:
+                      - generic [ref=e696]: 学习资料
+                      - generic [ref=e697]:
+                        - generic [ref=e698]: 🌅
+                        - text: 自习风景大图
+                  - generic [ref=e699]:
+                    - generic [ref=e700]:
+                      - generic [ref=e701]: 2026-06-01
+                      - generic [ref=e702]: "阅时: 4 分钟"
+                    - heading "【自习风景图片】落日余晖落满校园树林与考研备用多维学习图库" [level=4] [ref=e703]
+                    - paragraph [ref=e704]: 傍晚自学结束时，正好看见橘红的晚霞温柔铺满一整排林荫小道。我用相机捕捉下了这段落日风景大图，附包含高清PNG分享链接。
+                    - generic [ref=e705]:
+                      - generic [ref=e706]:
+                        - generic "治愈系自学风景壁纸" [ref=e708]: 🌅
+                        - generic [ref=e709]:
+                          - heading "【学习风景】夕阳晚霞射入图书馆与金光台灯高燃氛围图集.zip" [level=5] [ref=e710]
+                          - paragraph [ref=e711]: "25.8 MB (风景照片压缩包) • 提取: GLOW"
+                      - button "下载" [ref=e712] [cursor=pointer]:
+                        - generic [ref=e713]: 下载
+                        - img [ref=e714]
+                - generic [ref=e717]:
+                  - generic [ref=e718]:
+                    - button "点赞，当前 125 个赞" [ref=e719] [cursor=pointer]:
+                      - img [ref=e720]
+                      - generic [ref=e722]: "125"
+                    - button "分享文章链接" [ref=e723] [cursor=pointer]:
+                      - img [ref=e724]
+                    - generic [ref=e730]:
+                      - img [ref=e731]
+                      - generic [ref=e733]: "0"
+                    - generic [ref=e734]: "|"
+                    - generic [ref=e735]: 480 阅读
+                  - button "展开阅读" [ref=e736] [cursor=pointer]:
+                    - text: 展开阅读
+                    - img [ref=e737]
+              - generic [ref=e739]:
+                - generic [ref=e740]:
+                  - generic [ref=e741]:
+                    - img "日常碎片：在写字楼窗外捕捉的一抹暮色与自省" [ref=e742]
+                    - generic [ref=e744]: 日常随记
+                  - generic [ref=e745]:
+                    - generic [ref=e746]:
+                      - generic [ref=e747]: 2026-06-02
+                      - generic [ref=e748]: "阅时: 3 分钟"
+                    - heading "日常碎片：在写字楼窗外捕捉的一抹暮色与自省" [level=4] [ref=e749]
+                    - paragraph [ref=e750]: 今日工作结束后，习惯性站在绿树荫外的窗台看天边。在写下十几行随记的同时，也对自己的时间和身体能效做了一次理性的自检。
+                - generic [ref=e751]:
+                  - generic [ref=e752]:
+                    - button "点赞，当前 54 个赞" [ref=e753] [cursor=pointer]:
+                      - img [ref=e754]
+                      - generic [ref=e756]: "54"
+                    - button "分享文章链接" [ref=e757] [cursor=pointer]:
+                      - img [ref=e758]
+                    - generic [ref=e764]:
+                      - img [ref=e765]
+                      - generic [ref=e767]: "0"
+                    - generic [ref=e768]: "|"
+                    - generic [ref=e769]: 218 阅读
+                  - button "展开阅读" [ref=e770] [cursor=pointer]:
+                    - text: 展开阅读
+                    - img [ref=e771]
+    - contentinfo [ref=e773]:
+      - generic [ref=e774]:
+        - generic [ref=e775]: © 2026 VistaBlog. All rights reserved.
+        - generic [ref=e776]: •
+        - generic [ref=e777]:
+          - text: Powered by
+          - generic [ref=e778]: Google AI Studio
+      - generic [ref=e779]: 本站使用高斯模糊毛玻璃(Glassmorphism)及浏览器 Web Audio API 正弦音源物理合成落雨白噪音。风景图片引自 Unsplash，感谢 Bailey Zindel, Kalen Emsley 等独立风景摄影师的杰出馈赠。
+      - generic [ref=e780]: "💡 提示: 输入 ↑↑↓↓←→←→BA 解锁彩蛋"

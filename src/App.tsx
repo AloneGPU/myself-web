@@ -32,10 +32,12 @@ import {
   Trophy,
   Star
 } from 'lucide-react';
+import { animateCounter, animateCards, animateTitle, animateBounce, anime } from './utils/animations';
 
 import { BackgroundTheme, BlogPost, Moment, ActiveTab, Comment } from './types';
 import { BACKGROUND_THEMES, INITIAL_BLOG_POSTS, INITIAL_MOMENTS } from './data/defaultData';
 import ResourceDiscoveryHub from './components/ResourceDiscoveryHub';
+import DynamicBackground from './components/DynamicBackground';
 
 const ReaderModal = lazy(() => import('./components/ReaderModal'));
 const WritePostModal = lazy(() => import('./components/WritePostModal'));
@@ -175,6 +177,24 @@ export default function App() {
     setCurrentTheme(theme);
     localStorage.setItem('vistablog_theme_id', theme.id);
   };
+
+  // Anime.js 动画效果
+  useEffect(() => {
+    // 数字滚动动画
+    const statNumbers = document.querySelectorAll('.stat-number');
+    statNumbers.forEach((el) => {
+      const target = parseInt(el.getAttribute('data-target') || '0');
+      animateCounter(el as HTMLElement, target, 1500);
+    });
+
+    // 卡片入场动画
+    setTimeout(() => {
+      animateCards('.glass-card');
+    }, 300);
+
+    // 标题动画
+    animateTitle('h2');
+  }, []);
 
   // Backgorund Parallax Tracker
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -432,48 +452,14 @@ export default function App() {
 
   return (
     <div
-      onMouseMove={handleMouseMove}
       className="relative min-h-screen w-full font-sans text-slate-100 overflow-x-hidden selection:bg-slate-700 pb-20"
       id="root-viewport-container"
     >
-      {/* 1. HD Landscape Dynamic Background Panel */}
-      <div className="absolute inset-0 z-0 overflow-hidden bg-slate-950">
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={currentTheme.id}
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{
-              opacity: 1,
-              scale: 1.05,
-              x: mousePos.x,
-              y: mousePos.y
-            }}
-            exit={{ opacity: 0, scale: 1.02 }}
-            transition={{
-              opacity: { duration: 1.2 },
-              scale: { duration: 1.2 },
-              x: { type: 'spring', damping: 20, stiffness: 40 },
-              y: { type: 'spring', damping: 20, stiffness: 40 }
-            }}
-            src={currentTheme.url}
-            alt={currentTheme.name}
-            className="absolute inset-0 w-full h-full min-h-screen object-cover filter brightness-[0.4] contrast-[1.05] saturate-[1.02]"
-            referrerPolicy="no-referrer"
-          />
-        </AnimatePresence>
-        
-        {/* Soft atmospheric gradient layer */}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/10 via-transparent to-slate-950/70" />
-
-        {/* Ambient star particle overlay for Starry Peaks background */}
-        {currentTheme.id === 'starry-peaks' && (
-          <div className="absolute inset-0 overflow-hidden pointer-events-none z-1">
-            <div className="star-particle absolute w-1.5 h-1.5 bg-white rounded-full top-[15%] left-[25%] blur-[0.5px] opacity-40 duration-1000" />
-            <div className="star-particle absolute w-1 h-1 bg-white rounded-full top-[28%] left-[65%] blur-[0.5px] opacity-[0.2] delay-500 duration-1500" />
-            <div className="star-particle absolute w-2 h-2 bg-indigo-200 rounded-full top-[10%] left-[80%] blur-[1px] opacity-30 delay-1000 duration-[2.5s]" />
-          </div>
-        )}
-      </div>
+      {/* 1. Dynamic Background with Video/Image Support */}
+      <DynamicBackground
+        currentTheme={currentTheme}
+        onMouseMove={handleMouseMove}
+      />
 
       {/* 2. Visual Layer Wrapper */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 pt-6 md:px-8 md:pt-10 select-none">
@@ -551,16 +537,16 @@ export default function App() {
 
               {/* Small interactive blog metrics */}
               <div className="grid grid-cols-3 gap-2 w-full p-2 bg-black/25 rounded-2xl border border-white/5 text-center mb-5 font-mono">
-                <div>
-                  <span className="block text-sm font-black text-white">{posts.length}</span>
+                <div className="stat-item">
+                  <span className="block text-sm font-black text-white stat-number" data-target={posts.length}>{posts.length}</span>
                   <span className="text-[10px] text-slate-400">文章</span>
                 </div>
-                <div>
-                  <span className="block text-sm font-black text-white">{moments.length}</span>
+                <div className="stat-item">
+                  <span className="block text-sm font-black text-white stat-number" data-target={moments.length}>{moments.length}</span>
                   <span className="text-[10px] text-slate-400">微言</span>
                 </div>
-                <div>
-                  <span className="block text-sm font-black text-white">
+                <div className="stat-item">
+                  <span className="block text-sm font-black text-white stat-number" data-target={posts.reduce((sum, p) => sum + p.views, 0) + 120}>
                     {posts.reduce((sum, p) => sum + p.views, 0) + 120}
                   </span>
                   <span className="text-[10px] text-slate-400">总博阅</span>
