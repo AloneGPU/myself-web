@@ -50,6 +50,10 @@ import { BACKGROUND_THEMES, INITIAL_BLOG_POSTS, INITIAL_MOMENTS } from './data/d
 import ResourceDiscoveryHub from './components/ResourceDiscoveryHub';
 import DynamicBackground from './components/DynamicBackground';
 import { findThemeById, useMediaManifest } from './hooks/useMediaManifest';
+import { useBackground, useSavedTheme } from './hooks/useBackground';
+import ReadingProgressBar from './components/ReadingProgress';
+import ScrollToTop from './components/ScrollToTop';
+import AdminPanel from './components/AdminPanel';
 
 const ReaderModal = lazy(() => import('./components/ReaderModal'));
 const WritePostModal = lazy(() => import('./components/WritePostModal'));
@@ -58,7 +62,7 @@ const WeeklyViewsChart = lazy(() => import('./components/WeeklyViewsChart'));
 const DanmakuOverlay = lazy(() => import('./components/DanmakuOverlay'));
 
 const LazyPanelFallback = ({ label = '正在加载互动模块...' }: { label?: string }) => (
-  <div className="glass-panel rounded-3xl p-6 text-center text-sm text-slate-300">
+  <div className="wallpaper-tuner glass-panel rounded-3xl p-6 text-center text-sm text-slate-300">
     {label}
   </div>
 );
@@ -103,6 +107,16 @@ export default function App() {
     onConfirm: () => void;
   } | null>(null);
 
+  const { mode: bgMode, setMode: setBgMode, isVideoActive } = useBackground(backgroundThemes, !!themeVideos[currentTheme.id]);
+  const { useAutoTheme, setUseAutoTheme, saveThemeId } = useSavedTheme();
+  const handleThemeChange = useCallback((theme: BackgroundTheme) => {
+    setCurrentTheme(theme);
+    setCustomBgUrl(null);
+    localStorage.removeItem('vistablog_custom_bg');
+    localStorage.setItem('vistablog_theme_id', theme.id);
+    saveThemeId(theme.id);
+  }, [saveThemeId]);
+
   // Background Parallax Mouse Tracking
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
@@ -118,6 +132,7 @@ export default function App() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
   const [shareTooltip, setShareTooltip] = useState<string | null>(null);
+  const [adminOpen, setAdminOpen] = useState(false);
 
   const toggleManageMode = useCallback(() => {
     setIsManageMode((prev) => {
@@ -251,13 +266,6 @@ export default function App() {
     localStorage.setItem('vistablog_custom_bg', JSON.stringify(bg));
   };
 
-  // Switch Theme & Save
-  const handleThemeChange = (theme: BackgroundTheme) => {
-    setCurrentTheme(theme);
-    setCustomBgUrl(null);
-    localStorage.removeItem('vistablog_custom_bg');
-    localStorage.setItem('vistablog_theme_id', theme.id);
-  };
 
   // Anime.js 动画效果
   useEffect(() => {
@@ -667,6 +675,7 @@ export default function App() {
       className={`relative min-h-screen w-full font-sans text-slate-100 overflow-x-hidden selection:bg-slate-700 pb-20 ${sparkleMode ? 'sparkle-mode' : ''}`}
       id="root-viewport-container"
     >
+      <ReadingProgressBar />
       <EasterEggToasts toasts={easterToasts} onDismiss={dismissToast} />
       <CommandPalette open={commandOpen} onClose={() => setCommandOpen(false)} actions={commandActions} />
       <ConfirmDialog
@@ -687,7 +696,7 @@ export default function App() {
       <MusicPlayer />
       <ClickEffect enabled={true} />
       <Fireflies count={15} enabled={sparkleMode} />
-      <MouseGlow size={120} />
+      <MouseGlow enabled={true} />
       {/* 1. Dynamic Background with Video/Image Support */}
       <DynamicBackground
         currentTheme={displayTheme}
@@ -705,7 +714,7 @@ export default function App() {
               type="button"
               onClick={handleLogoClick}
               className="w-11 h-11 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800 border border-slate-700/60 flex items-center justify-center cursor-pointer hover:scale-105 transition active:scale-95"
-              title="连点三次打开指令台 · Ctrl+K"
+              title="VistaBlog"
             >
               <Compass size={22} className={style.accentText} />
             </button>
@@ -719,7 +728,7 @@ export default function App() {
           </div>
 
           {/* Quick theme status badge / photographer credit */}
-          <div className="flex items-center gap-2 text-[11px] font-mono bg-black/35 pl-3 pr-4 py-2 border border-white/5 rounded-2xl">
+          <div className="theme-badge-header flex items-center gap-2 text-[11px] font-mono bg-black/35 pl-3 pr-4 py-2 border border-white/5 rounded-2xl">
             <div className="w-2 h-2 rounded-full alive-indicator shrink-0" style={{ backgroundColor: 'var(--accent-vibe-color)' }} />
             <span className="text-slate-400">当前壁纸: </span>
             <span className="font-semibold text-white mr-1">{displayTheme.name}</span>
@@ -740,11 +749,7 @@ export default function App() {
                 · {manifestSource}
               </span>
             )}
-            {konamiProgress > 0 && (
-              <span className="text-[10px] text-amber-400 font-mono ml-1" title="Konami 进度">
-                🎮 {konamiProgress}/10
-              </span>
-            )}
+
           </div>
         </header>
 
@@ -769,7 +774,7 @@ export default function App() {
           <section className="lg:col-span-1 space-y-6">
             
             {/* PROFILE CARD */}
-            <div className="glass-panel p-6 rounded-3xl flex flex-col items-center text-center">
+            <div className="wallpaper-tuner glass-panel p-6 rounded-3xl flex flex-col items-center text-center">
               
               {/* Avatar block */}
               <div className="relative group mb-4">
@@ -803,7 +808,7 @@ export default function App() {
               </p>
 
               {/* Small interactive blog metrics */}
-              <div className="grid grid-cols-3 gap-2 w-full p-2 bg-black/25 rounded-2xl border border-white/5 text-center mb-5 font-mono">
+              <div className="profile-stats-grid grid grid-cols-3 gap-2 w-full p-2 bg-black/25 rounded-2xl border border-white/5 text-center mb-5 font-mono">
                 <div className="stat-item">
                   <span className="block text-sm font-black text-white stat-number" data-target={posts.length}>{posts.length}</span>
                   <span className="text-[10px] text-slate-400">文章</span>
@@ -821,7 +826,7 @@ export default function App() {
               </div>
 
               {/* Social Channels */}
-              <div className="flex gap-4">
+              <div className="social-channels-row flex gap-4">
                 <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="p-2 border border-white/5 hover:border-white/20 transition rounded-full text-slate-350 hover:text-white bg-black/20">
                   <Github size={15} />
                 </a>
@@ -853,7 +858,7 @@ export default function App() {
             </div>
 
             {/* INTERACTIVE AMBIENT SOUND GENERATOR (Web Audio Binaural Synth) */}
-            <div className="glass-panel p-5 rounded-3xl">
+            <div className="ambient-sound-wrapper glass-panel p-5 rounded-3xl">
               <div className="flex items-center justify-between mb-3.5">
                 <div className="flex items-center gap-2">
                   <Volume2 size={16} className={style.accentText} />
@@ -1614,21 +1619,7 @@ export default function App() {
 
       </div>
 
-      {/* Back to Top Button */}
-      <AnimatePresence>
-        {showBackToTop && (
-          <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="fixed bottom-8 right-8 z-50 p-3 rounded-full bg-slate-800/80 backdrop-blur-md border border-white/10 text-white hover:bg-slate-700/80 transition-all shadow-lg cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
-            aria-label="返回顶部"
-          >
-            <ArrowUp size={20} />
-          </motion.button>
-        )}
-      </AnimatePresence>
+      <ScrollToTop />
 
       {/* 3. MODALS LIGHT BOXES */}
       <AnimatePresence>

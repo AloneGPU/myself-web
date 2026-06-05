@@ -117,7 +117,7 @@ export default function DynamicBackground({
       <div className="absolute inset-0 bg-gradient-to-b from-slate-950/10 via-transparent to-slate-950/70 pointer-events-none" />
 
       {/* 视频状态指示器（右上角） */}
-      <div className="absolute top-8 right-8 z-50 pointer-events-none">
+      <div className="absolute top-8 right-8 z-50 pointer-events-none bg-status-indicator">
         <div className="glass-panel rounded-xl px-3 py-1.5 flex items-center gap-2">
           <span className="text-xs text-slate-300">
             {isVideoLoaded ? '🎬 视频背景' : '🖼️ 图片背景'}

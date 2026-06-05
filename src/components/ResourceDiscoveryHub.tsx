@@ -30,7 +30,7 @@ interface ResourceDiscoveryHubProps {
     badgeClass: string;
   };
   onOpenPost: (post: BlogPost) => void;
-  onOpenSandbox: () => void;
+  onOpenSandbox?: () => void;
   onStartContribution: () => void;
 }
 
@@ -63,6 +63,7 @@ export default function ResourceDiscoveryHub({
   style,
   onOpenPost,
   onStartContribution,
+  onOpenSandbox,
 }: ResourceDiscoveryHubProps) {
   const [mode, setMode] = useState<HubMode>('materials');
   const [query, setQuery] = useState('');
@@ -189,7 +190,7 @@ export default function ResourceDiscoveryHub({
                 </button>
                 <button
                   type="button"
-                  onClick={onOpenSandbox}
+                  onClick={onOpenSandbox ?? (() => {})}
                   className="min-h-32 rounded-2xl border border-white/10 bg-white/[0.06] p-4 text-left transition hover:border-white/20 hover:bg-white/[0.09]"
                 >
                   <Music size={20} className={style.accentText} />
